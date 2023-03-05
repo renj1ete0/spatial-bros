@@ -24,7 +24,7 @@ For each of the analyses, the application will provide users with kernel density
 
 # Problems & Motivation
 
-In today\'s technological advancing world, there are many interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geospatial data is the foundation based on the foundation of geographical boundary locations and Aspatial data are the observations recorded that can be used to generate derive insights.
+In today's technological advancing world, there are many interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geospatial data is the foundation based on the foundation of geographical boundary locations and Aspatial data are the observations recorded that can be used to generate derive insights.
 
 Despite that, there are not many people who are knowledgeable and trained to perform such analysis. Without the fundamental knowledge and appropriate training, any results based on the analysis performed could be inaccurate.
 
@@ -78,7 +78,7 @@ Throughout the development of this project, our group would like to perform our 
 
 # Relevant Related Works
 
-## Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China 
+## Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China
 
 <https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829>
 
@@ -147,7 +147,7 @@ The paper looks at a methodology to analyse spatial accessibility using network 
 Our data sources includes datasets from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria) due to its large and wide range of datasets available for exploration and analysis.
 
 | **Type**               | **Name**                                                                                                                                     | **Link**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-------------|-------------|-----------------------------------------------|
 | Localities             | Localities Outline for Australia (to filter out City of Melbourne)                                                                           | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Local Government Areas | LGA Outline for Australia (to use to filter out City of Melbourne Localities)                                                                | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Network                | Pedestrian                                                                                                                                   | <https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -174,7 +174,7 @@ They could also select and see accessibility of drinking fountains by pedestrian
 
 ![](proposal/Project%20timeline.PNG)
 
-References
+# References
 
 1.  Dr Kam Tin Seong - [Course Website](https://is415-ay2022-23t2.netlify.app/) and [[R for Geospatial Data Science and Analytics]{.underline}](https://r4gdsa.netlify.app/chap01.html) textbook
 2.  Yikang Rui, Zaigui Yang, Tianlu Qian, Shoaib Khalid, Nan Xia & Jiechen Wang - [Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China](https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829)
