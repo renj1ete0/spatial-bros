@@ -1,11 +1,37 @@
 ---
-title: "Spatial-Bros"
+title: "About Us"
 ---
 
-## Quarto
+# Spatial Bros
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+The Spatial Bros consists of three members from the School of Computing and Information Systems at Singapore Management University who are taking the IS415 Geospatial Analytics and Applications course. View our profiles below!
 
-```{r}
-1 + 1
-```
+## Harith
+
+![](imgs/harith.jpg){style="border-radius: 50%" width="250"}
+
+> Hello! My name is Harith and I am currently a Full-time student at Singapore Management University pursuing a double major degree in BSc (IS) Smart-City Management & Technology as my first major and Sustainability as my second major.
+>
+> 'If the hunger to learn is genuine, the appetite for growth is colossal'. With this line taken to heart, I am constantly looking for opportunities to learn and challenge myself to gain the most out of every obstacle I face.
+>
+> Harnessing the skillsets and experiences gained from working with and leading work teams in various sectors, I am committed to taking on increasing roles and responsibilities to ultimately embark on the goal of innovating and contributing to smart city solutions. Other than that, I enjoy playing pool and singing my heart out during my free time!
+
+## Ming Rong
+
+![](imgs/mingrong.jpg){style="border-radius: 50%" width="250"}
+
+> Currently a student pursuing a degree in Information System with track in Financial Technology. By aligning Technology with Finance is my interest and goal. It meets business needs, creates value and result in a more efficient eco-system.
+>
+> I am constantly looking forward to opportunities where I can try something new. This way I can acquire knowledge and explore new grounds where I believe there are endless findings. As such, I see myself as jack of all trades and master of absolute none.
+>
+> I am just an everyday student striving to live another day in this fast pace and ever changing society. Beyond that, I can be found on the streets running or cycling.
+
+## Ren Jie
+
+![](imgs/renjie.JPG){style="border-radius: 50%" width="250"}
+
+> I'm Ren Jie, a Year 2 Information Systems Undergraduate student at the Singapore Management University, majoring in Digitalisation & Cloud Solutions (SCIS) and Urban Science (CIS).
+>
+> My interests are in urban science and urban planning. I am excited to learn more about geospatial analytics from this course which will value-add to my individualised second major in Urban Science at the College of Integrative Studies, where I aim to utilise, integrate and interpret data from the city into innovative solutions for cities of the future.
+>
+> I enjoy hiking and cycling during my free time, or enjoying the good food in Singapore!
