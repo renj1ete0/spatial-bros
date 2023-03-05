@@ -1,0 +1,36 @@
+project:
+  type: website
+
+website:
+  search:
+    location: navbar
+    type: textbox
+  reader-mode: true
+  navbar:
+    logo: "imgs/logo.png"
+    search: true
+    background: primary
+    right:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About Us
+      - href: proposal.qmd
+        text: Proposal
+      - icon: github
+        href: https://github.com/renjie-teo/spatial-bros
+        
+  page-footer:
+    background: dark
+    left: "Spatial Bros: Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility" 
+    right: 
+      - icon: github
+        href: https://github.com/renjie-teo/spatial-bros
+
+format:
+  html:
+    theme: [darkly, dark.scss]
+    css: [styles.css, logo.css]
+    toc: true
+
+editor: visual
