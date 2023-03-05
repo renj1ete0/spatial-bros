@@ -4,22 +4,15 @@ description: "Exploring Network-Constrained Spatial Point Analysis and Geographi
 author: "Spatial Bros"
 date: "03/05/2023"
 number-sections: true
-categories: ["proposal"]
+categories: ["proposal", "network-constrained spatial point analysis", "geographical accessibility"]
 title-block-banner: true
-#image: In-Class_Ex07/preview.png
 ---
 
-## 
+Theme: Point Pattern Analysis
 
-# Theme: Point Pattern Analysis 
+# Abstract
 
-1.  <div>
-
-    #  Abstract 
-
-    </div>
-
-The Spatial Bros is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:
+The **Spatial Bros** is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:
 
 Spatial Points Analysis
 
@@ -29,31 +22,17 @@ Spatial Points Analysis
 
 For each of the analyses, the application will provide users with kernel density maps, Geographical Accessibility maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.
 
-2.  <div>
-
-    #  Problem & Motivation
-
-    </div>
+# Problems & Motivation
 
 In today\'s technological advancing world, there are many interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geospatial data is the foundation based on the foundation of geographical boundary locations and Aspatial data are the observations recorded that can be used to generate derive insights.
 
-\
-
 Despite that, there are not many people who are knowledgeable and trained to perform such analysis. Without the fundamental knowledge and appropriate training, any results based on the analysis performed could be inaccurate.
-
-\
 
 Hence, our group's main focus is to perform our analysis and develop a web-based geospatial tool using R Shiny with regards to Point Pattern Analysis particularly on Network-Constrained Point Pattern Analysis (NCPPA) and Geographical Accessibility (GA). We hope this application can empower and educate users on NCPPA and GA and conduct the analysis they want regardless of their technical expertise to gain further insights from geospatial data. 
 
-3.  <div>
+# Project Objectives
 
-    #  Project Objectives
-
-    </div>
-
-Throughout the development of this project, our group would like to perform our analysis and develop an analytical application that allow users to:
-
-\
+Throughout the development of this project, our group would like to perform our analysis and develop an analytical application that allow users to:\
 
 -   Better understand the capabilities of Network-Constrained Point Pattern Analysis
 
@@ -61,15 +40,11 @@ Throughout the development of this project, our group would like to perform our 
 
 -   Conduct Network-Constrained Point Pattern Analysis density estimation (NetKDE) and (G, K) function analysis
 
--   Ability to generate insights based on the above analysis for any decision making 
+-   Ability to generate insights based on the above analysis for any decision making
 
-4.  <div>
+# Our Approach & Methodology
 
-    #  Our Approach/Methodology
-
-    </div>
-
-## 4.1 Data Preparation
+## Data Preparation
 
 -   To source and assemble data from various sources out there
 
@@ -79,7 +54,7 @@ Throughout the development of this project, our group would like to perform our 
 
 -   Generate Origin-Destination (OD) Matrix using Spatial Points and Networks
 
-## 4.2 Exploratory Data Analysis
+## Exploratory Data Analysis
 
 -   Visualise and examine the distribution of spatial pointers
 
@@ -87,13 +62,13 @@ Throughout the development of this project, our group would like to perform our 
 
 -   Further Data Wrangling (where necessary)
 
-## 4.3 Network Constrained Point Pattern Analysis
+## Network Constrained Point Pattern Analysis
 
 -   Network Kernel Density Estimation - To explore the intensity of points along network
 
 -   G and K function - To identify any potential clustering patterns, random distributions, even or uneven distributions of patterns
 
-## 4.4 Geographical Accessibility
+## Geographical Accessibility
 
 -   Tidying the distance matrix by using ODMatrix
 
@@ -101,173 +76,107 @@ Throughout the development of this project, our group would like to perform our 
 
 -   Visualising accessibility using methods such as Hansen, KD2SFCA and Spatial Accessibility Measure (SAM)
 
+# Relevant Related Works
+
+## Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China 
+
+<https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829>
+
+### Summary
+
+Network KDE and Network K-function was used to study retail service  hot-spot areas and spatial clustering patterns of a local retail giant, Suguo, in Nanjing City.
+
+### Learning Points and Linking Back to Our Project
+
+The bandwidth for generating network-constrained kernel density estimation (KDE) maps would produce representations of distributions that  and we should explore various network KDE bandwidths to find suitable bandwidth and also provide options for users to adjust bandwidth
+
+## Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S
+
+<https://arxiv.org/abs/2212.06954>
+
+### Summary
+
+The team created a tool to analyse the ease and equity of access to major POI using public transit in US cities using an interactive website (to filter selected POIs) calculated with 2SFCA (2-step floating catchment area) approach.\
 \
+It aims to explore effectiveness and equity of public transit system in major US cities
 
-5.  <div>
+### Learning Points and Linking Back to Our Project
 
-    ## Relevant Related Works
+-   User Interface for users to filter by POI and view geographical accessibility information and additional
 
-    </div>
+## Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments -- a case study of public amenities in Toruń
 
-```{=html}
-<!-- -->
-```
-1.  Network-constrained and category-based pointpattern analysis for Suguo retail stores in Nanjing, China (<http://dx.doi.org/10.1080/13658816.2015.1080829>)
+<http://dx.doi.org/10.2478/mgrsd-2018-0037>
 
-\
+### Summary
 
-<https://sci-hub.se/https://doi.org/10.1080/13658816.2015.1080829> 
+The paper looks at a methodology to analyse spatial accessibility using network analysis and a hexagonal grid to the city of Toruń, Poland. The paper also explored that it is important to empower citizens with knowledge of the geospatial analysis and created a web application to empower citizens with knowledge.
 
-\
+### Learning Points and Linking Back to Our Project
 
-Summary:
+-   Adopt a similar methodology of converting distance for OD Matrix, specifically Origin and Destination distances to travel times by assuming a walking speed of 4km/h
 
--   Network KDE and Network K-function was used to study retail service  hot-spot areas and spatial clustering patterns of a local retail giant, Suguo, in Nanjing City.\
-    \
+-   Network will be calculated using the travel time of the appropriate speed (eg. road will be calculated based on road speed limit)
 
-```{=html}
-<!-- -->
-```
--   Learning Points:
+-   This will prevent underestimation of travel times which may affect the accessbility metrics
 
-    -   The bandwidth for generating network-constrained kernel density estimation (KDE) maps would produce representations of distributions that \
-        \
+# Story Board
 
--   Linking back to our project:
+## Home Page
 
-    -   Explore various network KDE bandwidths to find suitable bandwidth and also provide options for users to adjust bandwidth
+![](proposal/homepage.PNG)
 
-\
+## Network KDE
 
-2.  Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S
+![](proposal/Network%20KDE.PNG)
 
-<https://arxiv.org/abs/2212.06954> 
+## Network Statistical Function
 
-\
+![](proposal/Stats%20function.PNG)
 
-Summary:
+## Geographical Accessibility
 
--   The team created a tool to analyse the ease and equity of access to major POI using public transit in US cities using an interactive website (to filter selected POIs) calculated with 2SFCA (2-step floating catchment area) approach.\
-    \
-    It aims to explore effectiveness and equity of public transit system in major US cities\
-    \
+![](proposal/geo%20access.PNG)
 
-```{=html}
-<!-- -->
-```
--   Learning Points:
+## Data
 
-    -   User Interface for users to filter by POI and view geographical accessibility information and additional \
-        \
+![](proposal/Data.PNG)
 
--   Linking back to our project:
+# Data Sources
 
-    -   \
+Our data sources includes datasets from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria) due to its large and wide range of datasets available for exploration and analysis.
 
-\
-\
-
-6.  <div>
-
-    #  Storyboard
-
-    </div>
-
-Homepage
-
-![](https://lh5.googleusercontent.com/yno619MiCVctA6iNWQ5gc1Zx6VrzfJmTgHfAxYyfXyY25aLoqTwq-gKCdQYmQsTwFqXBiYhubUNEFIc92_W4hyXYSrcZ1q_GMN4We0LgJ9DuTwIBb8gEFIAiGKA4h9t7LSqB7hLdMD3H6poxwq0ulMw)
-
-\
-
-Network KDE
-
-![](https://lh6.googleusercontent.com/agS86dP_fHHhw3mQF0MJTE6tAWFlsnr4x9UltFfJ-ABCslrL63mpkIrrl_vCBNCkp65Uures7vhRd9v_gaUi-8TM5n2EaTx_r7RKS98IqhlqctQ7HaTiMXedSJbcEa-oqTG61Fsyfm4UAH7_2GGHZ7k)
-
-\
-\
-\
-\
-
-Network Statistical Function
-
-\
-
-![](https://lh3.googleusercontent.com/KiYLgEuC6Y0113QCSte0d68G1wC-UPjqzV2_VO_ONyqKOlZeKg3_Iniv2qFy8MQpog0TI7N4K529Puhs9KxY0aboOogioQaDybNKLNep55JLmAOm3VqgSS-ozbpnG-b88bJN1Yt11OmnwIQbMeV48fk)
-
-Geographical Accessibility
-
-\
-
-![](https://lh6.googleusercontent.com/iQ5mVOyOBmrpp6nE9rdXiIpWzL1cT7_T4uDwy_m9nJyGTktuVVwwWcL_U4Bds8ivn3Yv0BJhnfH54Z5e4FXUs6WAtOYWtKy1AQByo4SysiqtmXMFSKHfkLylqFDA6QJLERs--wiSBFVUBKpSRwPoUFM)
-
-\
-\
-\
-
-Data
-
-![](https://lh6.googleusercontent.com/kUjQcUvYtgR7VnFIUk3Hc2qo_CHlVDAwc3VpUiJ6NQn-vXT_orMh2KWQLIxNA7IRbPrwlLeTskQ-GaZeOzquzwcgZ3H0GVXPJKd9e7ZFziplCNSauoNj6ruXSiBzTMptaMJ8hFgjPaZ83El2YgMp3Lw)
-
-\
-
-7.  <div>
-
-    #  Data Sources
-
-    </div>
-
-\
-\
-
-| **Type**       | **Name**                                                                                                                                     | **Link**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| LGA            | LGA of melbourne (province lines find dataset)                                                                                               | Insert link link                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| Network        | Pedestrian                                                                                                                                   | <https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| Network        | Roads                                                                                                                                        | <https://data.melbourne.vic.gov.au/explore/dataset/road-corridors/information/?location=14,-37.81097,144.96168&basemap=mbs-7a7333>                                                                                                                                                                                                                                                                                                                                                                                                           |
-| Network        | Trams                                                                                                                                        | <https://discover.data.vic.gov.au/dataset/ptv-metro-tram-routes1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| Spatial Points | Business establishments location and industry classification                                                                                 | <https://data.melbourne.vic.gov.au/explore/dataset/business-establishments-with-address-and-industry-classification/>                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| Spatial Points | Residential Dwellings                                                                                                                        | <https://data.melbourne.vic.gov.au/explore/dataset/residential-dwellings/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Spatial Points | Landmarks and places of interest, including schools, theatres, health services, sports facilities, places of worship, galleries and museums. | <https://data.melbourne.vic.gov.au/explore/dataset/landmarks-and-places-of-interest-including-schools-theatres-health-services-spor/information/>                                                                                                                                                                                                                                                                                                                                                                                            |
-| Spatial Points | Drinking Fountain                                                                                                                            | <https://data.melbourne.vic.gov.au/explore/dataset/drinking-fountains/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Spatial Points | Public Toilet                                                                                                                                | [https://data.melbourne.vic.gov.au/explore/dataset/public-toilets](https://data.melbourne.vic.gov.au/explore/dataset/public-toilets/information/?dataChart=eyJxdWVyaWVzIjpbeyJjb25maWciOnsiZGF0YXNldCI6InB1YmxpYy10b2lsZXRzIiwib3B0aW9ucyI6e319LCJjaGFydHMiOlt7ImFsaWduTW9udGgiOnRydWUsInR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiQVZHIiwieUF4aXMiOiJsYXQiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjMjc3QkI0In1dLCJ4QXhpcyI6ImxhdCIsIm1heHBvaW50cyI6NTAsInNvcnQiOiIifV0sInRpbWVzY2FsZSI6IiIsImRpc3BsYXlMZWdlbmQiOnRydWUsImFsaWduTW9udGgiOnRydWV9) |
-| Spatial Points | Childcare Centres                                                                                                                            | <https://data.melbourne.vic.gov.au/explore/dataset/childcare-centres/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-
-\
-\
+| **Type**               | **Name**                                                                                                                                     | **Link**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Localities             | Localities Outline for Australia (to filter out City of Melbourne)                                                                           | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
+| Local Government Areas | LGA Outline for Australia (to use to filter out City of Melbourne Localities)                                                                | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
+| Network                | Pedestrian                                                                                                                                   | <https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Network                | Roads                                                                                                                                        | <https://data.melbourne.vic.gov.au/explore/dataset/road-corridors/information/?location=14,-37.81097,144.96168&basemap=mbs-7a7333>                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Network                | Trams                                                                                                                                        | <https://discover.data.vic.gov.au/dataset/ptv-metro-tram-routes1>                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Spatial Points         | Business establishments location and industry classification                                                                                 | <https://data.melbourne.vic.gov.au/explore/dataset/business-establishments-with-address-and-industry-classification/>                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Spatial Points         | Residential Dwellings                                                                                                                        | <https://data.melbourne.vic.gov.au/explore/dataset/residential-dwellings/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Spatial Points         | Landmarks and places of interest, including schools, theatres, health services, sports facilities, places of worship, galleries and museums. | <https://data.melbourne.vic.gov.au/explore/dataset/landmarks-and-places-of-interest-including-schools-theatres-health-services-spor/information/>                                                                                                                                                                                                                                                                                                                                                                                            |
+| Spatial Points         | Drinking Fountain                                                                                                                            | <https://data.melbourne.vic.gov.au/explore/dataset/drinking-fountains/>                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Spatial Points         | Public Toilet                                                                                                                                | [https://data.melbourne.vic.gov.au/explore/dataset/public-toilets](https://data.melbourne.vic.gov.au/explore/dataset/public-toilets/information/?dataChart=eyJxdWVyaWVzIjpbeyJjb25maWciOnsiZGF0YXNldCI6InB1YmxpYy10b2lsZXRzIiwib3B0aW9ucyI6e319LCJjaGFydHMiOlt7ImFsaWduTW9udGgiOnRydWUsInR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiQVZHIiwieUF4aXMiOiJsYXQiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjMjc3QkI0In1dLCJ4QXhpcyI6ImxhdCIsIm1heHBvaW50cyI6NTAsInNvcnQiOiIifV0sInRpbWVzY2FsZSI6IiIsImRpc3BsYXlMZWdlbmQiOnRydWUsImFsaWduTW9udGgiOnRydWV9) |
+| Spatial Points         | Childcare Centres                                                                                                                            | <https://data.melbourne.vic.gov.au/explore/dataset/childcare-centres/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 With the inclusion of three different Network datasets in Melbourne and various Spatial Points datasets, we hope to allow users to understand and gain further insight of the use cases of Network-Constrained Spatial Points Analysis and Geographical Accessibility along different networks such as Pedestrian, Roads and Tram Networks.
 
-\
-
 For example, users could select health services and understand more about geographical accessibility of health services across Melbourne by Road. 
-
-\
 
 They could also select and see accessibility of drinking fountains by pedestrian paths, which could drive further understanding about the distribution of drinking fountains across the city and possibly push for more water fountains to reduce the use of disposable water bottles to be more sustainable.
 
-\
-\
-\
+# Application Architecture
 
-8.  <div>
+![](proposal/Application%20Architecture.PNG)
 
-    #  Application Architecture
+# Timeline
 
-    </div>
+![](proposal/Project%20timeline.PNG)
 
-![](https://lh3.googleusercontent.com/Y_nRkYJwsG5XQq6zNh8Xj4jfIjWTlEaTKmHFimWp5rWiCoMCcVTNQpFWBhQFyMxW_s0hYlRya0KxJ03o5CFeZT5sSmyEmAYFHEmJwVANvAWT_ATdl0vRK0XZ-ssgBT98-E4sErFIwkMSNwV4ULjtMVk)
+References
 
-\
-\
-\
-\
-
-9.  <div>
-
-    # Timeline
-
-    </div>
-
-[IS415 Project Timeline](https://docs.google.com/spreadsheets/d/1elNmCZFWiOhuEW13ccowDRreiPgbJSxhupn0gNrUyeQ/edit#gid=0)
-
-![](https://lh6.googleusercontent.com/LCgXbiMQp0L6aiQ255AaKNdZeQN-HDz6jl1jXppnhZTthFAtFvepihLmTcIg6AfNgQFUIMtrS6H1NwTIQRoO-kzFSiUTpnhNbDPAvxPiFcqKLkWiEe9mUZpmj1L-1nPrwv3J68hZIVJSqMxTI7z2MKs)
+1.  Dr Kam Tin Seong - [Course Website](https://is415-ay2022-23t2.netlify.app/) and [[R for Geospatial Data Science and Analytics]{.underline}](https://r4gdsa.netlify.app/chap01.html) textbook
+2.  Yikang Rui, Zaigui Yang, Tianlu Qian, Shoaib Khalid, Nan Xia & Jiechen Wang - [Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China](https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829)
+3.  Alexander Li, Mengyang Liu, Aurimas Racas, Tejas Santanam, Junaid Syed, Przemyslaw Zientala - [Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S](https://arxiv.org/abs/2212.06954)
+4.  Jan Burdziej - [Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments -- a case study of public amenities in Toruń](https://doi.org/10.2478/mgrsd-2018-0037)

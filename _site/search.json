@@ -9,9 +9,9 @@
   {
     "objectID": "proposal.html",
     "href": "proposal.html",
-    "title": "Project Proposal",
+    "title": "Project Proposal: Spatial Bros",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n1 + 1\n\n[1] 2"
+    "text": "Theme: Point Pattern Analysis"
   },
   {
     "objectID": "about.html",
@@ -31,28 +31,84 @@
     "objectID": "proposal.html#data-preparation",
     "href": "proposal.html#data-preparation",
     "title": "Project Proposal: Spatial Bros",
-    "section": "5.1 4.1 Data Preparation",
-    "text": "5.1 4.1 Data Preparation\n\nTo source and assemble data from various sources out there\nImporting the Spatial Data (Geospatial and Aspatial)\nData Wrangling \nGenerate Origin-Destination (OD) Matrix using Spatial Points and Networks"
+    "section": "4.1 Data Preparation",
+    "text": "4.1 Data Preparation\n\nTo source and assemble data from various sources out there\nImporting the Spatial Data (Geospatial and Aspatial)\nData Wrangling \nGenerate Origin-Destination (OD) Matrix using Spatial Points and Networks"
   },
   {
     "objectID": "proposal.html#exploratory-data-analysis",
     "href": "proposal.html#exploratory-data-analysis",
     "title": "Project Proposal: Spatial Bros",
-    "section": "5.2 4.2 Exploratory Data Analysis",
-    "text": "5.2 4.2 Exploratory Data Analysis\n\nVisualise and examine the distribution of spatial pointers\nExamine any anomalies and outliers in the dataset sourced\nFurther Data Wrangling (where necessary)"
+    "section": "4.2 Exploratory Data Analysis",
+    "text": "4.2 Exploratory Data Analysis\n\nVisualise and examine the distribution of spatial pointers\nExamine any anomalies and outliers in the dataset sourced\nFurther Data Wrangling (where necessary)"
   },
   {
     "objectID": "proposal.html#network-constrained-point-pattern-analysis",
     "href": "proposal.html#network-constrained-point-pattern-analysis",
     "title": "Project Proposal: Spatial Bros",
-    "section": "5.3 4.3 Network Constrained Point Pattern Analysis",
-    "text": "5.3 4.3 Network Constrained Point Pattern Analysis\n\nNetwork Kernel Density Estimation - To explore the intensity of points along network\nG and K function - To identify any potential clustering patterns, random distributions, even or uneven distributions of patterns"
+    "section": "4.3 Network Constrained Point Pattern Analysis",
+    "text": "4.3 Network Constrained Point Pattern Analysis\n\nNetwork Kernel Density Estimation - To explore the intensity of points along network\nG and K function - To identify any potential clustering patterns, random distributions, even or uneven distributions of patterns"
   },
   {
     "objectID": "proposal.html#geographical-accessibility",
     "href": "proposal.html#geographical-accessibility",
     "title": "Project Proposal: Spatial Bros",
-    "section": "5.4 4.4 Geographical Accessibility",
-    "text": "5.4 4.4 Geographical Accessibility\n\nTidying the distance matrix by using ODMatrix\nTo identify the accessibility of origins to destinations\nVisualising accessibility using methods such as Hansen, KD2SFCA and Spatial Accessibility Measure (SAM)\n\n\n\n\n\n5.5 Relevant Related Works\n\n\n\n\nNetwork-constrained and category-based pointpattern analysis for Suguo retail stores in Nanjing, China (http://dx.doi.org/10.1080/13658816.2015.1080829)\n\n\n\nhttps://sci-hub.se/https://doi.org/10.1080/13658816.2015.1080829 \n\n\nSummary:\n\nNetwork KDE and Network K-function was used to study retail service  hot-spot areas and spatial clustering patterns of a local retail giant, Suguo, in Nanjing City.\n\n\n\n\n\nLearning Points:\n\nThe bandwidth for generating network-constrained kernel density estimation (KDE) maps would produce representations of distributions that\n\n\n\nLinking back to our project:\n\nExplore various network KDE bandwidths to find suitable bandwidth and also provide options for users to adjust bandwidth\n\n\n\n\n\nEase and Equity of Point of Interest Accessibility via Public Transit in the U.S\n\nhttps://arxiv.org/abs/2212.06954 \n\n\nSummary:\n\nThe team created a tool to analyse the ease and equity of access to major POI using public transit in US cities using an interactive website (to filter selected POIs) calculated with 2SFCA (2-step floating catchment area) approach.\n\nIt aims to explore effectiveness and equity of public transit system in major US cities\n\n\n\n\n\nLearning Points:\n\nUser Interface for users to filter by POI and view geographical accessibility information and additional\n\n\n\nLinking back to our project:\n\n\n\n\n\n\n\n\n\n\n6  Storyboard\n\n\nHomepage\n\n\n\nNetwork KDE\n\n\n\n\n\n\nNetwork Statistical Function\n\n\n\nGeographical Accessibility\n\n\n\n\n\n\n\nData\n\n\n\n\n\n7  Data Sources\n\n\n\n\n\n\n\n\nType\nName\nLink\n\n\n\n\nLGA\nLGA of melbourne (province lines find dataset)\nInsert link link\n\n\nNetwork\nPedestrian\nhttps://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/ \n\n\nNetwork\nRoads\nhttps://data.melbourne.vic.gov.au/explore/dataset/road-corridors/information/?location=14,-37.81097,144.96168&basemap=mbs-7a7333 \n\n\nNetwork\nTrams\nhttps://discover.data.vic.gov.au/dataset/ptv-metro-tram-routes1 \n\n\nSpatial Points\nBusiness establishments location and industry classification\nhttps://data.melbourne.vic.gov.au/explore/dataset/business-establishments-with-address-and-industry-classification/ \n\n\nSpatial Points\nResidential Dwellings\nhttps://data.melbourne.vic.gov.au/explore/dataset/residential-dwellings/information/ \n\n\nSpatial Points\nLandmarks and places of interest, including schools, theatres, health services, sports facilities, places of worship, galleries and museums.\nhttps://data.melbourne.vic.gov.au/explore/dataset/landmarks-and-places-of-interest-including-schools-theatres-health-services-spor/information/\n\n\nSpatial Points\nDrinking Fountain\nhttps://data.melbourne.vic.gov.au/explore/dataset/drinking-fountains/ \n\n\nSpatial Points\nPublic Toilet\nhttps://data.melbourne.vic.gov.au/explore/dataset/public-toilets\n\n\nSpatial Points\nChildcare Centres\nhttps://data.melbourne.vic.gov.au/explore/dataset/childcare-centres/information/ \n\n\n\n\n\n\nWith the inclusion of three different Network datasets in Melbourne and various Spatial Points datasets, we hope to allow users to understand and gain further insight of the use cases of Network-Constrained Spatial Points Analysis and Geographical Accessibility along different networks such as Pedestrian, Roads and Tram Networks.\n\n\nFor example, users could select health services and understand more about geographical accessibility of health services across Melbourne by Road. \n\n\nThey could also select and see accessibility of drinking fountains by pedestrian paths, which could drive further understanding about the distribution of drinking fountains across the city and possibly push for more water fountains to reduce the use of disposable water bottles to be more sustainable.\n\n\n\n\n\n\n8  Application Architecture\n\n\n\n\n\n\n\n\n\n\n9 Timeline\n\n\nIS415 Project Timeline"
+    "section": "4.4 Geographical Accessibility",
+    "text": "4.4 Geographical Accessibility\n\nTidying the distance matrix by using ODMatrix\nTo identify the accessibility of origins to destinations\nVisualising accessibility using methods such as Hansen, KD2SFCA and Spatial Accessibility Measure (SAM)"
+  },
+  {
+    "objectID": "proposal.html#network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china",
+    "href": "proposal.html#network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "5.1 Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China",
+    "text": "5.1 Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China\nhttps://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829\n\n5.1.1 Summary\nNetwork KDE and Network K-function was used to study retail service  hot-spot areas and spatial clustering patterns of a local retail giant, Suguo, in Nanjing City.\n\n\n5.1.2 Learning Points and Linking Back to Our Project\nThe bandwidth for generating network-constrained kernel density estimation (KDE) maps would produce representations of distributions that  and we should explore various network KDE bandwidths to find suitable bandwidth and also provide options for users to adjust bandwidth"
+  },
+  {
+    "objectID": "proposal.html#ease-and-equity-of-point-of-interest-accessibility-via-public-transit-in-the-u.s",
+    "href": "proposal.html#ease-and-equity-of-point-of-interest-accessibility-via-public-transit-in-the-u.s",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "5.2 Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S",
+    "text": "5.2 Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S\nhttps://arxiv.org/abs/2212.06954\n\n5.2.1 Summary\nThe team created a tool to analyse the ease and equity of access to major POI using public transit in US cities using an interactive website (to filter selected POIs) calculated with 2SFCA (2-step floating catchment area) approach.\n\nIt aims to explore effectiveness and equity of public transit system in major US cities\n\n\n5.2.2 Learning Points and Linking Back to Our Project\n\nUser Interface for users to filter by POI and view geographical accessibility information and additional"
+  },
+  {
+    "objectID": "proposal.html#using-hexagonal-grids-and-network-analysis-for-spatial-accessibility-assessment-in-urban-environments-a-case-study-of-public-amenities-in-toruń",
+    "href": "proposal.html#using-hexagonal-grids-and-network-analysis-for-spatial-accessibility-assessment-in-urban-environments-a-case-study-of-public-amenities-in-toruń",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "5.3 Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments – a case study of public amenities in Toruń",
+    "text": "5.3 Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments – a case study of public amenities in Toruń\nhttp://dx.doi.org/10.2478/mgrsd-2018-0037\n\n5.3.1 Summary\nThe paper looks at a methodology to analyse spatial accessibility using network analysis and a hexagonal grid to the city of Toruń, Poland. The paper also explored that it is important to empower citizens with knowledge of the geospatial analysis and created a web application to empower citizens with knowledge.\n\n\n5.3.2 Learning Points and Linking Back to Our Project\n\nAdopt a similar methodology of converting distance for OD Matrix, specifically Origin and Destination distances to travel times by assuming a walking speed of 4km/h\nNetwork will be calculated using the travel time of the appropriate speed (eg. road will be calculated based on road speed limit)\nThis will prevent underestimation of travel times which may affect the accessbility metrics"
+  },
+  {
+    "objectID": "proposal.html#home-page",
+    "href": "proposal.html#home-page",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "6.1 Home Page",
+    "text": "6.1 Home Page"
+  },
+  {
+    "objectID": "proposal.html#network-kde",
+    "href": "proposal.html#network-kde",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "6.2 Network KDE",
+    "text": "6.2 Network KDE"
+  },
+  {
+    "objectID": "proposal.html#network-statistical-function",
+    "href": "proposal.html#network-statistical-function",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "6.3 Network Statistical Function",
+    "text": "6.3 Network Statistical Function"
+  },
+  {
+    "objectID": "proposal.html#geographical-accessibility-1",
+    "href": "proposal.html#geographical-accessibility-1",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "6.4 Geographical Accessibility",
+    "text": "6.4 Geographical Accessibility"
+  },
+  {
+    "objectID": "proposal.html#data",
+    "href": "proposal.html#data",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "6.5 Data",
+    "text": "6.5 Data"
   }
 ]
