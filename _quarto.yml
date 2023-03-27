@@ -17,6 +17,8 @@ website:
         text: About Us
       - href: proposal.qmd
         text: Proposal
+      - href: project.qmd
+        text: Project
       - icon: github
         href: https://github.com/renjie-teo/spatial-bros
         

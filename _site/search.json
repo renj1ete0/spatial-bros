@@ -1,19 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Spatial Bros",
-    "section": "",
-    "text": "The Spatial Bros is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:\nSpatial Points Analysis\n\nNetwork Constraint Spatial Point\nGeographical Accessibility\n\nFor each of the analyses, the application will provide users with kernel density maps, Geographical Accessibility maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks."
-  },
-  {
-    "objectID": "proposal.html",
-    "href": "proposal.html",
-    "title": "Project Proposal: Spatial Bros",
-    "section": "",
-    "text": "Theme: Point Pattern Analysis"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About Us",
@@ -21,11 +7,32 @@
     "text": "The Spatial Bros consists of three members from the School of Computing and Information Systems at Singapore Management University who are taking the IS415 Geospatial Analytics and Applications course. View our profiles below!\n\n\n\n\nHello! My name is Harith and I am currently a Full-time student at Singapore Management University pursuing a double major degree in BSc (IS) Smart-City Management & Technology as my first major and Sustainability as my second major.\n‘If the hunger to learn is genuine, the appetite for growth is colossal’. With this line taken to heart, I am constantly looking for opportunities to learn and challenge myself to gain the most out of every obstacle I face.\nHarnessing the skillsets and experiences gained from working with and leading work teams in various sectors, I am committed to taking on increasing roles and responsibilities to ultimately embark on the goal of innovating and contributing to smart city solutions. Other than that, I enjoy playing pool and singing my heart out during my free time!\n\n\n\n\n\n\nCurrently a student pursuing a degree in Information System with track in Financial Technology. By aligning Technology with Finance is my interest and goal. It meets business needs, creates value and result in a more efficient eco-system.\nI am constantly looking forward to opportunities where I can try something new. This way I can acquire knowledge and explore new grounds where I believe there are endless findings. As such, I see myself as jack of all trades and master of absolute none.\nI am just an everyday student striving to live another day in this fast pace and ever changing society. Beyond that, I can be found on the streets running or cycling.\n\n\n\n\n\n\nI’m Ren Jie, a Year 2 Information Systems Undergraduate student at the Singapore Management University, majoring in Digitalisation & Cloud Solutions (SCIS) and Urban Science (CIS).\nMy interests are in urban science and urban planning. I am excited to learn more about geospatial analytics from this course which will value-add to my individualised second major in Urban Science at the College of Integrative Studies, where I aim to utilise, integrate and interpret data from the city into innovative solutions for cities of the future.\nI enjoy hiking and cycling during my free time, or enjoying the good food in Singapore!"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Spatial Bros",
+    "section": "",
+    "text": "The Spatial Bros is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:\nSpatial Points Analysis\n\nNetwork Constraint Spatial Point\nGeographical Accessibility\n\nFor each of the analyses, the application will provide users with kernel density maps, Geographical Accessibility maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks."
+  },
+  {
     "objectID": "index.html#contents",
     "href": "index.html#contents",
     "title": "Spatial Bros",
     "section": "Contents",
     "text": "Contents\n\nProject Proposal"
+  },
+  {
+    "objectID": "project.html",
+    "href": "project.html",
+    "title": "Project: Spatial Bros",
+    "section": "",
+    "text": "Network constrained Spatial Point Patterns Analysis (NetSPAA) is a collection of spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network.\nThe spatial point event can be locations of childcare centre for example.\nThe network, on the other hand can be a road network for example.\nMore information with regards to data sources used for this project can be found at the proposal\n\n\n\nIn this project, x packages will be used\n\npacman::p_load(sp, sf, rgdal, spNetwork, tmap)\n\n\n\n\n\n\n\nroad_network <- st_read(\"data/geospatial/Roads Network\", layer = \"road-corridors\")\n\nReading layer `road-corridors' from data source \n  `C:\\Users\\Ming Rong\\Desktop\\IS415 Project\\spatial-bros\\data\\geospatial\\Roads Network' \n  using driver `ESRI Shapefile'\nSimple feature collection with 4177 features and 9 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 144.897 ymin: -37.85066 xmax: 144.9913 ymax: -37.77545\nGeodetic CRS:  WGS 84\n\n\n\n\n\n\npedestrian_network <- st_read(\"data/geospatial/Pedestrian Network/pedestrian-network.geojson\")\n\nReading layer `pedestrian-network' from data source \n  `C:\\Users\\Ming Rong\\Desktop\\IS415 Project\\spatial-bros\\data\\geospatial\\Pedestrian Network\\pedestrian-network.geojson' \n  using driver `GeoJSON'\nSimple feature collection with 85326 features and 3 fields\nGeometry type: GEOMETRY\nDimension:     XY\nBounding box:  xmin: 144.8993 ymin: -37.85074 xmax: 144.9918 ymax: -37.77547\nGeodetic CRS:  WGS 84\n\n\n\n\n\nTo wait for email file\n\n#tram_network <- st_read()\n\n\n\n\n\nlocalities = st_read(\"data/geospatial/Localities\", layer = \"UCL_2021_AUST_GDA2020\") \n\nReading layer `UCL_2021_AUST_GDA2020' from data source \n  `C:\\Users\\Ming Rong\\Desktop\\IS415 Project\\spatial-bros\\data\\geospatial\\Localities' \n  using driver `ESRI Shapefile'\nSimple feature collection with 1837 features and 12 fields (with 19 geometries empty)\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 96.81695 ymin: -43.7405 xmax: 167.998 ymax: -9.142163\nGeodetic CRS:  GDA2020\n\nmelbourne_localities <- localities[localities$UCL_NAME21 == \"Melbourne\", ]\n\n\n\n\n\nlocal_government_areas = st_read(\"data/geospatial/Local Government Areas\", layer = \"LGA_2022_AUST_GDA2020\")\n\nReading layer `LGA_2022_AUST_GDA2020' from data source \n  `C:\\Users\\Ming Rong\\Desktop\\IS415 Project\\spatial-bros\\data\\geospatial\\Local Government Areas' \n  using driver `ESRI Shapefile'\nSimple feature collection with 566 features and 10 fields (with 19 geometries empty)\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 96.81695 ymin: -43.7405 xmax: 167.998 ymax: -9.142163\nGeodetic CRS:  GDA2020\n\nmelbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == \"Melbourne\",]"
+  },
+  {
+    "objectID": "proposal.html",
+    "href": "proposal.html",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "",
+    "text": "Theme: Point Pattern Analysis"
   },
   {
     "objectID": "proposal.html#data-preparation",

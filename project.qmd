@@ -1,0 +1,65 @@
+---
+title: "Project: Spatial Bros"
+description: "Exploring Network-Constrained Spatial Point Analysis"
+author: "Spatial Bros"
+date: "27/03/2023"
+number-sections: true
+categories: ["network-constrained spatial point analysis"]
+title-block-banner: true
+---
+
+# Network Constrained Spatial Point Pattern Analysis
+
+## Project Overview
+
+Network constrained Spatial Point Patterns Analysis (NetSPAA) is a collection of spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network.
+
+The spatial point event can be locations of childcare centre for example.
+
+The network, on the other hand can be a road network for example.
+
+More information with regards to data sources used for this project can be found at the [proposal](https://spatialbros.netlify.app/proposal.html#data-sources)
+
+## Installing the R packages
+
+In this project, x packages will be used
+
+```{r}
+pacman::p_load(sp, sf, rgdal, spNetwork, tmap)
+```
+
+## Data Import and Prepration
+
+### Melbourne Road Network
+
+```{r}
+road_network <- st_read("data/geospatial/Roads Network", layer = "road-corridors")
+```
+
+### Melbourne Pedestrian Network
+
+```{r}
+pedestrian_network <- st_read("data/geospatial/Pedestrian Network/pedestrian-network.geojson")
+```
+
+### Tram Network
+
+*To wait for email file*
+```{r}
+#tram_network <- st_read()
+```
+
+### Localities
+
+```{r}
+localities = st_read("data/geospatial/Localities", layer = "UCL_2021_AUST_GDA2020") 
+melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
+
+```
+
+### Local Government Areas
+
+```{r}
+local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
+melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
+```
