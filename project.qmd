@@ -44,9 +44,8 @@ pedestrian_network <- st_read("data/geospatial/Pedestrian Network/pedestrian-net
 
 ### Tram Network
 
-*To wait for email file*
 ```{r}
-#tram_network <- st_read()
+tram_network <- st_read("data/geospatial/Trams Network", layer = "PTV_METRO_TRAM_ROUTE")
 ```
 
 ### Localities
