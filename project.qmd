@@ -25,10 +25,10 @@ More information with regards to data sources used for this project can be found
 In this project, x packages will be used
 
 ```{r}
-pacman::p_load(sp, sf, rgdal, spNetwork, tmap)
+pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr)
 ```
 
-## Data Import and Prepration
+## Data Import and Preparation
 
 ### Melbourne Road Network
 
@@ -62,3 +62,67 @@ melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
 local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
 melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
 ```
+
+### Business Establishments Spatial Point
+
+```{r}
+business_est_sp_point <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson")
+```
+
+### Drinking Fountain Spatial Point
+
+```{r}
+drinking_fountain_sp_point <- st_read("data/geospatial/Drinking Fountain Spatial Point", layer = "drinking-fountains")
+```
+
+### Landmarks Spatial Point
+
+```{r}
+landmarks_sp_point <- st_read("data/geospatial/Landmarks Spatial Point", layer = "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor")
+```
+
+
+### Residential Dwellings Spatial Point
+
+```{r}
+residential_dwelling_sp_point <- st_read("data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson")
+```
+
+### Childcare Centres Spatial Point
+
+```{r}
+childcare_sp_point <- read_csv("data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv")
+
+```
+
+#### Creating a simple feature data frame from Childcare Centres Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's
+GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+childcare_sp_point_sf <- st_as_sf(childcare_sp_point, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+```
+
+### Public Toilets Spatial Point 
+
+```{r}
+public_toilets_sp_point <- read_csv("data/geospatial/Public Toilets Spatial Point/public-toilets.csv")
+list(public_toilets_sp_point) 
+```
+
+#### Creating a simple feature data frame from Public Toilets Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's
+GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+public_toilets_sp_point_sf <- st_as_sf(public_toilets_sp_point, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+```
+

@@ -224,13 +224,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#project-overview" id="toc-project-overview" class="nav-link" data-scroll-target="#project-overview"><span class="toc-section-number">1.1</span>  Project Overview</a></li>
   <li><a href="#installing-the-r-packages" id="toc-installing-the-r-packages" class="nav-link" data-scroll-target="#installing-the-r-packages"><span class="toc-section-number">1.2</span>  Installing the R packages</a></li>
-  <li><a href="#data-import-and-prepration" id="toc-data-import-and-prepration" class="nav-link" data-scroll-target="#data-import-and-prepration"><span class="toc-section-number">1.3</span>  Data Import and Prepration</a>
+  <li><a href="#data-import-and-preparation" id="toc-data-import-and-preparation" class="nav-link" data-scroll-target="#data-import-and-preparation"><span class="toc-section-number">1.3</span>  Data Import and Preparation</a>
   <ul class="collapse">
   <li><a href="#melbourne-road-network" id="toc-melbourne-road-network" class="nav-link" data-scroll-target="#melbourne-road-network"><span class="toc-section-number">1.3.1</span>  Melbourne Road Network</a></li>
   <li><a href="#melbourne-pedestrian-network" id="toc-melbourne-pedestrian-network" class="nav-link" data-scroll-target="#melbourne-pedestrian-network"><span class="toc-section-number">1.3.2</span>  Melbourne Pedestrian Network</a></li>
   <li><a href="#tram-network" id="toc-tram-network" class="nav-link" data-scroll-target="#tram-network"><span class="toc-section-number">1.3.3</span>  Tram Network</a></li>
   <li><a href="#localities" id="toc-localities" class="nav-link" data-scroll-target="#localities"><span class="toc-section-number">1.3.4</span>  Localities</a></li>
   <li><a href="#local-government-areas" id="toc-local-government-areas" class="nav-link" data-scroll-target="#local-government-areas"><span class="toc-section-number">1.3.5</span>  Local Government Areas</a></li>
+  <li><a href="#business-establishments-spatial-point" id="toc-business-establishments-spatial-point" class="nav-link" data-scroll-target="#business-establishments-spatial-point"><span class="toc-section-number">1.3.6</span>  Business Establishments Spatial Point</a></li>
+  <li><a href="#drinking-fountain-spatial-point" id="toc-drinking-fountain-spatial-point" class="nav-link" data-scroll-target="#drinking-fountain-spatial-point"><span class="toc-section-number">1.3.7</span>  Drinking Fountain Spatial Point</a></li>
+  <li><a href="#landmarks-spatial-point" id="toc-landmarks-spatial-point" class="nav-link" data-scroll-target="#landmarks-spatial-point"><span class="toc-section-number">1.3.8</span>  Landmarks Spatial Point</a></li>
+  <li><a href="#residential-dwellings-spatial-point" id="toc-residential-dwellings-spatial-point" class="nav-link" data-scroll-target="#residential-dwellings-spatial-point"><span class="toc-section-number">1.3.9</span>  Residential Dwellings Spatial Point</a></li>
+  <li><a href="#childcare-centres-spatial-point" id="toc-childcare-centres-spatial-point" class="nav-link" data-scroll-target="#childcare-centres-spatial-point"><span class="toc-section-number">1.3.10</span>  Childcare Centres Spatial Point</a></li>
+  <li><a href="#public-toilets-spatial-point" id="toc-public-toilets-spatial-point" class="nav-link" data-scroll-target="#public-toilets-spatial-point"><span class="toc-section-number">1.3.11</span>  Public Toilets Spatial Point</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -255,11 +261,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 data-number="1.2" class="anchored" data-anchor-id="installing-the-r-packages"><span class="header-section-number">1.2</span> Installing the R packages</h2>
 <p>In this project, x packages will be used</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sp, sf, rgdal, spNetwork, tmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sp, sf, rgdal, spNetwork, tmap, readr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data-import-and-prepration" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="data-import-and-prepration"><span class="header-section-number">1.3</span> Data Import and Prepration</h2>
+<section id="data-import-and-preparation" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="data-import-and-preparation"><span class="header-section-number">1.3</span> Data Import and Preparation</h2>
 <section id="melbourne-road-network" class="level3" data-number="1.3.1">
 <h3 data-number="1.3.1" class="anchored" data-anchor-id="melbourne-road-network"><span class="header-section-number">1.3.1</span> Melbourne Road Network</h3>
 <div class="cell">
@@ -294,15 +300,24 @@ Geodetic CRS:  WGS 84</code></pre>
 </section>
 <section id="tram-network" class="level3" data-number="1.3.3">
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="tram-network"><span class="header-section-number">1.3.3</span> Tram Network</h3>
-<p><em>To wait for email file</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tram_network &lt;- st_read()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Trams Network"</span>, <span class="at">layer =</span> <span class="st">"PTV_METRO_TRAM_ROUTE"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `PTV_METRO_TRAM_ROUTE' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Trams Network' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 82 features and 12 fields
+Geometry type: LINESTRING
+Dimension:     XY
+Bounding box:  xmin: 144.878 ymin: -37.91422 xmax: 145.182 ymax: -37.67898
+Geodetic CRS:  GDA2020</code></pre>
+</div>
 </div>
 </section>
 <section id="localities" class="level3" data-number="1.3.4">
 <h3 data-number="1.3.4" class="anchored" data-anchor-id="localities"><span class="header-section-number">1.3.4</span> Localities</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>localities <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Localities"</span>, <span class="at">layer =</span> <span class="st">"UCL_2021_AUST_GDA2020"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>localities <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Localities"</span>, <span class="at">layer =</span> <span class="st">"UCL_2021_AUST_GDA2020"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `UCL_2021_AUST_GDA2020' from data source 
   `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Localities' 
@@ -313,13 +328,13 @@ Dimension:     XY
 Bounding box:  xmin: 96.81695 ymin: -43.7405 xmax: 167.998 ymax: -9.142163
 Geodetic CRS:  GDA2020</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>melbourne_localities <span class="ot">&lt;-</span> localities[localities<span class="sc">$</span>UCL_NAME21 <span class="sc">==</span> <span class="st">"Melbourne"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>melbourne_localities <span class="ot">&lt;-</span> localities[localities<span class="sc">$</span>UCL_NAME21 <span class="sc">==</span> <span class="st">"Melbourne"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="local-government-areas" class="level3" data-number="1.3.5">
 <h3 data-number="1.3.5" class="anchored" data-anchor-id="local-government-areas"><span class="header-section-number">1.3.5</span> Local Government Areas</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>local_government_areas <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Local Government Areas"</span>, <span class="at">layer =</span> <span class="st">"LGA_2022_AUST_GDA2020"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>local_government_areas <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Local Government Areas"</span>, <span class="at">layer =</span> <span class="st">"LGA_2022_AUST_GDA2020"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `LGA_2022_AUST_GDA2020' from data source 
   `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Local Government Areas' 
@@ -330,10 +345,163 @@ Dimension:     XY
 Bounding box:  xmin: 96.81695 ymin: -43.7405 xmax: 167.998 ymax: -9.142163
 Geodetic CRS:  GDA2020</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">=</span> local_government_areas[local_government_areas<span class="sc">$</span>LGA_NAME22 <span class="sc">==</span> <span class="st">"Melbourne"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">=</span> local_government_areas[local_government_areas<span class="sc">$</span>LGA_NAME22 <span class="sc">==</span> <span class="st">"Melbourne"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="business-establishments-spatial-point" class="level3" data-number="1.3.6">
+<h3 data-number="1.3.6" class="anchored" data-anchor-id="business-establishments-spatial-point"><span class="header-section-number">1.3.6</span> Business Establishments Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>business_est_sp_point <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `business-establishments-with-address-and-industry-classification' from data source `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Business Establishments Spatial Point\business-establishments-with-address-and-industry-classification.geojson' 
+  using driver `GeoJSON'
+replacing null geometries with empty geometries
+Simple feature collection with 354556 features and 12 fields (with 4786 geometries empty)
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.8985 ymin: -37.85138 xmax: 144.9906 ymax: -37.77586
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="drinking-fountain-spatial-point" class="level3" data-number="1.3.7">
+<h3 data-number="1.3.7" class="anchored" data-anchor-id="drinking-fountain-spatial-point"><span class="header-section-number">1.3.7</span> Drinking Fountain Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp_point <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Drinking Fountain Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"drinking-fountains"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `drinking-fountains' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Drinking Fountain Spatial Point' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 302 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.9159 ymin: -37.84521 xmax: 144.991 ymax: -37.77712
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="landmarks-spatial-point" class="level3" data-number="1.3.8">
+<h3 data-number="1.3.8" class="anchored" data-anchor-id="landmarks-spatial-point"><span class="header-section-number">1.3.8</span> Landmarks Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>landmarks_sp_point <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Landmarks Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"landmarks-and-places-of-interest-including-schools-theatres-health-services-spor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `landmarks-and-places-of-interest-including-schools-theatres-health-services-spor' from data source `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Landmarks Spatial Point' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 242 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.9082 ymin: -37.84852 xmax: 144.9894 ymax: -37.78127
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="residential-dwellings-spatial-point" class="level3" data-number="1.3.9">
+<h3 data-number="1.3.9" class="anchored" data-anchor-id="residential-dwellings-spatial-point"><span class="header-section-number">1.3.9</span> Residential Dwellings Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>residential_dwelling_sp_point <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `residential-dwellings' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Residential Dwellings Spatial Point\residential-dwellings.geojson' 
+  using driver `GeoJSON'
+replacing null geometries with empty geometries
+Simple feature collection with 188160 features and 11 fields (with 2869 geometries empty)
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.905 ymin: -37.84798 xmax: 144.9908 ymax: -37.77583
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="childcare-centres-spatial-point" class="level3" data-number="1.3.10">
+<h3 data-number="1.3.10" class="anchored" data-anchor-id="childcare-centres-spatial-point"><span class="header-section-number">1.3.10</span> Childcare Centres Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>childcare_sp_point <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 29 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): name, contact_ph, url
+dbl (3): ref, lat, lon
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(childcare_sp_point) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 29 × 6
+      ref name                                         conta…¹ url     lat   lon
+    &lt;dbl&gt; &lt;chr&gt;                                        &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 109894 Early Learning Centre                        03 986… http… -37.8  145.
+ 2 109351 University Of Melbourne Child Care           03 903… http… -37.8  145.
+ 3 617536 Hotham Hub Children's Centre                 03 965… &lt;NA&gt;  -37.8  145.
+ 4 711265 Kids Club Collins Street Early Learning Cen… &lt;NA&gt;    &lt;NA&gt;  -37.8  145.
+ 5 619559 The Harbour Family and Childrens Centre      03 862… http… -37.8  145.
+ 6 592707 Goodstart Early Learning Melbourne Flinders… 03 967… http… -37.8  145.
+ 7 104202 MAMA Midwives and Mothers Australia          03 937… http… -37.8  145.
+ 8 627399 Only About Children                          03 992… &lt;NA&gt;  -37.8  145.
+ 9 101064 Yarra Park Children's Centre                 9428 0… http… -37.8  145.
+10 563554 Kensington Community Children's Co-Operative 03 937… http… -37.8  145.
+# … with 19 more rows, and abbreviated variable name ¹​contact_ph</code></pre>
+</div>
+</div>
+<section id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings" class="level4" data-number="1.3.10.1">
+<h4 data-number="1.3.10.1" class="anchored" data-anchor-id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings"><span class="header-section-number">1.3.10.1</span> Creating a simple feature data frame from Childcare Centres Spatial Point listings</h4>
+<p>Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne’s GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>childcare_sp_point_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(childcare_sp_point, </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="public-toilets-spatial-point" class="level3" data-number="1.3.11">
+<h3 data-number="1.3.11" class="anchored" data-anchor-id="public-toilets-spatial-point"><span class="header-section-number">1.3.11</span> Public Toilets Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>public_toilets_sp_point <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/geospatial/Public Toilets Spatial Point/public-toilets.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 74 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): name, female, male, wheelchair, operator, baby_facil
+dbl (2): lat, lon
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(public_toilets_sp_point) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 74 × 8
+   name                         female male  wheel…¹ opera…² baby_…³   lat   lon
+   &lt;chr&gt;                        &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 Public Toilet - Toilet 140 … no     yes   no      City o… no      -37.8  145.
+ 2 Public Toilet - Toilet 6 - … yes    no    no      City o… no      -37.8  145.
+ 3 Public Toilet - Toilet 142 … no     yes   no      City o… no      -37.8  145.
+ 4 Public Toilet - Royal Park … yes    yes   no      City o… no      -37.8  145.
+ 5 Public Toilet - Toilet 177 … yes    yes   yes     City o… no      -37.8  145.
+ 6 Public Toilet - Toilet 118 … yes    yes   yes     City o… no      -37.8  145.
+ 7 Public Toilet - Toilet 34 -… yes    yes   yes     City o… no      -37.8  145.
+ 8 Public Toilet - Town Hall M… yes    yes   yes     City o… yes     -37.8  145.
+ 9 Public Toilet - Toilet 131 … yes    yes   yes     City o… no      -37.8  145.
+10 Public Toilet - Toilet 146 … yes    no    no      City o… no      -37.8  145.
+# … with 64 more rows, and abbreviated variable names ¹​wheelchair, ²​operator,
+#   ³​baby_facil</code></pre>
+</div>
+</div>
+<section id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings-1" class="level4" data-number="1.3.11.1">
+<h4 data-number="1.3.11.1" class="anchored" data-anchor-id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings-1"><span class="header-section-number">1.3.11.1</span> Creating a simple feature data frame from Childcare Centres Spatial Point listings</h4>
+<p>Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne’s GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>public_toilets_sp_point_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(public_toilets_sp_point, </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
+</section>
 </section>
 </section>
 </section>
