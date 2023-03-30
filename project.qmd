@@ -160,17 +160,17 @@ public_toilets_spdf
 
 ## Visualising the Geospatial Data
 
-<!-- ### Melbourne City's road network with Business Establishments -->
+### Melbourne City's road network with Business Establishments
 
-<!-- ```{r} -->
-<!-- tmap_mode('view') -->
-<!-- tm_basemap(server = "OpenStreetMap") + -->
-<!--   tm_shape(road_network_lines) + -->
-<!--   tm_lines() + -->
-<!--   tm_shape(business_est_sp) +  -->
-<!--   tm_dots(size = 0.03, col="green") -->
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(business_est_sp) +
+  tm_dots(size = 0.03, col="green")
 
-<!-- ``` -->
+```
 
 ### Melbourne City's road network with Childcare Centres
 
