@@ -184,16 +184,16 @@ tm_basemap(server = "OpenStreetMap") +
   
 ```
 
-<!-- ### Melbourne City's road network with Drinking Fountain -->
+### Melbourne City's road network with Drinking Fountain
 
-<!-- # ```{r} -->
-<!-- # tmap_mode('view') -->
-<!-- # tm_basemap(server = "OpenStreetMap") + -->
-<!-- #   tm_shape(road_network_lines) + -->
-<!-- #   tm_lines() + -->
-<!-- #   tm_shape(drinking_fountain_sp) + -->
-<!-- #   tm_dots(size = 0.03, col="green") -->
-<!-- # ``` -->
+```{r}
+ tmap_mode('view')
+ tm_basemap(server = "OpenStreetMap") +
+   tm_shape(road_network_lines) +
+   tm_lines() +
+   tm_shape(drinking_fountain_sp) +
+   tm_dots(size = 0.03, col="green")
+```
 
 
 <!-- ### Melbourne City's road network with Landmarks -->
