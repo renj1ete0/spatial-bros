@@ -25,12 +25,12 @@ More information with regards to data sources used for this project can be found
 In this project, x packages will be used
 
 ```{r}
-pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr)
+pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr, dplyr)
 ```
 
 ## Data Import and Preparation
 
-### Melbourne Road Network
+### Melbourne City's Road Network
 
 Importing of shapefile, converting to EPSG of 7855 and converting Geometry Type to LINGSTRING.
 
@@ -41,62 +41,76 @@ road_network_lines <- st_boundary(road_network) %>%
                      st_cast("LINESTRING")
 ```
 
-### Melbourne Pedestrian Network
+### Melbourne City's Pedestrian Network
 
 ```{r}
 pedestrian_network <- st_read("data/geospatial/Pedestrian Network/pedestrian-network.geojson")
+pedestrian_network <- st_transform(pedestrian_network, crs = 7855)
 ```
 
-### Tram Network
+### Melbourne City's Tram Network
 
 ```{r}
 tram_network <- st_read("data/geospatial/Trams Network", layer = "PTV_METRO_TRAM_ROUTE")
+tram_network <- st_transform(tram_network, crs = 7855)
 ```
 
 ### Localities
 
+Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.
+
 ```{r}
 localities = st_read("data/geospatial/Localities", layer = "UCL_2021_AUST_GDA2020") 
 melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
-
+melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
 ```
 
-### Local Government Areas
+### Melbourne City's Local Government Areas
+
+Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.
 
 ```{r}
 local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
 melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
+melbourne_local_government_areas <- st_transform(melbourne_local_government_areas, crs = 7855)
 ```
 
-### Business Establishments Spatial Point
+### Melbourne City's Business Establishments Spatial Point
+
+To retrieve only latest as of 2021 business establishments
 
 ```{r}
-business_est_sp_point <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson")
+business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021")
+business_est_sp <- st_transform(business_est_sp, crs = 7855) 
 ```
 
-### Drinking Fountain Spatial Point
+### Melbourne City's Drinking Fountain Spatial Point
 
 ```{r}
-drinking_fountain_sp_point <- st_read("data/geospatial/Drinking Fountain Spatial Point", layer = "drinking-fountains")
+drinking_fountain_sp <- st_read("data/geospatial/Drinking Fountain Spatial Point", layer = "drinking-fountains")
+drinking_fountain_sp <- st_transform(drinking_fountain_sp, crs = 7855)
 ```
 
-### Landmarks Spatial Point
+### Melbourne City's Landmarks Spatial Point
 
 ```{r}
-landmarks_sp_point <- st_read("data/geospatial/Landmarks Spatial Point", layer = "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor")
+landmarks_sp <- st_read("data/geospatial/Landmarks Spatial Point", layer = "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor")
+landmarks_sp <- st_transform(landmarks_sp, crs = 7855)
 ```
 
 
-### Residential Dwellings Spatial Point
+### Melbourne City's Residential Dwellings Spatial Point
 
 ```{r}
-residential_dwelling_sp_point <- st_read("data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson")
+residential_dwelling_sp <- st_read("data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson")
+residential_dwelling_sp <- st_transform(residential_dwelling_sp, crs = 7855)
+st_crs(residential_dwelling_sp)
 ```
 
-### Childcare Centres Spatial Point
+### Melbourne City's Childcare Centres Spatial Point
 
 ```{r}
-childcare_sp_point <- read_csv("data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv")
+childcare_sp <- read_csv("data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv")
 
 ```
 
@@ -106,7 +120,7 @@ Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate Syste
 GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
 
 ```{r}
-childcare_sp_point_sf <- st_as_sf(childcare_sp_point, 
+childcare_sp_sf <- st_as_sf(childcare_sp, 
                        coords = c("lon", "lat"),
                        crs=4326) %>%
   st_transform(crs = 7855)
@@ -115,15 +129,14 @@ childcare_sp_point_sf <- st_as_sf(childcare_sp_point,
 #### Converting to Spatial Point Data Frame
 
 ```{r}
-childcare_spdf <- as(childcare_sp_point_sf, "Spatial")
+childcare_spdf <- as(childcare_sp_sf, "Spatial")
 childcare_spdf
 ```
 
-### Public Toilets Spatial Point 
+### Melbourne City's Public Toilets Spatial Point 
 
 ```{r}
-public_toilets_sp_point <- read_csv("data/geospatial/Public Toilets Spatial Point/public-toilets.csv")
-list(public_toilets_sp_point) 
+public_toilets_sp <- read_csv("data/geospatial/Public Toilets Spatial Point/public-toilets.csv")
 ```
 
 #### Creating a simple feature data frame from Public Toilets Spatial Point listings
@@ -132,7 +145,7 @@ Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate Syste
 GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
 
 ```{r}
-public_toilets_sp_point_sf <- st_as_sf(public_toilets_sp_point, 
+public_toilets_sp_sf <- st_as_sf(public_toilets_sp, 
                        coords = c("lon", "lat"),
                        crs=4326) %>%
   st_transform(crs = 7855)
@@ -141,19 +154,88 @@ public_toilets_sp_point_sf <- st_as_sf(public_toilets_sp_point,
 #### Converting to Spatial Point Data Frame
 
 ```{r}
-public_toilets_spdf <- as(public_toilets_sp_point_sf, "Spatial")
+public_toilets_spdf <- as(public_toilets_sp_sf, "Spatial")
 public_toilets_spdf
 ```
 
 ## Visualising the Geospatial Data
 
-### Melbourne road network with childcare centre
+### Melbourne City's road network with Business Establishments
+
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(business_est_sp) + 
+  tm_dots(size = 0.03, col="green")
+
+```
+
+### Melbourne City's road network with Childcare Centres
+
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(childcare_spdf) + 
+  tm_dots(size = 0.03, col="green")
+  
+```
+
+### Melbourne City's road network with Drinking Fountain
+
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(drinking_fountain_sp) + 
+  tm_dots(size = 0.03, col="green")
+```
+
+
+### Melbourne City's road network with Landmarks
+
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(landmarks_sp) + 
+  tm_dots(size = 0.03, col="green")
+```
+
+### Melbourne City's road network with Public Toilets
+
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col="green")
+```
+
+### Melbourne City's road network with Residential Dwellings
+
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(residential_dwelling_sp) +
+  tm_dots(size = 0.03, col="green")
+```
+
+### Melbourne pedestrian network with childcare centre
 
 ```{r}
 tmap_mode('view')
 tm_basemap(server = "OpenStreetMap") +
 tm_shape(childcare_spdf) + 
-  tm_dots(size = 0.03) + 
-  tm_shape(road_network_lines) +
+  tm_dots(size = 0.1, col="green") + 
+  tm_shape(pedestrian_network) +
   tm_lines()
 ```
