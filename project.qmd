@@ -32,8 +32,13 @@ pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr)
 
 ### Melbourne Road Network
 
+Importing of shapefile, converting to EPSG of 7855 and converting Geometry Type to LINGSTRING.
+
 ```{r}
 road_network <- st_read("data/geospatial/Roads Network", layer = "road-corridors")
+road_network <- st_transform(road_network, crs = 7855)
+road_network_lines <- st_boundary(road_network) %>% 
+                     st_cast("LINESTRING")
 ```
 
 ### Melbourne Pedestrian Network
@@ -107,6 +112,13 @@ childcare_sp_point_sf <- st_as_sf(childcare_sp_point,
   st_transform(crs = 7855)
 ```
 
+#### Converting to Spatial Point Data Frame
+
+```{r}
+childcare_spdf <- as(childcare_sp_point_sf, "Spatial")
+childcare_spdf
+```
+
 ### Public Toilets Spatial Point 
 
 ```{r}
@@ -126,3 +138,22 @@ public_toilets_sp_point_sf <- st_as_sf(public_toilets_sp_point,
   st_transform(crs = 7855)
 ```
 
+#### Converting to Spatial Point Data Frame
+
+```{r}
+public_toilets_spdf <- as(public_toilets_sp_point_sf, "Spatial")
+public_toilets_spdf
+```
+
+## Visualising the Geospatial Data
+
+### Melbourne road network with childcare centre
+
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+tm_shape(childcare_spdf) + 
+  tm_dots(size = 0.03) + 
+  tm_shape(road_network_lines) +
+  tm_lines()
+```
