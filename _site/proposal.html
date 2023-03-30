@@ -1,3 +1,555 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:222cb540562c890b4f01c07b221f4af2c60384c556248a399c987144e1041c47
-size 36158
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Spatial Bros">
+<meta name="dcterms.date" content="2023-03-05">
+<meta name="description" content="Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility">
+
+<title>Project Proposal: Spatial Bros</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="logo.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./imgs/logo.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About Us</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./proposal.html" aria-current="page">Proposal</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./project.html">Project</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-reader-toggle nav-link" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Project Proposal: Spatial Bros</h1>
+                  <div>
+        <div class="description">
+          Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">proposal</div>
+                <div class="quarto-category">network-constrained spatial point analysis</div>
+                <div class="quarto-category">geographical accessibility</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Spatial Bros </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 5, 2023</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract"><span class="toc-section-number">1</span>  Abstract</a></li>
+  <li><a href="#problems-motivation" id="toc-problems-motivation" class="nav-link" data-scroll-target="#problems-motivation"><span class="toc-section-number">2</span>  Problems &amp; Motivation</a></li>
+  <li><a href="#project-objectives" id="toc-project-objectives" class="nav-link" data-scroll-target="#project-objectives"><span class="toc-section-number">3</span>  Project Objectives</a></li>
+  <li><a href="#our-approach-methodology" id="toc-our-approach-methodology" class="nav-link" data-scroll-target="#our-approach-methodology"><span class="toc-section-number">4</span>  Our Approach &amp; Methodology</a>
+  <ul class="collapse">
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><span class="toc-section-number">4.1</span>  Data Preparation</a></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="toc-section-number">4.2</span>  Exploratory Data Analysis</a></li>
+  <li><a href="#network-constrained-point-pattern-analysis" id="toc-network-constrained-point-pattern-analysis" class="nav-link" data-scroll-target="#network-constrained-point-pattern-analysis"><span class="toc-section-number">4.3</span>  Network Constrained Point Pattern Analysis</a></li>
+  <li><a href="#geographical-accessibility" id="toc-geographical-accessibility" class="nav-link" data-scroll-target="#geographical-accessibility"><span class="toc-section-number">4.4</span>  Geographical Accessibility</a></li>
+  </ul></li>
+  <li><a href="#relevant-related-works" id="toc-relevant-related-works" class="nav-link" data-scroll-target="#relevant-related-works"><span class="toc-section-number">5</span>  Relevant Related Works</a>
+  <ul class="collapse">
+  <li><a href="#network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china" id="toc-network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china" class="nav-link" data-scroll-target="#network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china"><span class="toc-section-number">5.1</span>  Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China</a>
+  <ul class="collapse">
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="toc-section-number">5.1.1</span>  Summary</a></li>
+  <li><a href="#learning-points-and-linking-back-to-our-project" id="toc-learning-points-and-linking-back-to-our-project" class="nav-link" data-scroll-target="#learning-points-and-linking-back-to-our-project"><span class="toc-section-number">5.1.2</span>  Learning Points and Linking Back to Our Project</a></li>
+  </ul></li>
+  <li><a href="#ease-and-equity-of-point-of-interest-accessibility-via-public-transit-in-the-u.s" id="toc-ease-and-equity-of-point-of-interest-accessibility-via-public-transit-in-the-u.s" class="nav-link" data-scroll-target="#ease-and-equity-of-point-of-interest-accessibility-via-public-transit-in-the-u.s"><span class="toc-section-number">5.2</span>  Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S</a>
+  <ul class="collapse">
+  <li><a href="#summary-1" id="toc-summary-1" class="nav-link" data-scroll-target="#summary-1"><span class="toc-section-number">5.2.1</span>  Summary</a></li>
+  <li><a href="#learning-points-and-linking-back-to-our-project-1" id="toc-learning-points-and-linking-back-to-our-project-1" class="nav-link" data-scroll-target="#learning-points-and-linking-back-to-our-project-1"><span class="toc-section-number">5.2.2</span>  Learning Points and Linking Back to Our Project</a></li>
+  </ul></li>
+  <li><a href="#using-hexagonal-grids-and-network-analysis-for-spatial-accessibility-assessment-in-urban-environments-a-case-study-of-public-amenities-in-toruń" id="toc-using-hexagonal-grids-and-network-analysis-for-spatial-accessibility-assessment-in-urban-environments-a-case-study-of-public-amenities-in-toruń" class="nav-link" data-scroll-target="#using-hexagonal-grids-and-network-analysis-for-spatial-accessibility-assessment-in-urban-environments-a-case-study-of-public-amenities-in-toruń"><span class="toc-section-number">5.3</span>  Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments – a case study of public amenities in Toruń</a>
+  <ul class="collapse">
+  <li><a href="#summary-2" id="toc-summary-2" class="nav-link" data-scroll-target="#summary-2"><span class="toc-section-number">5.3.1</span>  Summary</a></li>
+  <li><a href="#learning-points-and-linking-back-to-our-project-2" id="toc-learning-points-and-linking-back-to-our-project-2" class="nav-link" data-scroll-target="#learning-points-and-linking-back-to-our-project-2"><span class="toc-section-number">5.3.2</span>  Learning Points and Linking Back to Our Project</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#story-board" id="toc-story-board" class="nav-link" data-scroll-target="#story-board"><span class="toc-section-number">6</span>  Story Board</a>
+  <ul class="collapse">
+  <li><a href="#home-page" id="toc-home-page" class="nav-link" data-scroll-target="#home-page"><span class="toc-section-number">6.1</span>  Home Page</a></li>
+  <li><a href="#network-kde" id="toc-network-kde" class="nav-link" data-scroll-target="#network-kde"><span class="toc-section-number">6.2</span>  Network KDE</a></li>
+  <li><a href="#network-statistical-function" id="toc-network-statistical-function" class="nav-link" data-scroll-target="#network-statistical-function"><span class="toc-section-number">6.3</span>  Network Statistical Function</a></li>
+  <li><a href="#geographical-accessibility-1" id="toc-geographical-accessibility-1" class="nav-link" data-scroll-target="#geographical-accessibility-1"><span class="toc-section-number">6.4</span>  Geographical Accessibility</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">6.5</span>  Data</a></li>
+  </ul></li>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources"><span class="toc-section-number">7</span>  Data Sources</a></li>
+  <li><a href="#application-architecture" id="toc-application-architecture" class="nav-link" data-scroll-target="#application-architecture"><span class="toc-section-number">8</span>  Application Architecture</a></li>
+  <li><a href="#timeline" id="toc-timeline" class="nav-link" data-scroll-target="#timeline"><span class="toc-section-number">9</span>  Timeline</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">10</span>  References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>Theme: Point Pattern Analysis</p>
+<section id="abstract" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Abstract</h1>
+<p>The <strong>Spatial Bros</strong> is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:</p>
+<p>Spatial Points Analysis</p>
+<ul>
+<li><p>Network Constraint Spatial Point</p></li>
+<li><p>Geographical Accessibility</p></li>
+</ul>
+<p>For each of the analyses, the application will provide users with kernel density maps, Geographical Accessibility maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.</p>
+</section>
+<section id="problems-motivation" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Problems &amp; Motivation</h1>
+<p>In today’s technological advancing world, there are many interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geospatial data is the foundation based on the foundation of geographical boundary locations and Aspatial data are the observations recorded that can be used to generate derive insights.</p>
+<p>Despite that, there are not many people who are knowledgeable and trained to perform such analysis. Without the fundamental knowledge and appropriate training, any results based on the analysis performed could be inaccurate.</p>
+<p>Hence, our group’s main focus is to perform our analysis and develop a web-based geospatial tool using R Shiny with regards to Point Pattern Analysis particularly on Network-Constrained Point Pattern Analysis (NCPPA) and Geographical Accessibility (GA). We hope this application can empower and educate users on NCPPA and GA and conduct the analysis they want regardless of their technical expertise to gain further insights from geospatial data.&nbsp;</p>
+</section>
+<section id="project-objectives" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Project Objectives</h1>
+<p>Throughout the development of this project, our group would like to perform our analysis and develop an analytical application that allow users to:<br>
+</p>
+<ul>
+<li><p>Better understand the capabilities of Network-Constrained Point Pattern Analysis</p></li>
+<li><p>Better understanding of Geographical Accessibility</p></li>
+<li><p>Conduct Network-Constrained Point Pattern Analysis density estimation (NetKDE) and (G, K) function analysis</p></li>
+<li><p>Ability to generate insights based on the above analysis for any decision making</p></li>
+</ul>
+</section>
+<section id="our-approach-methodology" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Our Approach &amp; Methodology</h1>
+<section id="data-preparation" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">4.1</span> Data Preparation</h2>
+<ul>
+<li><p>To source and assemble data from various sources out there</p></li>
+<li><p>Importing the Spatial Data (Geospatial and Aspatial)</p></li>
+<li><p>Data Wrangling&nbsp;</p></li>
+<li><p>Generate Origin-Destination (OD) Matrix using Spatial Points and Networks</p></li>
+</ul>
+</section>
+<section id="exploratory-data-analysis" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="exploratory-data-analysis"><span class="header-section-number">4.2</span> Exploratory Data Analysis</h2>
+<ul>
+<li><p>Visualise and examine the distribution of spatial pointers</p></li>
+<li><p>Examine any anomalies and outliers in the dataset sourced</p></li>
+<li><p>Further Data Wrangling (where necessary)</p></li>
+</ul>
+</section>
+<section id="network-constrained-point-pattern-analysis" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="network-constrained-point-pattern-analysis"><span class="header-section-number">4.3</span> Network Constrained Point Pattern Analysis</h2>
+<ul>
+<li><p>Network Kernel Density Estimation - To explore the intensity of points along network</p></li>
+<li><p>G and K function - To identify any potential clustering patterns, random distributions, even or uneven distributions of patterns</p></li>
+</ul>
+</section>
+<section id="geographical-accessibility" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="geographical-accessibility"><span class="header-section-number">4.4</span> Geographical Accessibility</h2>
+<ul>
+<li><p>Tidying the distance matrix by using ODMatrix</p></li>
+<li><p>To identify the accessibility of origins to destinations</p></li>
+<li><p>Visualising accessibility using methods such as Hansen, KD2SFCA and Spatial Accessibility Measure (SAM)</p></li>
+</ul>
+</section>
+</section>
+<section id="relevant-related-works" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Relevant Related Works</h1>
+<section id="network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china"><span class="header-section-number">5.1</span> Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China</h2>
+<p><a href="https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829" class="uri">https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829</a></p>
+<section id="summary" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.1.1</span> Summary</h3>
+<p>Network KDE and Network K-function was used to study retail service&nbsp; hot-spot areas and spatial clustering patterns of a local retail giant, Suguo, in Nanjing City.</p>
+</section>
+<section id="learning-points-and-linking-back-to-our-project" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="learning-points-and-linking-back-to-our-project"><span class="header-section-number">5.1.2</span> Learning Points and Linking Back to Our Project</h3>
+<p>The bandwidth for generating network-constrained kernel density estimation (KDE) maps would produce representations of distributions that&nbsp; and we should explore various network KDE bandwidths to find suitable bandwidth and also provide options for users to adjust bandwidth</p>
+</section>
+</section>
+<section id="ease-and-equity-of-point-of-interest-accessibility-via-public-transit-in-the-u.s" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="ease-and-equity-of-point-of-interest-accessibility-via-public-transit-in-the-u.s"><span class="header-section-number">5.2</span> Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S</h2>
+<p><a href="https://arxiv.org/abs/2212.06954" class="uri">https://arxiv.org/abs/2212.06954</a></p>
+<section id="summary-1" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="summary-1"><span class="header-section-number">5.2.1</span> Summary</h3>
+<p>The team created a tool to analyse the ease and equity of access to major POI using public transit in US cities using an interactive website (to filter selected POIs) calculated with 2SFCA (2-step floating catchment area) approach.<br>
+<br>
+It aims to explore effectiveness and equity of public transit system in major US cities</p>
+</section>
+<section id="learning-points-and-linking-back-to-our-project-1" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="learning-points-and-linking-back-to-our-project-1"><span class="header-section-number">5.2.2</span> Learning Points and Linking Back to Our Project</h3>
+<ul>
+<li>User Interface for users to filter by POI and view geographical accessibility information and additional</li>
+</ul>
+</section>
+</section>
+<section id="using-hexagonal-grids-and-network-analysis-for-spatial-accessibility-assessment-in-urban-environments-a-case-study-of-public-amenities-in-toruń" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="using-hexagonal-grids-and-network-analysis-for-spatial-accessibility-assessment-in-urban-environments-a-case-study-of-public-amenities-in-toruń"><span class="header-section-number">5.3</span> Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments – a case study of public amenities in Toruń</h2>
+<p><a href="http://dx.doi.org/10.2478/mgrsd-2018-0037" class="uri">http://dx.doi.org/10.2478/mgrsd-2018-0037</a></p>
+<section id="summary-2" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="summary-2"><span class="header-section-number">5.3.1</span> Summary</h3>
+<p>The paper looks at a methodology to analyse spatial accessibility using network analysis and a hexagonal grid to the city of Toruń, Poland. The paper also explored that it is important to empower citizens with knowledge of the geospatial analysis and created a web application to empower citizens with knowledge.</p>
+</section>
+<section id="learning-points-and-linking-back-to-our-project-2" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="learning-points-and-linking-back-to-our-project-2"><span class="header-section-number">5.3.2</span> Learning Points and Linking Back to Our Project</h3>
+<ul>
+<li><p>Adopt a similar methodology of converting distance for OD Matrix, specifically Origin and Destination distances to travel times by assuming a walking speed of 4km/h</p></li>
+<li><p>Network will be calculated using the travel time of the appropriate speed (eg. road will be calculated based on road speed limit)</p></li>
+<li><p>This will prevent underestimation of travel times which may affect the accessbility metrics</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="story-board" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Story Board</h1>
+<section id="home-page" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="home-page"><span class="header-section-number">6.1</span> Home Page</h2>
+<p><img src="proposal/homepage.PNG" class="img-fluid"></p>
+</section>
+<section id="network-kde" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="network-kde"><span class="header-section-number">6.2</span> Network KDE</h2>
+<p><img src="proposal/Network%20KDE.PNG" class="img-fluid"></p>
+</section>
+<section id="network-statistical-function" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="network-statistical-function"><span class="header-section-number">6.3</span> Network Statistical Function</h2>
+<p><img src="proposal/Stats%20function.PNG" class="img-fluid"></p>
+</section>
+<section id="geographical-accessibility-1" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="geographical-accessibility-1"><span class="header-section-number">6.4</span> Geographical Accessibility</h2>
+<p><img src="proposal/geo%20access.PNG" class="img-fluid"></p>
+</section>
+<section id="data" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="data"><span class="header-section-number">6.5</span> Data</h2>
+<p><img src="proposal/Data.PNG" class="img-fluid"></p>
+</section>
+</section>
+<section id="data-sources" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Data Sources</h1>
+<p>Our data sources includes datasets from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria) due to its large and wide range of datasets available for exploration and analysis.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th><strong>Type</strong></th>
+<th><strong>Name</strong></th>
+<th><strong>Link</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Localities</td>
+<td>Localities Outline for Australia (to filter out City of Melbourne)</td>
+<td><a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files" class="uri">https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files</a>&nbsp;</td>
+</tr>
+<tr class="even">
+<td>Local Government Areas</td>
+<td>LGA Outline for Australia (to use to filter out City of Melbourne Localities)</td>
+<td><a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files" class="uri">https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files</a>&nbsp;</td>
+</tr>
+<tr class="odd">
+<td>Network</td>
+<td>Pedestrian</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/" class="uri">https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/</a>&nbsp;</td>
+</tr>
+<tr class="even">
+<td>Network</td>
+<td>Roads</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/road-corridors/information/?location=14,-37.81097,144.96168&amp;basemap=mbs-7a7333" class="uri">https://data.melbourne.vic.gov.au/explore/dataset/road-corridors/information/?location=14,-37.81097,144.96168&amp;basemap=mbs-7a7333</a>&nbsp;</td>
+</tr>
+<tr class="odd">
+<td>Network</td>
+<td>Trams</td>
+<td><a href="https://discover.data.vic.gov.au/dataset/ptv-metro-tram-routes1" class="uri">https://discover.data.vic.gov.au/dataset/ptv-metro-tram-routes1</a>&nbsp;</td>
+</tr>
+<tr class="even">
+<td>Spatial Points</td>
+<td>Business establishments location and industry classification</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/business-establishments-with-address-and-industry-classification/" class="uri">https://data.melbourne.vic.gov.au/explore/dataset/business-establishments-with-address-and-industry-classification/</a>&nbsp;</td>
+</tr>
+<tr class="odd">
+<td>Spatial Points</td>
+<td>Residential Dwellings</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/residential-dwellings/information/" class="uri">https://data.melbourne.vic.gov.au/explore/dataset/residential-dwellings/information/</a>&nbsp;</td>
+</tr>
+<tr class="even">
+<td>Spatial Points</td>
+<td>Landmarks and places of interest, including schools, theatres, health services, sports facilities, places of worship, galleries and museums.</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/landmarks-and-places-of-interest-including-schools-theatres-health-services-spor/information/" class="uri">https://data.melbourne.vic.gov.au/explore/dataset/landmarks-and-places-of-interest-including-schools-theatres-health-services-spor/information/</a></td>
+</tr>
+<tr class="odd">
+<td>Spatial Points</td>
+<td>Drinking Fountain</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/drinking-fountains/" class="uri">https://data.melbourne.vic.gov.au/explore/dataset/drinking-fountains/</a>&nbsp;</td>
+</tr>
+<tr class="even">
+<td>Spatial Points</td>
+<td>Public Toilet</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/public-toilets/information/?dataChart=eyJxdWVyaWVzIjpbeyJjb25maWciOnsiZGF0YXNldCI6InB1YmxpYy10b2lsZXRzIiwib3B0aW9ucyI6e319LCJjaGFydHMiOlt7ImFsaWduTW9udGgiOnRydWUsInR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiQVZHIiwieUF4aXMiOiJsYXQiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjMjc3QkI0In1dLCJ4QXhpcyI6ImxhdCIsIm1heHBvaW50cyI6NTAsInNvcnQiOiIifV0sInRpbWVzY2FsZSI6IiIsImRpc3BsYXlMZWdlbmQiOnRydWUsImFsaWduTW9udGgiOnRydWV9">https://data.melbourne.vic.gov.au/explore/dataset/public-toilets</a></td>
+</tr>
+<tr class="odd">
+<td>Spatial Points</td>
+<td>Childcare Centres</td>
+<td><a href="https://data.melbourne.vic.gov.au/explore/dataset/childcare-centres/information/" class="uri">https://data.melbourne.vic.gov.au/explore/dataset/childcare-centres/information/</a>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>With the inclusion of three different Network datasets in Melbourne and various Spatial Points datasets, we hope to allow users to understand and gain further insight of the use cases of Network-Constrained Spatial Points Analysis and Geographical Accessibility along different networks such as Pedestrian, Roads and Tram Networks.</p>
+<p>For example, users could select health services and understand more about geographical accessibility of health services across Melbourne by Road.&nbsp;</p>
+<p>They could also select and see accessibility of drinking fountains by pedestrian paths, which could drive further understanding about the distribution of drinking fountains across the city and possibly push for more water fountains to reduce the use of disposable water bottles to be more sustainable.</p>
+</section>
+<section id="application-architecture" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Application Architecture</h1>
+<p><img src="proposal/Application%20Architecture.PNG" class="img-fluid"></p>
+</section>
+<section id="timeline" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Timeline</h1>
+<p><img src="proposal/Project%20timeline.PNG" class="img-fluid"></p>
+</section>
+<section id="references" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> References</h1>
+<ol type="1">
+<li>Dr Kam Tin Seong - <a href="https://is415-ay2022-23t2.netlify.app/">Course Website</a> and <a href="https://r4gdsa.netlify.app/chap01.html"><u>R for Geospatial Data Science and Analytics</u></a> textbook</li>
+<li>Yikang Rui, Zaigui Yang, Tianlu Qian, Shoaib Khalid, Nan Xia &amp; Jiechen Wang - <a href="https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829">Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China</a></li>
+<li>Alexander Li, Mengyang Liu, Aurimas Racas, Tejas Santanam, Junaid Syed, Przemyslaw Zientala - <a href="https://arxiv.org/abs/2212.06954">Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S</a></li>
+<li>Jan Burdziej - <a href="https://doi.org/10.2478/mgrsd-2018-0037">Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments – a case study of public amenities in Toruń</a></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Spatial Bros: Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility</div>   
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
