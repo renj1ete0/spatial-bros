@@ -160,17 +160,17 @@ public_toilets_spdf
 
 ## Visualising the Geospatial Data
 
-### Melbourne City's road network with Business Establishments
+<!-- ### Melbourne City's road network with Business Establishments -->
 
-```{r}
-tmap_mode('view')
-tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
-  tm_lines() +
-  tm_shape(business_est_sp) + 
-  tm_dots(size = 0.03, col="green")
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(business_est_sp) +  -->
+<!--   tm_dots(size = 0.03, col="green") -->
 
-```
+<!-- ``` -->
 
 ### Melbourne City's road network with Childcare Centres
 
@@ -196,46 +196,46 @@ tm_basemap(server = "OpenStreetMap") +
 ```
 
 
-### Melbourne City's road network with Landmarks
+<!-- ### Melbourne City's road network with Landmarks -->
 
-```{r}
-tmap_mode('view')
-tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
-  tm_lines() +
-  tm_shape(landmarks_sp) + 
-  tm_dots(size = 0.03, col="green")
-```
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(landmarks_sp) +  -->
+<!--   tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
 
-### Melbourne City's road network with Public Toilets
+<!-- ### Melbourne City's road network with Public Toilets -->
 
-```{r}
-tmap_mode('view')
-tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
-  tm_lines() +
-  tm_shape(public_toilets_spdf) +
-  tm_dots(size = 0.03, col="green")
-```
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(public_toilets_spdf) + -->
+<!--   tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
 
-### Melbourne City's road network with Residential Dwellings
+<!-- ### Melbourne City's road network with Residential Dwellings -->
 
-```{r}
-tmap_mode('view')
-tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
-  tm_lines() +
-  tm_shape(residential_dwelling_sp) +
-  tm_dots(size = 0.03, col="green")
-```
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(residential_dwelling_sp) + -->
+<!--   tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
 
-### Melbourne pedestrian network with childcare centre
+<!-- ### Melbourne pedestrian network with childcare centre -->
 
-```{r}
-tmap_mode('view')
-tm_basemap(server = "OpenStreetMap") +
-tm_shape(childcare_spdf) + 
-  tm_dots(size = 0.1, col="green") + 
-  tm_shape(pedestrian_network) +
-  tm_lines()
-```
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!-- tm_shape(childcare_spdf) +  -->
+<!--   tm_dots(size = 0.1, col="green") +  -->
+<!--   tm_shape(pedestrian_network) + -->
+<!--   tm_lines() -->
+<!-- ``` -->
