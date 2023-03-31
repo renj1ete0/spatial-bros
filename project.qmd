@@ -80,7 +80,7 @@ melbourne_local_government_areas <- st_transform(melbourne_local_government_area
 To retrieve only latest as of 2021 business establishments and is not vacant.
 
 ```{r}
-business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021") %>% filter(trading_name != "Vacant")
+business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021") %>% filter(trading_name != "Vacant") %>% filter(clue_small_area == "Melbourne (CBD)")
 business_est_sp <- st_transform(business_est_sp, crs = 7855) 
 ```
 
@@ -230,27 +230,25 @@ public_toilets_spdf
 <!--   tm_dots(size = 0.03, col="green") -->
 <!-- ``` -->
 
-<!-- ### Melbourne's City Network Combined with all network spatial points -->
+### Melbourne's City Network Combined with all network spatial points
 
-<!-- ```{r} -->
-<!-- tmap_mode('view') -->
-<!-- tm_basemap(server = "OpenStreetMap") + -->
-<!--   tm_shape(road_network_lines) + -->
-<!--   tm_lines() + -->
-<!--   tm_shape(pedestrian_network) + -->
-<!--   tm_lines() + -->
-<!--   tm_shape(tram_network) + -->
-<!--   tm_lines() + -->
-<!--   tm_shape(business_est_sp) + -->
-<!--   tm_dots(size = 0.03, col="green") + -->
-<!--   tm_shape(childcare_spdf) +  -->
-<!--   tm_dots(size = 0.03, col="blue") + -->
-<!--   tm_shape(drinking_fountain_sp) +  -->
-<!--   tm_dots(size = 0.03, col="cyan") + -->
-<!--   tm_shape(landmarks_sp) +  -->
-<!--   tm_dots(size = 0.03, col="red") + -->
-<!--   tm_shape(public_toilets_spdf) +  -->
-<!--   tm_dots(size = 0.03, col="orange") + -->
-<!--   tm_shape(residential_dwelling_sp) +  -->
-<!--   tm_dots(size = 0.03, col="yellow") -->
-<!-- ``` -->
+```{r}
+tmap_mode('view')
+tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(business_est_sp) +
+  tm_dots(size = 0.03, col="green") +
+  tm_shape(childcare_spdf) +
+  tm_dots(size = 0.03, col="blue") +
+  tm_shape(drinking_fountain_sp) +
+  tm_dots(size = 0.03, col="cyan") +
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col="red") +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col="orange") +
+  tm_shape(residential_dwelling_sp) +
+  tm_dots(size = 0.03, col="yellow")
+```
