@@ -124,30 +124,42 @@ The paper looks at a methodology to analyse spatial accessibility using network 
 
 ## Home Page
 
-![](proposal/homepage.PNG)
+![](proposal/Homepage.jpg)
 
 ## Network KDE
 
-![](proposal/Network%20KDE.PNG)
+![](proposal/Network%20KDE.jpg)
 
 ## Network Statistical Function
 
-![](proposal/Stats%20function.PNG)
+![](proposal/Network%20Stat%20Function.jpg)
 
-## Geographical Accessibility
+## 1st Order KDE 
 
-![](proposal/geo%20access.PNG)
+![](proposal/1st%20Order%20KDE.jpg)
+
+## 1st Order Stat Function
+
+![](proposal/1st%20Order%20Stat%20Function.jpg)
+
+## 2nd Order KDE
+
+![](proposal/2nd%20Order%20KDE.jpg)
+
+## 2nd Order Stat Function 
+
+![](proposal/2nd%20Order%20Stat%20Function.jpg)
 
 ## Data
 
-![](proposal/Data.PNG)
+![](proposal/Data.jpg)
 
 # Data Sources
 
 Our data sources includes datasets from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria) due to its large and wide range of datasets available for exploration and analysis.
 
 | **Type**               | **Name**                                                                                                                                     | **Link**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------|---------------|------------------------------------------|
 | Localities             | Localities Outline for Australia (to filter out City of Melbourne)                                                                           | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Local Government Areas | LGA Outline for Australia (to use to filter out City of Melbourne Localities)                                                                | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Network                | Pedestrian                                                                                                                                   | <https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
