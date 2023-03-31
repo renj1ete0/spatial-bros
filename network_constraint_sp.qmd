@@ -100,16 +100,6 @@ landmarks_sp <- st_read("data/geospatial/Landmarks Spatial Point", layer = "land
 landmarks_sp <- st_transform(landmarks_sp, crs = 7855)
 ```
 
-### Melbourne City's Residential Dwellings Spatial Point
-
-To only retrieve 2015 residential dwellings
-
-```{r}
-residential_dwelling_sp <- st_read("data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson") %>% filter(census_year == "2015")
-residential_dwelling_sp <- st_transform(residential_dwelling_sp, crs = 7855)
-st_crs(residential_dwelling_sp)
-```
-
 ### Melbourne City's Childcare Centres Spatial Point
 
 ```{r}
