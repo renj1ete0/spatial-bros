@@ -77,10 +77,10 @@ melbourne_local_government_areas <- st_transform(melbourne_local_government_area
 
 ### Melbourne City's Business Establishments Spatial Point
 
-To retrieve only latest as of 2021 business establishments
+To retrieve only latest as of 2021 business establishments and is not vacant.
 
 ```{r}
-business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021")
+business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021") %>% filter(trading_name != "Vacant")
 business_est_sp <- st_transform(business_est_sp, crs = 7855) 
 ```
 
@@ -101,8 +101,10 @@ landmarks_sp <- st_transform(landmarks_sp, crs = 7855)
 
 ### Melbourne City's Residential Dwellings Spatial Point
 
+To only retrieve 2015 residential dwellings
+
 ```{r}
-residential_dwelling_sp <- st_read("data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson")
+residential_dwelling_sp <- st_read("data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson") %>% filter(census_year == "2015")
 residential_dwelling_sp <- st_transform(residential_dwelling_sp, crs = 7855)
 st_crs(residential_dwelling_sp)
 ```
@@ -169,31 +171,30 @@ public_toilets_spdf
 <!--   tm_lines() + -->
 <!--   tm_shape(business_est_sp) + -->
 <!--   tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
+
+<!-- ### Melbourne City's road network with Childcare Centres -->
+
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(childcare_spdf) +  -->
+<!--   tm_dots(size = 0.03, col="green") -->
 
 <!-- ``` -->
 
-### Melbourne City's road network with Childcare Centres
+<!-- ### Melbourne City's road network with Drinking Fountain -->
 
-```{r}
-tmap_mode('view')
-tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
-  tm_lines() +
-  tm_shape(childcare_spdf) + 
-  tm_dots(size = 0.03, col="green")
-  
-```
-
-### Melbourne City's road network with Drinking Fountain
-
-```{r}
- tmap_mode('view')
- tm_basemap(server = "OpenStreetMap") +
-   tm_shape(road_network_lines) +
-   tm_lines() +
-   tm_shape(drinking_fountain_sp) +
-   tm_dots(size = 0.03, col="green")
-```
+<!-- ```{r} -->
+<!--  tmap_mode('view') -->
+<!--  tm_basemap(server = "OpenStreetMap") + -->
+<!--    tm_shape(road_network_lines) + -->
+<!--    tm_lines() + -->
+<!--    tm_shape(drinking_fountain_sp) + -->
+<!--    tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
 
 
 <!-- ### Melbourne City's road network with Landmarks -->
@@ -203,7 +204,7 @@ tm_basemap(server = "OpenStreetMap") +
 <!-- tm_basemap(server = "OpenStreetMap") + -->
 <!--   tm_shape(road_network_lines) + -->
 <!--   tm_lines() + -->
-<!--   tm_shape(landmarks_sp) +  -->
+<!--   tm_shape(landmarks_sp) + -->
 <!--   tm_dots(size = 0.03, col="green") -->
 <!-- ``` -->
 
@@ -229,13 +230,27 @@ tm_basemap(server = "OpenStreetMap") +
 <!--   tm_dots(size = 0.03, col="green") -->
 <!-- ``` -->
 
-<!-- ### Melbourne pedestrian network with childcare centre -->
+<!-- ### Melbourne's City Network Combined with all network spatial points -->
 
 <!-- ```{r} -->
 <!-- tmap_mode('view') -->
 <!-- tm_basemap(server = "OpenStreetMap") + -->
-<!-- tm_shape(childcare_spdf) +  -->
-<!--   tm_dots(size = 0.1, col="green") +  -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
 <!--   tm_shape(pedestrian_network) + -->
-<!--   tm_lines() -->
+<!--   tm_lines() + -->
+<!--   tm_shape(tram_network) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(business_est_sp) + -->
+<!--   tm_dots(size = 0.03, col="green") + -->
+<!--   tm_shape(childcare_spdf) +  -->
+<!--   tm_dots(size = 0.03, col="blue") + -->
+<!--   tm_shape(drinking_fountain_sp) +  -->
+<!--   tm_dots(size = 0.03, col="cyan") + -->
+<!--   tm_shape(landmarks_sp) +  -->
+<!--   tm_dots(size = 0.03, col="red") + -->
+<!--   tm_shape(public_toilets_spdf) +  -->
+<!--   tm_dots(size = 0.03, col="orange") + -->
+<!--   tm_shape(residential_dwelling_sp) +  -->
+<!--   tm_dots(size = 0.03, col="yellow") -->
 <!-- ``` -->
