@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Spatial Bros">
+<meta name="dcterms.date" content="2025-03-03">
+<meta name="description" content="Exploring Network-Constrained Spatial Point Analysis">
+
+<title>Project: Spatial Bros</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="logo.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./imgs/logo.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About Us</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./proposal.html">Proposal</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./network_constraint_sp.html" aria-current="page">Project (Network Constrained Spatial Point)</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-reader-toggle nav-link" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Project: Spatial Bros</h1>
+                  <div>
+        <div class="description">
+          Exploring Network-Constrained Spatial Point Analysis
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">network-constrained spatial point analysis</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Spatial Bros </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 3, 2025</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#network-constrained-spatial-point-pattern-analysis" id="toc-network-constrained-spatial-point-pattern-analysis" class="nav-link active" data-scroll-target="#network-constrained-spatial-point-pattern-analysis"><span class="toc-section-number">1</span>  Network Constrained Spatial Point Pattern Analysis</a>
+  <ul class="collapse">
+  <li><a href="#project-overview" id="toc-project-overview" class="nav-link" data-scroll-target="#project-overview"><span class="toc-section-number">1.1</span>  Project Overview</a></li>
+  <li><a href="#installing-the-r-packages" id="toc-installing-the-r-packages" class="nav-link" data-scroll-target="#installing-the-r-packages"><span class="toc-section-number">1.2</span>  Installing the R packages</a></li>
+  <li><a href="#data-import-and-preparation" id="toc-data-import-and-preparation" class="nav-link" data-scroll-target="#data-import-and-preparation"><span class="toc-section-number">1.3</span>  Data Import and Preparation</a>
+  <ul class="collapse">
+  <li><a href="#melbourne-citys-road-network" id="toc-melbourne-citys-road-network" class="nav-link" data-scroll-target="#melbourne-citys-road-network"><span class="toc-section-number">1.3.1</span>  Melbourne City’s Road Network</a></li>
+  <li><a href="#melbourne-citys-pedestrian-network" id="toc-melbourne-citys-pedestrian-network" class="nav-link" data-scroll-target="#melbourne-citys-pedestrian-network"><span class="toc-section-number">1.3.2</span>  Melbourne City’s Pedestrian Network</a></li>
+  <li><a href="#melbourne-citys-tram-network" id="toc-melbourne-citys-tram-network" class="nav-link" data-scroll-target="#melbourne-citys-tram-network"><span class="toc-section-number">1.3.3</span>  Melbourne City’s Tram Network</a></li>
+  <li><a href="#localities" id="toc-localities" class="nav-link" data-scroll-target="#localities"><span class="toc-section-number">1.3.4</span>  Localities</a></li>
+  <li><a href="#melbourne-citys-local-government-areas" id="toc-melbourne-citys-local-government-areas" class="nav-link" data-scroll-target="#melbourne-citys-local-government-areas"><span class="toc-section-number">1.3.5</span>  Melbourne City’s Local Government Areas</a></li>
+  <li><a href="#melbourne-citys-business-establishments-spatial-point" id="toc-melbourne-citys-business-establishments-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-business-establishments-spatial-point"><span class="toc-section-number">1.3.6</span>  Melbourne City’s Business Establishments Spatial Point</a></li>
+  <li><a href="#melbourne-citys-drinking-fountain-spatial-point" id="toc-melbourne-citys-drinking-fountain-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-drinking-fountain-spatial-point"><span class="toc-section-number">1.3.7</span>  Melbourne City’s Drinking Fountain Spatial Point</a></li>
+  <li><a href="#melbourne-citys-landmarks-spatial-point" id="toc-melbourne-citys-landmarks-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-landmarks-spatial-point"><span class="toc-section-number">1.3.8</span>  Melbourne City’s Landmarks Spatial Point</a></li>
+  <li><a href="#melbourne-citys-residential-dwellings-spatial-point" id="toc-melbourne-citys-residential-dwellings-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-residential-dwellings-spatial-point"><span class="toc-section-number">1.3.9</span>  Melbourne City’s Residential Dwellings Spatial Point</a></li>
+  <li><a href="#melbourne-citys-childcare-centres-spatial-point" id="toc-melbourne-citys-childcare-centres-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-childcare-centres-spatial-point"><span class="toc-section-number">1.3.10</span>  Melbourne City’s Childcare Centres Spatial Point</a></li>
+  <li><a href="#melbourne-citys-public-toilets-spatial-point" id="toc-melbourne-citys-public-toilets-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-public-toilets-spatial-point"><span class="toc-section-number">1.3.11</span>  Melbourne City’s Public Toilets Spatial Point</a></li>
+  </ul></li>
+  <li><a href="#visualising-the-geospatial-data" id="toc-visualising-the-geospatial-data" class="nav-link" data-scroll-target="#visualising-the-geospatial-data"><span class="toc-section-number">1.4</span>  Visualising the Geospatial Data</a>
+  <ul class="collapse">
+  <li><a href="#melbourne-citys-road-network-with-business-establishments" id="toc-melbourne-citys-road-network-with-business-establishments" class="nav-link" data-scroll-target="#melbourne-citys-road-network-with-business-establishments"><span class="toc-section-number">1.4.1</span>  Melbourne City’s road network with Business Establishments</a></li>
+  <li><a href="#melbourne-citys-road-network-with-childcare-centres" id="toc-melbourne-citys-road-network-with-childcare-centres" class="nav-link" data-scroll-target="#melbourne-citys-road-network-with-childcare-centres"><span class="toc-section-number">1.4.2</span>  Melbourne City’s road network with Childcare Centres</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="network-constrained-spatial-point-pattern-analysis" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Network Constrained Spatial Point Pattern Analysis</h1>
+<section id="project-overview" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="project-overview"><span class="header-section-number">1.1</span> Project Overview</h2>
+<p>Network constrained Spatial Point Patterns Analysis (NetSPAA) is a collection of spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network.</p>
+<p>The spatial point event can be locations of childcare centre for example.</p>
+<p>The network, on the other hand can be a road network for example.</p>
+<p>More information with regards to data sources used for this project can be found at the <a href="https://spatialbros.netlify.app/proposal.html#data-sources">proposal</a></p>
+</section>
+<section id="installing-the-r-packages" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="installing-the-r-packages"><span class="header-section-number">1.2</span> Installing the R packages</h2>
+<p>In this project, x packages will be used</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sp, sf, rgdal, spNetwork, tmap, readr, dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-import-and-preparation" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="data-import-and-preparation"><span class="header-section-number">1.3</span> Data Import and Preparation</h2>
+<section id="melbourne-citys-road-network" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="melbourne-citys-road-network"><span class="header-section-number">1.3.1</span> Melbourne City’s Road Network</h3>
+<p>Importing of shapefile, converting to EPSG of 7855 and converting Geometry Type to LINGSTRING.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>road_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Roads Network"</span>, <span class="at">layer =</span> <span class="st">"road-corridors"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `road-corridors' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Roads Network' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 4177 features and 9 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 144.897 ymin: -37.85066 xmax: 144.9913 ymax: -37.77545
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>road_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(road_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>road_network_lines <span class="ot">&lt;-</span> <span class="fu">st_boundary</span>(road_network) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">st_cast</span>(<span class="st">"LINESTRING"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only
+
+Warning in st_cast.MULTILINESTRING(X[[i]], ...): keeping first linestring only</code></pre>
+</div>
+</div>
+</section>
+<section id="melbourne-citys-pedestrian-network" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="melbourne-citys-pedestrian-network"><span class="header-section-number">1.3.2</span> Melbourne City’s Pedestrian Network</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Pedestrian Network/pedestrian-network.geojson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `pedestrian-network' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Pedestrian Network\pedestrian-network.geojson' 
+  using driver `GeoJSON'
+Simple feature collection with 85326 features and 3 fields
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: 144.8993 ymin: -37.85074 xmax: 144.9918 ymax: -37.77547
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(pedestrian_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-tram-network" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="melbourne-citys-tram-network"><span class="header-section-number">1.3.3</span> Melbourne City’s Tram Network</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Trams Network"</span>, <span class="at">layer =</span> <span class="st">"PTV_METRO_TRAM_ROUTE"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `PTV_METRO_TRAM_ROUTE' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Trams Network' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 82 features and 12 fields
+Geometry type: LINESTRING
+Dimension:     XY
+Bounding box:  xmin: 144.878 ymin: -37.91422 xmax: 145.182 ymax: -37.67898
+Geodetic CRS:  GDA2020</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(tram_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="localities" class="level3" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="localities"><span class="header-section-number">1.3.4</span> Localities</h3>
+<p>Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>localities <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Localities"</span>, <span class="at">layer =</span> <span class="st">"vic_localities"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `vic_localities' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Localities' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 2973 features and 6 fields
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: 140.9619 ymin: -39.13657 xmax: 149.9763 ymax: -33.98127
+Geodetic CRS:  GDA2020</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># melbourne_localities &lt;- localities[localities$UCL_NAME21 == "Melbourne", ]</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># melbourne_localities &lt;- st_transform(melbourne_localities, crs = 7855)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-local-government-areas" class="level3" data-number="1.3.5">
+<h3 data-number="1.3.5" class="anchored" data-anchor-id="melbourne-citys-local-government-areas"><span class="header-section-number">1.3.5</span> Melbourne City’s Local Government Areas</h3>
+<p>Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>local_government_areas <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Local Government Areas"</span>, <span class="at">layer =</span> <span class="st">"LGA_2022_AUST_GDA2020"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `LGA_2022_AUST_GDA2020' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Local Government Areas' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 566 features and 10 fields (with 19 geometries empty)
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 96.81695 ymin: -43.7405 xmax: 167.998 ymax: -9.142163
+Geodetic CRS:  GDA2020</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">=</span> local_government_areas[local_government_areas<span class="sc">$</span>LGA_NAME22 <span class="sc">==</span> <span class="st">"Melbourne"</span>,]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(melbourne_local_government_areas, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(melbourne_local_government_areas)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to plot
+all</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="network_constraint_sp_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="melbourne-citys-business-establishments-spatial-point" class="level3" data-number="1.3.6">
+<h3 data-number="1.3.6" class="anchored" data-anchor-id="melbourne-citys-business-establishments-spatial-point"><span class="header-section-number">1.3.6</span> Melbourne City’s Business Establishments Spatial Point</h3>
+<p>To retrieve only latest as of 2021 business establishments and is not vacant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>business_est_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(census_year <span class="sc">==</span> <span class="st">"2021"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(trading_name <span class="sc">!=</span> <span class="st">"Vacant"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `business-establishments-with-address-and-industry-classification' from data source `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Business Establishments Spatial Point\business-establishments-with-address-and-industry-classification.geojson' 
+  using driver `GeoJSON'
+replacing null geometries with empty geometries
+Simple feature collection with 354556 features and 12 fields (with 4786 geometries empty)
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.8985 ymin: -37.85138 xmax: 144.9906 ymax: -37.77586
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>business_est_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(business_est_sp, <span class="at">crs =</span> <span class="dv">7855</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-drinking-fountain-spatial-point" class="level3" data-number="1.3.7">
+<h3 data-number="1.3.7" class="anchored" data-anchor-id="melbourne-citys-drinking-fountain-spatial-point"><span class="header-section-number">1.3.7</span> Melbourne City’s Drinking Fountain Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Drinking Fountain Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"drinking-fountains"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `drinking-fountains' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Drinking Fountain Spatial Point' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 302 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.9159 ymin: -37.84521 xmax: 144.991 ymax: -37.77712
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(drinking_fountain_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-landmarks-spatial-point" class="level3" data-number="1.3.8">
+<h3 data-number="1.3.8" class="anchored" data-anchor-id="melbourne-citys-landmarks-spatial-point"><span class="header-section-number">1.3.8</span> Melbourne City’s Landmarks Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>landmarks_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Landmarks Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"landmarks-and-places-of-interest-including-schools-theatres-health-services-spor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `landmarks-and-places-of-interest-including-schools-theatres-health-services-spor' from data source `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Landmarks Spatial Point' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 242 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.9082 ymin: -37.84852 xmax: 144.9894 ymax: -37.78127
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>landmarks_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(landmarks_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-residential-dwellings-spatial-point" class="level3" data-number="1.3.9">
+<h3 data-number="1.3.9" class="anchored" data-anchor-id="melbourne-citys-residential-dwellings-spatial-point"><span class="header-section-number">1.3.9</span> Melbourne City’s Residential Dwellings Spatial Point</h3>
+<p>To only retrieve 2015 residential dwellings</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>residential_dwelling_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Residential Dwellings Spatial Point/residential-dwellings.geojson"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(census_year <span class="sc">==</span> <span class="st">"2015"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `residential-dwellings' from data source 
+  `C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\data\geospatial\Residential Dwellings Spatial Point\residential-dwellings.geojson' 
+  using driver `GeoJSON'
+replacing null geometries with empty geometries
+Simple feature collection with 188160 features and 11 fields (with 2869 geometries empty)
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 144.905 ymin: -37.84798 xmax: 144.9908 ymax: -37.77583
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>residential_dwelling_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(residential_dwelling_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(residential_dwelling_sp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: EPSG:7855 
+  wkt:
+PROJCRS["GDA2020 / MGA zone 55",
+    BASEGEOGCRS["GDA2020",
+        DATUM["Geocentric Datum of Australia 2020",
+            ELLIPSOID["GRS 1980",6378137,298.257222101,
+                LENGTHUNIT["metre",1]]],
+        PRIMEM["Greenwich",0,
+            ANGLEUNIT["degree",0.0174532925199433]],
+        ID["EPSG",7844]],
+    CONVERSION["Map Grid of Australia zone 55",
+        METHOD["Transverse Mercator",
+            ID["EPSG",9807]],
+        PARAMETER["Latitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8801]],
+        PARAMETER["Longitude of natural origin",147,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8802]],
+        PARAMETER["Scale factor at natural origin",0.9996,
+            SCALEUNIT["unity",1],
+            ID["EPSG",8805]],
+        PARAMETER["False easting",500000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8806]],
+        PARAMETER["False northing",10000000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8807]]],
+    CS[Cartesian,2],
+        AXIS["(E)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1]],
+        AXIS["(N)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1]],
+    USAGE[
+        SCOPE["Engineering survey, topographic mapping."],
+        AREA["Australia - onshore and offshore between 144°E and 150°E."],
+        BBOX[-50.89,144,-9.23,150.01]],
+    ID["EPSG",7855]]</code></pre>
+</div>
+</div>
+</section>
+<section id="melbourne-citys-childcare-centres-spatial-point" class="level3" data-number="1.3.10">
+<h3 data-number="1.3.10" class="anchored" data-anchor-id="melbourne-citys-childcare-centres-spatial-point"><span class="header-section-number">1.3.10</span> Melbourne City’s Childcare Centres Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>childcare_sp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 29 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): name, contact_ph, url
+dbl (3): ref, lat, lon
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<section id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings" class="level4" data-number="1.3.10.1">
+<h4 data-number="1.3.10.1" class="anchored" data-anchor-id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings"><span class="header-section-number">1.3.10.1</span> Creating a simple feature data frame from Childcare Centres Spatial Point listings</h4>
+<p>Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne’s GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>childcare_sp_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(childcare_sp, </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="converting-to-spatial-point-data-frame" class="level4" data-number="1.3.10.2">
+<h4 data-number="1.3.10.2" class="anchored" data-anchor-id="converting-to-spatial-point-data-frame"><span class="header-section-number">1.3.10.2</span> Converting to Spatial Point Data Frame</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>childcare_spdf <span class="ot">&lt;-</span> <span class="fu">as</span>(childcare_sp_sf, <span class="st">"Spatial"</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>childcare_spdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 29 
+extent      : 316811.7, 322956.8, 5809281, 5816727  (xmin, xmax, ymin, ymax)
+crs         : +proj=utm +zone=55 +south +ellps=GRS80 +units=m +no_defs 
+variables   : 4
+names       :    ref,                         name,   contact_ph,                          url 
+min values  : 100083,     Alfred Child Care Centre, 03 8344 9621, http://emcc.org.au/yarra.php 
+max values  : 717144, Yarra Park Children's Centre,    9820 2758,   http://www.wimblest.com.au </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="melbourne-citys-public-toilets-spatial-point" class="level3" data-number="1.3.11">
+<h3 data-number="1.3.11" class="anchored" data-anchor-id="melbourne-citys-public-toilets-spatial-point"><span class="header-section-number">1.3.11</span> Melbourne City’s Public Toilets Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>public_toilets_sp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/geospatial/Public Toilets Spatial Point/public-toilets.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 74 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): name, female, male, wheelchair, operator, baby_facil
+dbl (2): lat, lon
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<section id="creating-a-simple-feature-data-frame-from-public-toilets-spatial-point-listings" class="level4" data-number="1.3.11.1">
+<h4 data-number="1.3.11.1" class="anchored" data-anchor-id="creating-a-simple-feature-data-frame-from-public-toilets-spatial-point-listings"><span class="header-section-number">1.3.11.1</span> Creating a simple feature data frame from Public Toilets Spatial Point listings</h4>
+<p>Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne’s GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>public_toilets_sp_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(public_toilets_sp, </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="converting-to-spatial-point-data-frame-1" class="level4" data-number="1.3.11.2">
+<h4 data-number="1.3.11.2" class="anchored" data-anchor-id="converting-to-spatial-point-data-frame-1"><span class="header-section-number">1.3.11.2</span> Converting to Spatial Point Data Frame</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>public_toilets_spdf <span class="ot">&lt;-</span> <span class="fu">as</span>(public_toilets_sp_sf, <span class="st">"Spatial"</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>public_toilets_spdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 74 
+extent      : 316969.7, 322790.1, 5809443, 5816753  (xmin, xmax, ymin, ymax)
+crs         : +proj=utm +zone=55 +south +ellps=GRS80 +units=m +no_defs 
+variables   : 6
+names       :                                                        name, female, male, wheelchair,          operator, baby_facil 
+min values  :      Public Toilet - Newmarket Reserve (26 Smithfield Road),     no,   no,         no, City of Melbourne,         no 
+max values  : Public Toilet - Victoria Harbour, Shed 3 (North Wharf Road),    yes,  yes,        yes, City of Melbourne,        yes </code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="visualising-the-geospatial-data" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="visualising-the-geospatial-data"><span class="header-section-number">1.4</span> Visualising the Geospatial Data</h2>
+<section id="melbourne-citys-road-network-with-business-establishments" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="melbourne-citys-road-network-with-business-establishments"><span class="header-section-number">1.4.1</span> Melbourne City’s road network with Business Establishments</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_options</span>(<span class="st">'view'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in tmap_options("view"): the following options do not exist: view</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>named list()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>road_network_be <span class="ot">&lt;-</span> <span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">"OpenStreetMap"</span>) <span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(road_network_lines) <span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_lines</span>() <span class="sc">+</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(business_est_sp) <span class="sc">+</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.03</span>, <span class="at">col=</span><span class="st">"green"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-road-network-with-childcare-centres" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="melbourne-citys-road-network-with-childcare-centres"><span class="header-section-number">1.4.2</span> Melbourne City’s road network with Childcare Centres</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_options</span>(<span class="st">'view'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in tmap_options("view"): the following options do not exist: view</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>named list()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>road_network_cc <span class="ot">&lt;-</span> <span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">"OpenStreetMap"</span>) <span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(road_network_lines) <span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_lines</span>() <span class="sc">+</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(childcare_spdf) <span class="sc">+</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.03</span>, <span class="at">col=</span><span class="st">"green"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- ### Melbourne City's road network with Drinking Fountain -->
+<!-- ```{r} -->
+<!--  tmap_mode('view') -->
+<!--  tm_basemap(server = "OpenStreetMap") + -->
+<!--    tm_shape(road_network_lines) + -->
+<!--    tm_lines() + -->
+<!--    tm_shape(drinking_fountain_sp) + -->
+<!--    tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
+<!-- ### Melbourne City's road network with Landmarks -->
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(landmarks_sp) + -->
+<!--   tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
+<!-- ### Melbourne City's road network with Public Toilets -->
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(public_toilets_spdf) + -->
+<!--   tm_dots(size = 0.03, col="green") -->
+<!-- ``` -->
+<!-- ### Melbourne City's road network with Residential Dwellings -->
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(residential_dwelling_sp) + -->
+<!--   tm_dots(size = 0.03, col="green") -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_save</span>(road_network_cc, <span class="st">"tmaphtml/road_network_cc.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Interactive map saved to C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\tmaphtml\tmaphtml\road_network_cc.html</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_save</span>(road_network_be, <span class="st">"tmaphtml/road_network_be.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Interactive map saved to C:\Users\Ming Rong\Desktop\IS415 Project\spatial-bros\tmaphtml\tmaphtml\road_network_be.html</code></pre>
+</div>
+</div>
+<!-- ``` -->
+<!-- ### Melbourne's City Network Combined with all network spatial points -->
+<!-- ```{r} -->
+<!-- tmap_mode('view') -->
+<!-- tm_basemap(server = "OpenStreetMap") + -->
+<!--   tm_shape(road_network_lines) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(tram_network) + -->
+<!--   tm_lines() + -->
+<!--   tm_shape(business_est_sp) + -->
+<!--   tm_dots(size = 0.03, col="green") + -->
+<!--   tm_shape(childcare_spdf) + -->
+<!--   tm_dots(size = 0.03, col="blue") + -->
+<!--   tm_shape(drinking_fountain_sp) + -->
+<!--   tm_dots(size = 0.03, col="cyan") + -->
+<!--   tm_shape(landmarks_sp) + -->
+<!--   tm_dots(size = 0.03, col="red") + -->
+<!--   tm_shape(public_toilets_spdf) + -->
+<!--   tm_dots(size = 0.03, col="orange") + -->
+<!--   tm_shape(residential_dwelling_sp) + -->
+<!--   tm_dots(size = 0.03, col="yellow") -->
+<!-- ``` -->
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Spatial Bros: Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility</div>   
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
