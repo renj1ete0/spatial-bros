@@ -167,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><span class="toc-section-number">4.1</span>  Data Preparation</a></li>
   <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="toc-section-number">4.2</span>  Exploratory Data Analysis</a></li>
   <li><a href="#network-constrained-point-pattern-analysis" id="toc-network-constrained-point-pattern-analysis" class="nav-link" data-scroll-target="#network-constrained-point-pattern-analysis"><span class="toc-section-number">4.3</span>  Network Constrained Point Pattern Analysis</a></li>
-  <li><a href="#geographical-accessibility" id="toc-geographical-accessibility" class="nav-link" data-scroll-target="#geographical-accessibility"><span class="toc-section-number">4.4</span>  Geographical Accessibility</a></li>
+  <li><a href="#st-2nd-order-kernel-density-estimation" id="toc-st-2nd-order-kernel-density-estimation" class="nav-link" data-scroll-target="#st-2nd-order-kernel-density-estimation"><span class="toc-section-number">4.4</span>  1st &amp; 2nd Order Kernel Density Estimation</a></li>
   </ul></li>
   <li><a href="#relevant-related-works" id="toc-relevant-related-works" class="nav-link" data-scroll-target="#relevant-related-works"><span class="toc-section-number">5</span>  Relevant Related Works</a>
   <ul class="collapse">
@@ -217,16 +217,16 @@ ul.task-list li input[type="checkbox"] {
 <p>The <strong>Spatial Bros</strong> is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:</p>
 <p>Spatial Points Analysis</p>
 <ul>
-<li><p>Network Constraint Spatial Point</p></li>
-<li><p>Geographical Accessibility</p></li>
+<li><p>Network Constraint Spatial Point (Network KDE)</p></li>
+<li><p>1st and 2nd Order Kernel Density Estimation (KDE)</p></li>
 </ul>
-<p>For each of the analyses, the application will provide users with kernel density maps, Geographical Accessibility maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.</p>
+<p>For each of the analyses, the application will provide users with kernel density maps, 1st and 2nd order will provide and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.</p>
 </section>
 <section id="problems-motivation" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Problems &amp; Motivation</h1>
 <p>In today’s technological advancing world, there are many interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geospatial data is the foundation based on the foundation of geographical boundary locations and Aspatial data are the observations recorded that can be used to generate derive insights.</p>
 <p>Despite that, there are not many people who are knowledgeable and trained to perform such analysis. Without the fundamental knowledge and appropriate training, any results based on the analysis performed could be inaccurate.</p>
-<p>Hence, our group’s main focus is to perform our analysis and develop a web-based geospatial tool using R Shiny with regards to Point Pattern Analysis particularly on Network-Constrained Point Pattern Analysis (NCPPA) and Geographical Accessibility (GA). We hope this application can empower and educate users on NCPPA and GA and conduct the analysis they want regardless of their technical expertise to gain further insights from geospatial data.&nbsp;</p>
+<p>Hence, our group’s main focus is to perform our analysis and develop a web-based geospatial tool using R Shiny with regards to Point Pattern Analysis particularly on Network-Constrained Point Pattern Analysis (NCPPA) and 1st/2nd Order Kernel Density Estimation (KDE). We hope this application can empower and educate users and conduct the analysis they want regardless of their technical expertise to gain further insights from geospatial data.&nbsp;</p>
 </section>
 <section id="project-objectives" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Project Objectives</h1>
@@ -234,7 +234,7 @@ ul.task-list li input[type="checkbox"] {
 </p>
 <ul>
 <li><p>Better understand the capabilities of Network-Constrained Point Pattern Analysis</p></li>
-<li><p>Better understanding of Geographical Accessibility</p></li>
+<li><p>Better understanding of 1st and 2nd order Kernel Density Estimation (KDE)</p></li>
 <li><p>Conduct Network-Constrained Point Pattern Analysis density estimation (NetKDE) and (G, K) function analysis</p></li>
 <li><p>Ability to generate insights based on the above analysis for any decision making</p></li>
 </ul>
@@ -245,9 +245,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="4.1" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">4.1</span> Data Preparation</h2>
 <ul>
 <li><p>To source and assemble data from various sources out there</p></li>
-<li><p>Importing the Spatial Data (Geospatial and Aspatial)</p></li>
+<li><p>Importing the Spatial Data (Geospatial)</p></li>
 <li><p>Data Wrangling&nbsp;</p></li>
-<li><p>Generate Origin-Destination (OD) Matrix using Spatial Points and Networks</p></li>
 </ul>
 </section>
 <section id="exploratory-data-analysis" class="level2" data-number="4.2">
@@ -265,12 +264,11 @@ ul.task-list li input[type="checkbox"] {
 <li><p>G and K function - To identify any potential clustering patterns, random distributions, even or uneven distributions of patterns</p></li>
 </ul>
 </section>
-<section id="geographical-accessibility" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="geographical-accessibility"><span class="header-section-number">4.4</span> Geographical Accessibility</h2>
+<section id="st-2nd-order-kernel-density-estimation" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="st-2nd-order-kernel-density-estimation"><span class="header-section-number">4.4</span> 1st &amp; 2nd Order Kernel Density Estimation</h2>
 <ul>
-<li><p>Tidying the distance matrix by using ODMatrix</p></li>
-<li><p>To identify the accessibility of origins to destinations</p></li>
-<li><p>Visualising accessibility using methods such as Hansen, KD2SFCA and Spatial Accessibility Measure (SAM)</p></li>
+<li><p>1st order Kernel Density Estimation</p></li>
+<li><p>G and K function</p></li>
 </ul>
 </section>
 </section>
@@ -420,7 +418,7 @@ It aims to explore effectiveness and equity of public transit system in major US
 </tr>
 </tbody>
 </table>
-<p>With the inclusion of three different Network datasets in Melbourne and various Spatial Points datasets, we hope to allow users to understand and gain further insight of the use cases of Network-Constrained Spatial Points Analysis and Geographical Accessibility along different networks such as Pedestrian, Roads and Tram Networks.</p>
+<p>With the inclusion of three different Network datasets in Melbourne and various Spatial Points datasets, we hope to allow users to understand and gain further insight of the use cases of Network-Constrained Spatial Points Analysis and 1st/2nd Order KDE along different networks such as Pedestrian, Roads and Tram Networks.</p>
 <p>For example, users could select health services and understand more about geographical accessibility of health services across Melbourne by Road.&nbsp;</p>
 <p>They could also select and see accessibility of drinking fountains by pedestrian paths, which could drive further understanding about the distribution of drinking fountains across the city and possibly push for more water fountains to reduce the use of disposable water bottles to be more sustainable.</p>
 </section>

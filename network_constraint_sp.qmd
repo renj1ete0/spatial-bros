@@ -74,7 +74,6 @@ Local Government Areas file downloaded was entire Australia. Therefore, we need 
 local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
 melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
 melbourne_local_government_areas <- st_transform(melbourne_local_government_areas, crs = 7855)
-plot(melbourne_local_government_areas)
 ```
 
 ### Melbourne City's Business Establishments Spatial Point
@@ -173,122 +172,110 @@ road_network_cc <- tm_basemap(server = "OpenStreetMap") +
   tm_dots(size = 0.03, col="green")
 ```
 
-<!-- ### Melbourne City's road network with Drinking Fountain -->
+### Melbourne City's road network with Drinking Fountain
 
-<!-- ```{r} -->
+```{r}
+tmap_options('view')
+road_network_df <- tm_basemap(server = "OpenStreetMap") +
+ tm_shape(road_network_lines) +
+ tm_lines() +
+ tm_shape(drinking_fountain_sp) +
+ tm_dots(size = 0.03, col="green")
+```
 
-<!--  tmap_mode('view') -->
+### Melbourne City's road network with Landmarks
 
-<!--  tm_basemap(server = "OpenStreetMap") + -->
+```{r}
+tmap_options('view')
+road_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col="green")
+```
 
-<!--    tm_shape(road_network_lines) + -->
+### Melbourne City's road network with Public Toilets
 
-<!--    tm_lines() + -->
+```{r}
+tmap_options('view')
+road_network_pt <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col="green")
+```
 
-<!--    tm_shape(drinking_fountain_sp) + -->
-
-<!--    tm_dots(size = 0.03, col="green") -->
-
-<!-- ``` -->
-
-<!-- ### Melbourne City's road network with Landmarks -->
-
-<!-- ```{r} -->
-
-<!-- tmap_mode('view') -->
-
-<!-- tm_basemap(server = "OpenStreetMap") + -->
-
-<!--   tm_shape(road_network_lines) + -->
-
-<!--   tm_lines() + -->
-
-<!--   tm_shape(landmarks_sp) + -->
-
-<!--   tm_dots(size = 0.03, col="green") -->
-
-<!-- ``` -->
-
-<!-- ### Melbourne City's road network with Public Toilets -->
-
-<!-- ```{r} -->
-
-<!-- tmap_mode('view') -->
-
-<!-- tm_basemap(server = "OpenStreetMap") + -->
-
-<!--   tm_shape(road_network_lines) + -->
-
-<!--   tm_lines() + -->
-
-<!--   tm_shape(public_toilets_spdf) + -->
-
-<!--   tm_dots(size = 0.03, col="green") -->
-
-<!-- ``` -->
-
-<!-- ### Melbourne City's road network with Residential Dwellings -->
-
-<!-- ```{r} -->
-
-<!-- tmap_mode('view') -->
-
-<!-- tm_basemap(server = "OpenStreetMap") + -->
-
-<!--   tm_shape(road_network_lines) + -->
-
-<!--   tm_lines() + -->
-
-<!--   tm_shape(residential_dwelling_sp) + -->
-
-<!--   tm_dots(size = 0.03, col="green") -->
+Saving road networks with all spatial points to a html file separately
 
 ```{r}
 tmap_save(road_network_cc, "tmaphtml/road_network_cc.html")
 tmap_save(road_network_be, "tmaphtml/road_network_be.html")
+tmap_save(road_network_df, "tmaphtml/road_network_df.html")
+tmap_save(road_network_landmarks, "tmaphtml/road_network_landmarks.html")
+tmap_save(road_network_pt, "tmaphtml/road_network_pt.html")
 ```
 
+### Melbourne City's pedestrian network with Business Establishments
 
-<!-- ``` -->
+```{r}
+tmap_options('view')
+pedestrian_network_be <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(business_est_sp) +
+  tm_dots(size = 0.03, col="green")
+```
 
-<!-- ### Melbourne's City Network Combined with all network spatial points -->
+### Melbourne City's pedestrian network with Childcare Centres
 
-<!-- ```{r} -->
+```{r}
+tmap_options('view')
+pedestrian_network_cc <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(childcare_spdf) +
+  tm_dots(size = 0.03, col="green")
+```
 
-<!-- tmap_mode('view') -->
+### Melbourne City's pedestrian network with Drinking Fountain
 
-<!-- tm_basemap(server = "OpenStreetMap") + -->
+```{r}
+tmap_options('view')
+pedestrian_network_df <- tm_basemap(server = "OpenStreetMap") +
+ tm_shape(road_network_lines) +
+ tm_lines() +
+ tm_shape(drinking_fountain_sp) +
+ tm_dots(size = 0.03, col="green")
+```
 
-<!--   tm_shape(road_network_lines) + -->
+### Melbourne City's pedestrian network with Landmarks
 
-<!--   tm_lines() + -->
+```{r}
+tmap_options('view')
+pedestrian_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col="green")
+```
 
-<!--   tm_shape(tram_network) + -->
+### Melbourne City's pedestrian network with Public Toilets
 
-<!--   tm_lines() + -->
+```{r}
+tmap_options('view')
+pedestrian_network_pt <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col="green")
+```
 
-<!--   tm_shape(business_est_sp) + -->
+Saving pedestrian networks with all spatial points to a html file separately
 
-<!--   tm_dots(size = 0.03, col="green") + -->
-
-<!--   tm_shape(childcare_spdf) + -->
-
-<!--   tm_dots(size = 0.03, col="blue") + -->
-
-<!--   tm_shape(drinking_fountain_sp) + -->
-
-<!--   tm_dots(size = 0.03, col="cyan") + -->
-
-<!--   tm_shape(landmarks_sp) + -->
-
-<!--   tm_dots(size = 0.03, col="red") + -->
-
-<!--   tm_shape(public_toilets_spdf) + -->
-
-<!--   tm_dots(size = 0.03, col="orange") + -->
-
-<!--   tm_shape(residential_dwelling_sp) + -->
-
-<!--   tm_dots(size = 0.03, col="yellow") -->
-
-<!-- ``` -->
+```{r}
+tmap_save(pedestrian_network_cc, "tmaphtml/pedestrian_network_cc.html")
+tmap_save(pedestrian_network_be, "tmaphtml/pedestrian_network_be.html")
+tmap_save(pedestrian_network_df, "tmaphtml/pedestrian_network_df.html")
+tmap_save(pedestrian_network_landmarks, "tmaphtml/pedestrian_network_landmarks.html")
+tmap_save(pedestrian_network_pt, "tmaphtml/pedestrian_network_pt.html")
+```
