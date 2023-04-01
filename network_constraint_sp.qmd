@@ -46,6 +46,7 @@ road_network_lines <- st_boundary(road_network) %>%
 ```{r}
 pedestrian_network <- st_read("data/geospatial/Pedestrian Network/pedestrian-network.geojson")
 pedestrian_network <- st_transform(pedestrian_network, crs = 7855)
+pedestrian_network <- pedestrian_network[st_geometry_type(st_geometry(pedestrian_network)) == "LINESTRING",]
 ```
 
 ### Melbourne City's Tram Network
@@ -61,8 +62,8 @@ Localities file downloaded was entire Australia. Therefore, we need to filter to
 
 ```{r}
 localities = st_read("data/geospatial/Localities", layer = "vic_localities") 
-# melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
-# melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
+#melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
+#melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
 
 ```
 
@@ -220,7 +221,7 @@ tmap_save(road_network_pt, "tmaphtml/road_network_pt.html")
 ```{r}
 tmap_options('view')
 pedestrian_network_be <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+  tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(business_est_sp) +
   tm_dots(size = 0.03, col="green")
@@ -231,7 +232,7 @@ pedestrian_network_be <- tm_basemap(server = "OpenStreetMap") +
 ```{r}
 tmap_options('view')
 pedestrian_network_cc <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+  tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(childcare_spdf) +
   tm_dots(size = 0.03, col="green")
@@ -242,7 +243,7 @@ pedestrian_network_cc <- tm_basemap(server = "OpenStreetMap") +
 ```{r}
 tmap_options('view')
 pedestrian_network_df <- tm_basemap(server = "OpenStreetMap") +
- tm_shape(road_network_lines) +
+ tm_shape(pedestrian_network) +
  tm_lines() +
  tm_shape(drinking_fountain_sp) +
  tm_dots(size = 0.03, col="green")
@@ -253,7 +254,7 @@ pedestrian_network_df <- tm_basemap(server = "OpenStreetMap") +
 ```{r}
 tmap_options('view')
 pedestrian_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+  tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(landmarks_sp) +
   tm_dots(size = 0.03, col="green")
@@ -264,7 +265,7 @@ pedestrian_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
 ```{r}
 tmap_options('view')
 pedestrian_network_pt <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+  tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(public_toilets_spdf) +
   tm_dots(size = 0.03, col="green")
@@ -278,4 +279,95 @@ tmap_save(pedestrian_network_be, "tmaphtml/pedestrian_network_be.html")
 tmap_save(pedestrian_network_df, "tmaphtml/pedestrian_network_df.html")
 tmap_save(pedestrian_network_landmarks, "tmaphtml/pedestrian_network_landmarks.html")
 tmap_save(pedestrian_network_pt, "tmaphtml/pedestrian_network_pt.html")
+```
+
+### Melbourne City's tram network with Business Establishments
+
+```{r}
+tmap_options('view')
+tram_network_be <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(business_est_sp) +
+  tm_dots(size = 0.03, col="green")
+```
+
+### Melbourne City's tram network with Childcare Centres
+
+```{r}
+tmap_options('view')
+tram_network_cc <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(childcare_spdf) +
+  tm_dots(size = 0.03, col="green")
+```
+
+### Melbourne City's tram network with Drinking Fountain
+
+```{r}
+tmap_options('view')
+tram_network_df <- tm_basemap(server = "OpenStreetMap") +
+ tm_shape(tram_network) +
+ tm_lines() +
+ tm_shape(drinking_fountain_sp) +
+ tm_dots(size = 0.03, col="green")
+```
+
+### Melbourne City's tram network with Landmarks
+
+```{r}
+tmap_options('view')
+tram_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col="green")
+```
+
+### Melbourne City's tram network with Public Toilets
+
+```{r}
+tmap_options('view')
+tram_network_pt <- tm_basemap(server = "OpenStreetMap") +
+  tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col="green")
+```
+
+Saving tram networks with all spatial points to a html file separately
+
+```{r}
+tmap_save(tram_network_cc, "tmaphtml/tram_network_cc.html")
+tmap_save(tram_network_be, "tmaphtml/tram_network_be.html")
+tmap_save(tram_network_df, "tmaphtml/tram_network_df.html")
+tmap_save(tram_network_landmarks, "tmaphtml/tram_network_landmarks.html")
+tmap_save(tram_network_pt, "tmaphtml/tram_network_pt.html")
+```
+
+## Network Constrained KDE (NetKDE) Analysis
+
+In this section, we will perform NetKDE analysis by using appropriate functions provided in spNetwork package.
+
+### Preparing the lixels objects
+
+Before computing NetKDE, the SpatialLines object need to be cut into lixels with a specified minimal distance. This task can be performed by using with lixelize_lines() of spNetwork as shown in the code chunk below.
+
+```{r}
+road_lixels <- lixelize_lines(road_network_lines, 800, mindist = 350)
+pedestrian_lixels <- lixelize_lines(pedestrian_network, 500, mindist = 350)
+tram_lixels <- lixelize_lines(tram_network, 1000, mindist = 350)
+```
+
+The length of a lixel, lx_length is set to 800m, 500m and 1000m respectively for road_network, pedestrian_network and tram_network. The minimum length of a lixel, mindist is set to 350m.
+
+### Generating line centre points
+
+Next, lines_center() of spNetwork will be used to generate a SpatialPointsDataFrame (i.e. samples) with line centre points as shown in the code chunk below.
+
+```{r}
+road_samples <- lines_center(road_lixels)
+pedestrian_samples <- lines_center(pedestrian_lixels)
+tram_samples <- lines_center(tram_lixels)
 ```
