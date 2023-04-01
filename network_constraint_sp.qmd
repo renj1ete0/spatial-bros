@@ -355,9 +355,18 @@ In this section, we will perform NetKDE analysis by using appropriate functions 
 Before computing NetKDE, the SpatialLines object need to be cut into lixels with a specified minimal distance. This task can be performed by using with lixelize_lines() of spNetwork as shown in the code chunk below.
 
 ```{r}
-road_lixels <- lixelize_lines(road_network_lines, 800, mindist = 350)
-pedestrian_lixels <- lixelize_lines(pedestrian_network, 500, mindist = 350)
-tram_lixels <- lixelize_lines(tram_network, 1000, mindist = 350)
+# Lixels for Road Network
+road_lixels_cc <- lixelize_lines(road_network_lines, 800, mindist = 350)
+road_lixels_be <- lixelize_lines(road_network_lines, 800, mindist = 350)
+road_lixels_df <- lixelize_lines(road_network_lines, 800, mindist = 350)
+road_lixels_lm <- lixelize_lines(road_network_lines, 800, mindist = 350)
+road_lixels_pt <- lixelize_lines(road_network_lines, 800, mindist = 350)
+
+# Lixels for Pedestrian Network
+pedestrian_lixels_cc <- lixelize_lines(pedestrian_network, 500, mindist = 350)
+
+# Lixels for Trarm Network
+tram_lixels_cc <- lixelize_lines(tram_network, 1000, mindist = 350)
 ```
 
 The length of a lixel, lx_length is set to 800m, 500m and 1000m respectively for road_network, pedestrian_network and tram_network. The minimum length of a lixel, mindist is set to 350m.
@@ -367,7 +376,130 @@ The length of a lixel, lx_length is set to 800m, 500m and 1000m respectively for
 Next, lines_center() of spNetwork will be used to generate a SpatialPointsDataFrame (i.e. samples) with line centre points as shown in the code chunk below.
 
 ```{r}
-road_samples <- lines_center(road_lixels)
-pedestrian_samples <- lines_center(pedestrian_lixels)
-tram_samples <- lines_center(tram_lixels)
+# Road network lines center
+road_samples_cc <- lines_center(road_lixels)
+road_samples_be <- lines_center(road_lixels)
+road_samples_df <- lines_center(road_lixels)
+road_samples_lm <- lines_center(road_lixels)
+road_samples_pt <- lines_center(road_lixels)
+
+# Pedestrian network lines center
+pedestrian_samples_cc <- lines_center(pedestrian_lixels)
+
+# Tram network lines center
+tram_samples_cc <- lines_center(tram_lixels)
+```
+
+### Performing NetKDE
+
+We are ready to compute the NetKDE by using the code chunk below.
+
+#### Childcare Centres NetKDE
+```{r}
+road_network_cc_densities <- nkde(road_network_lines, 
+                  events = childcare_sp_sf,
+                  w = rep(1,nrow(childcare_sp_sf)),
+                  samples = road_samples_cc,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 1, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Business Establishments NetKDE
+
+```{r}
+road_network_be_densities <- nkde(road_network_lines, 
+                  events = business_est_sp,
+                  w = rep(1,nrow(business_est_sp)),
+                  samples = road_samples_be,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 1, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Drinking Fountain NetKDE
+
+```{r}
+road_network_df_densities <- nkde(road_network_lines, 
+                  events = drinking_fountain_sp,
+                  w = rep(1,nrow(drinking_fountain_sp)),
+                  samples = road_samples_df,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 1, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+### Visualising NetKDE
+
+Before we can visualise the NetKDE values, code chunk below will be used to insert the computed density values (i.e. densities) into samples and lixels objects as density field.
+
+```{r}
+road_samples_cc$density <- road_network_cc_densities * 1000
+road_lixels_cc$density <- road_network_cc_densities * 1000
+
+road_samples_be$density <- road_network_be_densities * 1000
+road_lixels_be$density <- road_network_be_densities * 1000
+
+road_samples_df$density <- road_network_df_densities * 1000
+road_lixels_df$density <- road_network_df_densities * 1000
+```
+
+#### Childcare Centre
+
+```{r}
+tmap_options('view')
+road_networkKDE_cc <- tm_shape(road_lixels_cc) +
+  tm_lines(col="density")+
+  tm_shape(childcare_spdf)+
+  tm_dots(size = 0.03, col="green")
+```
+#### Business Establishments
+
+```{r}
+tmap_options('view')
+road_networkKDE_be <- tm_shape(road_lixels_be) +
+  tm_lines(col="density")+
+  tm_shape(business_est_sp)+
+  tm_dots(size = 0.03, col="green")
+```
+#### Drinking Fountain
+
+```{r}
+tmap_options('view')
+road_networkKDE_df <- tm_shape(road_lixels_df) +
+  tm_lines(col="density")+
+  tm_shape(drinking_fountain_sp)+
+  tm_dots(size = 0.03, col="green")
+```
+
+
+
+```{r}
+tmap_save(road_networkKDE_cc, "tmapnetworkKDEhtml/road_networkKDE_cc.html")
+tmap_save(road_networkKDE_be, "tmapnetworkKDEhtml/road_networkKDE_be.html")
+tmap_save(road_networkKDE_df, "tmapnetworkKDEhtml/road_networkKDE_df.html")
 ```
