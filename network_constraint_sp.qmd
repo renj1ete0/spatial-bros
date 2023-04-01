@@ -29,7 +29,7 @@ More information with regards to data sources used for this project can be found
 In this project, x packages will be used
 
 ```{r}
-pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr, dplyr)
+pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr, dplyr, ggplot2)
 ```
 
 ## Data Import and Preparation
@@ -448,7 +448,7 @@ road_network_be_densities <- nkde(road_network_lines,
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
-                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  agg = 500, #we aggregate events within a 10m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
 ```
@@ -954,4 +954,377 @@ tmap_save(tram_networkKDE_be, "tmapnetworkKDEhtml/tram_networkKDE_be.html")
 tmap_save(tram_networkKDE_df, "tmapnetworkKDEhtml/tram_networkKDE_df.html")
 tmap_save(tram_networkKDE_lm, "tmapnetworkKDEhtml/tram_networkKDE_lm.html")
 tmap_save(tram_networkKDE_pt, "tmapnetworkKDEhtml/tram_networkKDE_pt.html")
+```
+
+## Network Constrained G- and K-Function Analysis
+
+In this section, we are going to perform complete spatial randomness (CSR) test by using kfunctions() of spNetwork package. The null hypothesis is defined as:
+
+### Road Network Null Hypothesis
+
+Ho: The observed spatial point events (i.e distribution of childcare centres) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of business establishments) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of drinking fountain) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of landmarks) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of public toilets) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+### Pedestrian Network Null Hypothesis
+
+Ho: The observed spatial point events (i.e distribution of childcare centres) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of business establishments) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of drinking fountain) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of landmarks) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of public toilets) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+### Tram Network Null Hypothesis
+
+Ho: The observed spatial point events (i.e distribution of childcare centres) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of business establishments) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of drinking fountain) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of landmarks) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of public toilets) are uniformly distributed over a tram network in Melbourne City Area.
+
+The CSR test is based on the assumption of the binomial point process which implies the hypothesis that the spatial points are randomly and independently distributed over the various network.
+
+If this hypothesis is rejected, we may infer that the distribution of spatial points are spatially interacting and dependent on each other; as a result, they may form nonrandom patterns.
+
+### G & K Function 
+
+#### Childcare Centres with Road Network
+
+```{r}
+kfun_childcare_road <- kfunctions(road_network_lines, 
+                             childcare_sp_sf,
+                             start = 0, 
+                             end = 5000, 
+                             step = 50, 
+                             width = 50, 
+                             nsim = 50, 
+                             resolution = 50,
+                             verbose = FALSE, 
+                             conf_int = 0.05)
+```
+
+```{r}
+kfun_childcare_road <- kfun_childcare_road$plotk
+```
+
+#### Business Establishments with Road Network
+
+```{r}
+business_est_sp_unique <- business_est_sp[!duplicated(st_geometry(business_est_sp)), ]
+kfun_be_road <- kfunctions(road_network_lines, 
+                           business_est_sp_unique,
+                           start = 0, 
+                           end = 5000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 100,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_be_road <- kfun_be_road$plotk
+```
+
+#### Drinking Fountain with Road Network
+
+```{r}
+kfun_df_road <- kfunctions(road_network_lines, 
+                           drinking_fountain_sp,
+                           start = 0, 
+                           end = 500, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_df_road <- kfun_df_road$plotk
+```
+
+#### Landmarks with Road Network
+
+```{r}
+kfun_lm_road <- kfunctions(road_network_lines, 
+                           landmarks_sp,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_lm_road <- kfun_lm_road$plotk
+```
+
+#### Public Toilets with Road Network
+
+```{r}
+public_toilets_sp_sf_unique <- public_toilets_sp_sf[!duplicated(st_geometry(public_toilets_sp_sf)), ]
+kfun_pt_road <- kfunctions(road_network_lines, 
+                           public_toilets_sp_sf,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50,
+                           agg = 100,
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_pt_road <- kfun_pt_road$plotk
+```
+
+
+```{r}
+ggsave(file = "g&kplot/kfun_childcare_road.png", plot = kfun_childcare_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_be_road.png", plot = kfun_be_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_df_road.png", plot = kfun_df_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_lm_road.png", plot = kfun_lm_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_pt_road.png", plot = kfun_pt_road, width = 6, height = 4, dpi = 300)
+```
+
+#### Childcare Centres with Pedestrian Network
+
+```{r}
+kfun_childcare_pedestrian <- kfunctions(pedestrian_network, 
+                             childcare_sp_sf,
+                             start = 0, 
+                             end = 1000, 
+                             step = 50, 
+                             width = 50, 
+                             nsim = 50, 
+                             resolution = 50,
+                             verbose = FALSE, 
+                             conf_int = 0.05)
+```
+
+```{r}
+kfun_childcare_pedestrian <- kfun_childcare_pedestrian$plotk
+```
+
+#### Business Establishments with Pedestrian Network
+
+```{r}
+business_est_sp_unique <- business_est_sp[!duplicated(st_geometry(business_est_sp)), ]
+kfun_be_pedestrian <- kfunctions(pedestrian_network, 
+                           business_est_sp_unique,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 100,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_be_pedestrian <- kfun_be_pedestrian$plotk
+```
+
+#### Drinking Fountain with Pedestrian Network
+
+```{r}
+kfun_df_pedestrian <- kfunctions(pedestrian_network, 
+                           drinking_fountain_sp,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_df_pedestrian <- kfun_df_pedestrian$plotk
+```
+
+#### Landmarks with Pedestrian Network
+
+```{r}
+kfun_lm_pedestrian <- kfunctions(pedestrian_network, 
+                           landmarks_sp,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_lm_pedestrian <- kfun_lm_pedestrian$plotk
+```
+
+#### Public Toilets with Pedestrian Network
+
+```{r}
+public_toilets_sp_sf_unique <- public_toilets_sp_sf[!duplicated(st_geometry(public_toilets_sp_sf)), ]
+kfun_pt_pedestrian <- kfunctions(pedestrian_network, 
+                           public_toilets_sp_sf,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50,
+                           agg = 100,
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_pt_pedestrian <- kfun_pt_pedestrian$plotk
+```
+
+
+```{r}
+ggsave(file = "g&kplot/kfun_childcare_pedestrian.png", plot = kfun_childcare_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_be_pedestrian.png", plot = kfun_be_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_df_pedestrian.png", plot = kfun_df_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_lm_pedestrian.png", plot = kfun_lm_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_pt_pedestrian.png", plot = kfun_pt_pedestrian, width = 6, height = 4, dpi = 300)
+```
+
+#### Childcare Centres with Tram Network
+
+```{r}
+kfun_childcare_tram <- kfunctions(tram_network, 
+                             childcare_sp_sf,
+                             start = 0, 
+                             end = 1000, 
+                             step = 50, 
+                             width = 50, 
+                             nsim = 50, 
+                             resolution = 50,
+                             verbose = FALSE, 
+                             conf_int = 0.05)
+```
+
+```{r}
+kfun_childcare_tram <- kfun_childcare_tram$plotk
+```
+
+#### Business Establishments with Tram Network
+
+```{r}
+business_est_sp_unique <- business_est_sp[!duplicated(st_geometry(business_est_sp)), ]
+kfun_be_tram <- kfunctions(tram_network, 
+                           business_est_sp_unique,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 500,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_be_tram <- kfun_be_tram$plotk
+```
+
+#### Drinking Fountain with Tram Network
+
+```{r}
+kfun_df_tram <- kfunctions(tram_network, 
+                           drinking_fountain_sp,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 500,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_df_tram <- kfun_df_tram$plotk
+```
+
+#### Landmarks with Tram Network
+
+```{r}
+kfun_lm_tram <- kfunctions(tram_network, 
+                           landmarks_sp,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 700,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_lm_tram <- kfun_lm_tram$plotk
+```
+
+#### Public Toilets with Tram Network
+
+```{r}
+public_toilets_sp_sf_unique <- public_toilets_sp_sf[!duplicated(st_geometry(public_toilets_sp_sf)), ]
+kfun_pt_tram <- kfunctions(tram_network, 
+                           public_toilets_sp_sf,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50,
+                           agg = 500,
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_pt_tram <- kfun_pt_tram$plotk
+```
+
+
+```{r}
+ggsave(file = "g&kplot/kfun_childcare_tram.png", plot = kfun_childcare_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_be_tram.png", plot = kfun_be_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_df_tram.png", plot = kfun_df_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_lm_tram.png", plot = kfun_lm_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_pt_tram.png", plot = kfun_pt_tram, width = 6, height = 4, dpi = 300)
 ```
