@@ -159,55 +159,50 @@ public_toilets_spdf
 
 ```{r}
 tmap_options('view')
-road_network_be <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+road_network_be <- tm_shape(road_network_lines) +
   tm_lines() +
   tm_shape(business_est_sp) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.02, col="green")
 ```
 
 ### Melbourne City's road network with Childcare Centres
 
 ```{r}
 tmap_options('view')
-road_network_cc <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+road_network_cc <- tm_shape(road_network_lines) +
   tm_lines() +
   tm_shape(childcare_spdf) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's road network with Drinking Fountain
 
 ```{r}
 tmap_options('view')
-road_network_df <- tm_basemap(server = "OpenStreetMap") +
- tm_shape(road_network_lines) +
+road_network_df <- tm_shape(road_network_lines) +
  tm_lines() +
  tm_shape(drinking_fountain_sp) +
- tm_dots(size = 0.03, col="green")
+ tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's road network with Landmarks
 
 ```{r}
 tmap_options('view')
-road_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+road_network_landmarks <- tm_shape(road_network_lines) +
   tm_lines() +
   tm_shape(landmarks_sp) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's road network with Public Toilets
 
 ```{r}
 tmap_options('view')
-road_network_pt <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(road_network_lines) +
+road_network_pt <- tm_shape(road_network_lines) +
   tm_lines() +
   tm_shape(public_toilets_spdf) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 Saving road networks with all spatial points to a html file separately
@@ -224,55 +219,50 @@ tmap_save(road_network_pt, "tmaphtml/road_network_pt.html")
 
 ```{r}
 tmap_options('view')
-pedestrian_network_be <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(pedestrian_network) +
+pedestrian_network_be <- tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(business_est_sp) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.02, col = "green")
 ```
 
 ### Melbourne City's pedestrian network with Childcare Centres
 
 ```{r}
 tmap_options('view')
-pedestrian_network_cc <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(pedestrian_network) +
+pedestrian_network_cc <- tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(childcare_spdf) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's pedestrian network with Drinking Fountain
 
 ```{r}
 tmap_options('view')
-pedestrian_network_df <- tm_basemap(server = "OpenStreetMap") +
- tm_shape(pedestrian_network) +
+pedestrian_network_df <- tm_shape(pedestrian_network) +
  tm_lines() +
  tm_shape(drinking_fountain_sp) +
- tm_dots(size = 0.03, col="green")
+ tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's pedestrian network with Landmarks
 
 ```{r}
 tmap_options('view')
-pedestrian_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(pedestrian_network) +
+pedestrian_network_landmarks <- tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(landmarks_sp) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's pedestrian network with Public Toilets
 
 ```{r}
 tmap_options('view')
-pedestrian_network_pt <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(pedestrian_network) +
+pedestrian_network_pt <- tm_shape(pedestrian_network) +
   tm_lines() +
   tm_shape(public_toilets_spdf) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 Saving pedestrian networks with all spatial points to a html file separately
@@ -289,55 +279,50 @@ tmap_save(pedestrian_network_pt, "tmaphtml/pedestrian_network_pt.html")
 
 ```{r}
 tmap_options('view')
-tram_network_be <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(tram_network) +
+tram_network_be <- tm_shape(tram_network) +
   tm_lines() +
   tm_shape(business_est_sp) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.02, col = "green")
 ```
 
 ### Melbourne City's tram network with Childcare Centres
 
 ```{r}
 tmap_options('view')
-tram_network_cc <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(tram_network) +
+tram_network_cc <- tm_shape(tram_network) +
   tm_lines() +
   tm_shape(childcare_spdf) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's tram network with Drinking Fountain
 
 ```{r}
 tmap_options('view')
-tram_network_df <- tm_basemap(server = "OpenStreetMap") +
- tm_shape(tram_network) +
+tram_network_df <- tm_shape(tram_network) +
  tm_lines() +
  tm_shape(drinking_fountain_sp) +
- tm_dots(size = 0.03, col="green")
+ tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's tram network with Landmarks
 
 ```{r}
 tmap_options('view')
-tram_network_landmarks <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(tram_network) +
+tram_network_landmarks <- tm_shape(tram_network) +
   tm_lines() +
   tm_shape(landmarks_sp) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 ### Melbourne City's tram network with Public Toilets
 
 ```{r}
 tmap_options('view')
-tram_network_pt <- tm_basemap(server = "OpenStreetMap") +
-  tm_shape(tram_network) +
+tram_network_pt <- tm_shape(tram_network) +
   tm_lines() +
   tm_shape(public_toilets_spdf) +
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03, col = "green")
 ```
 
 Saving tram networks with all spatial points to a html file separately
@@ -360,20 +345,20 @@ Before computing NetKDE, the SpatialLines object need to be cut into lixels with
 
 ```{r}
 # Lixels for Road Network
-road_lixels_cc <- lixelize_lines(road_network_lines, 800, mindist = 350)
-road_lixels_be <- lixelize_lines(road_network_lines, 800, mindist = 350)
-road_lixels_df <- lixelize_lines(road_network_lines, 800, mindist = 350)
-road_lixels_lm <- lixelize_lines(road_network_lines, 800, mindist = 350)
-road_lixels_pt <- lixelize_lines(road_network_lines, 800, mindist = 350)
+road_lixels_cc <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_be <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_df <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_lm <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_pt <- lixelize_lines(road_network_lines, 1000, mindist = 350)
 
 # Lixels for Pedestrian Network
-pedestrian_lixels_cc <- lixelize_lines(pedestrian_network, 500, mindist = 350)
-pedestrian_lixels_be <- lixelize_lines(pedestrian_network, 500, mindist = 350)
-pedestrian_lixels_df <- lixelize_lines(pedestrian_network, 500, mindist = 350)
-pedestrian_lixels_lm <- lixelize_lines(pedestrian_network, 500, mindist = 350)
-pedestrian_lixels_pt <- lixelize_lines(pedestrian_network, 500, mindist = 350)
+pedestrian_lixels_cc <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_be <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_df <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_lm <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_pt <- lixelize_lines(pedestrian_network, 500, mindist = 250)
 
-# Lixels for Trarm Network
+# Lixels for Tram Network
 tram_lixels_cc <- lixelize_lines(tram_network, 1000, mindist = 350)
 tram_lixels_be <- lixelize_lines(tram_network, 1000, mindist = 350)
 tram_lixels_df <- lixelize_lines(tram_network, 1000, mindist = 350)
@@ -381,7 +366,7 @@ tram_lixels_lm <- lixelize_lines(tram_network, 1000, mindist = 350)
 tram_lixels_pt <- lixelize_lines(tram_network, 1000, mindist = 350)
 ```
 
-The length of a lixel, lx_length is set to 800m, 500m and 1000m respectively for road_network, pedestrian_network and tram_network. The minimum length of a lixel, mindist is set to 350m.
+The length of a lixel, lx_length is set to 1000m, 500m and 1000m respectively for road_network, pedestrian_network and tram_network. The minimum length of a lixel, mindist is set to 350m for network of road and tram whereas 250m for pedestrian network.
 
 ### Generating line centre points
 
@@ -402,7 +387,7 @@ pedestrian_samples_df <- lines_center(pedestrian_lixels_df)
 pedestrian_samples_lm <- lines_center(pedestrian_lixels_lm)
 pedestrian_samples_pt <- lines_center(pedestrian_lixels_pt)
 
-# Tram network lines center
+# # Tram network lines center
 tram_samples_cc <- lines_center(tram_lixels_cc)
 tram_samples_be <- lines_center(tram_lixels_be)
 tram_samples_df <- lines_center(tram_lixels_df)
@@ -424,7 +409,7 @@ road_network_cc_densities <- nkde(road_network_lines,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
@@ -444,11 +429,11 @@ road_network_be_densities <- nkde(road_network_lines,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
-                  agg = 500, #we aggregate events within a 10m radius (faster calculation)
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
 ```
@@ -464,7 +449,7 @@ road_network_df_densities <- nkde(road_network_lines,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
@@ -484,7 +469,7 @@ road_network_lm_densities <- nkde(road_network_lines,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
@@ -494,7 +479,7 @@ road_network_lm_densities <- nkde(road_network_lines,
 ```
 
 
-#### Public Toielts NetKDE
+#### Public Toilets NetKDE
 
 ```{r}
 road_network_pt_densities <- nkde(road_network_lines, 
@@ -505,7 +490,7 @@ road_network_pt_densities <- nkde(road_network_lines,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
@@ -542,7 +527,7 @@ tmap_options('view')
 road_networkKDE_cc <- tm_shape(road_lixels_cc) +
   tm_lines(col="density")+
   tm_shape(childcare_spdf)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 #### Business Establishments
 
@@ -551,7 +536,7 @@ tmap_options('view')
 road_networkKDE_be <- tm_shape(road_lixels_be) +
   tm_lines(col="density")+
   tm_shape(business_est_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.02)
 ```
 #### Drinking Fountain
 
@@ -560,7 +545,7 @@ tmap_options('view')
 road_networkKDE_df <- tm_shape(road_lixels_df) +
   tm_lines(col="density")+
   tm_shape(drinking_fountain_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 #### Landmarks
 
@@ -569,7 +554,7 @@ tmap_options('view')
 road_networkKDE_lm <- tm_shape(road_lixels_lm) +
   tm_lines(col="density")+
   tm_shape(landmarks_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 #### Public Toilets
 
@@ -578,7 +563,7 @@ tmap_options('view')
 road_networkKDE_pt <- tm_shape(road_lixels_pt) +
   tm_lines(col="density")+
   tm_shape(public_toilets_spdf)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 Saving road networks KDE to separate html file 
 
@@ -592,7 +577,7 @@ tmap_save(road_networkKDE_pt, "tmapnetworkKDEhtml/road_networkKDE_pt.html")
 
 ### Pedestrian Network NetKDE
 
-We are ready to compute the NetKDE by using the code chunk below.
+We are ready to compute the NetKDE by using the code chunk below. When using the continuous and discontinuous methods, the calculation time and memory use can go wild if the network has many small edges (area with many of intersections and many events) - especially for pedestrian network. To avoid it, it is possible to set here a maximum depth. Considering that the kernel is divided at intersections, a value of max_depth value of 10 is set and should yield good estimates in most cases. (https://cran.r-project.org/web/packages/spNetwork/spNetwork.pdf)
 
 #### Childcare Centres NetKDE
 ```{r}
@@ -604,10 +589,10 @@ pedestrian_network_cc_densities <- nkde(pedestrian_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
-                  max_depth = 8,
+                  max_depth = 10,
                   agg = 10, #we aggregate events within a 10m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
@@ -624,10 +609,10 @@ pedestrian_network_be_densities <- nkde(pedestrian_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
-                  max_depth = 8,
+                  max_depth = 10,
                   agg = 10, #we aggregate events within a 10m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
@@ -644,10 +629,10 @@ pedestrian_network_df_densities <- nkde(pedestrian_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
-                  max_depth = 8,
+                  max_depth = 10,
                   agg = 10, #we aggregate events within a 10m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
@@ -664,10 +649,10 @@ pedestrian_network_lm_densities <- nkde(pedestrian_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
-                  max_depth = 8,
+                  max_depth = 10,
                   agg = 10, #we aggregate events within a 10m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
@@ -688,7 +673,7 @@ pedestrian_network_pt_densities <- nkde(pedestrian_network,
                   digits = 1, 
                   tol = 1,
                   grid_shape = c(1,1), 
-                  max_depth = 8,
+                  max_depth = 10,
                   agg = 10, #we aggregate events within a 10m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
@@ -722,7 +707,7 @@ tmap_options('view')
 pedestrian_networkKDE_cc <- tm_shape(pedestrian_lixels_cc) +
   tm_lines(col="density")+
   tm_shape(childcare_spdf)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 #### Business Establishments
 
@@ -731,7 +716,7 @@ tmap_options('view')
 pedestrian_networkKDE_be <- tm_shape(pedestrian_lixels_be) +
   tm_lines(col="density")+
   tm_shape(business_est_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.02)
 ```
 #### Drinking Fountain
 
@@ -740,7 +725,7 @@ tmap_options('view')
 pedestrian_networkKDE_df <- tm_shape(pedestrian_lixels_df) +
   tm_lines(col="density")+
   tm_shape(drinking_fountain_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 #### Landmarks
 
@@ -749,7 +734,7 @@ tmap_options('view')
 pedestrian_networkKDE_lm <- tm_shape(pedestrian_lixels_lm) +
   tm_lines(col="density")+
   tm_shape(landmarks_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 #### Public Toilets
 
@@ -758,7 +743,7 @@ tmap_options('view')
 pedestrian_networkKDE_pt <- tm_shape(pedestrian_lixels_pt) +
   tm_lines(col="density")+
   tm_shape(public_toilets_spdf)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 
 Saving road networks KDE to separate html file 
@@ -785,11 +770,11 @@ tram_network_cc_densities <- nkde(tram_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
-                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
 ```
@@ -805,11 +790,11 @@ tram_network_be_densities <- nkde(tram_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
-                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
 ```
@@ -825,11 +810,11 @@ tram_network_df_densities <- nkde(tram_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
-                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
 ```
@@ -845,11 +830,11 @@ tram_network_lm_densities <- nkde(tram_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
-                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
 ```
@@ -866,11 +851,11 @@ tram_network_pt_densities <- nkde(tram_network,
                   bw = 300, 
                   div= "bw", 
                   method = "simple", 
-                  digits = 1, 
+                  digits = 3, 
                   tol = 1,
                   grid_shape = c(1,1), 
                   max_depth = 8,
-                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
                   sparse = TRUE,
                   verbose = FALSE)
 ```
@@ -903,7 +888,7 @@ tmap_options('view')
 tram_networkKDE_cc <- tm_shape(tram_lixels_cc) +
   tm_lines(col="density")+
   tm_shape(childcare_spdf)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 
 #### Business Establishments
@@ -913,7 +898,7 @@ tmap_options('view')
 tram_networkKDE_be <- tm_shape(tram_lixels_be) +
   tm_lines(col="density")+
   tm_shape(business_est_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.02)
 ```
 
 #### Drinking Fountain
@@ -923,7 +908,7 @@ tmap_options('view')
 tram_networkKDE_df <- tm_shape(tram_lixels_df) +
   tm_lines(col="density")+
   tm_shape(drinking_fountain_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 
 #### Landmarks
@@ -933,7 +918,7 @@ tmap_options('view')
 tram_networkKDE_lm <- tm_shape(tram_lixels_lm) +
   tm_lines(col="density")+
   tm_shape(landmarks_sp)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 
 #### Public Toilets
@@ -943,7 +928,7 @@ tmap_options('view')
 tram_networkKDE_pt <- tm_shape(tram_lixels_pt) +
   tm_lines(col="density")+
   tm_shape(public_toilets_spdf)+
-  tm_dots(size = 0.03, col="green")
+  tm_dots(size = 0.03)
 ```
 
 Saving tram networks KDE to separate html file 
@@ -1008,10 +993,10 @@ If this hypothesis is rejected, we may infer that the distribution of spatial po
 kfun_childcare_road <- kfunctions(road_network_lines, 
                              childcare_sp_sf,
                              start = 0, 
-                             end = 5000, 
-                             step = 50, 
+                             end = 1000, 
+                             step = 100, 
                              width = 50, 
-                             nsim = 50, 
+                             nsim = 100, 
                              resolution = 50,
                              verbose = FALSE, 
                              conf_int = 0.05)
@@ -1028,8 +1013,8 @@ business_est_sp_unique <- business_est_sp[!duplicated(st_geometry(business_est_s
 kfun_be_road <- kfunctions(road_network_lines, 
                            business_est_sp_unique,
                            start = 0, 
-                           end = 5000, 
-                           step = 50, 
+                           end = 1000, 
+                           step = 100, 
                            width = 50, 
                            nsim = 50, 
                            resolution = 50,
@@ -1048,10 +1033,10 @@ kfun_be_road <- kfun_be_road$plotk
 kfun_df_road <- kfunctions(road_network_lines, 
                            drinking_fountain_sp,
                            start = 0, 
-                           end = 500, 
+                           end = 250, 
                            step = 50, 
                            width = 50, 
-                           nsim = 50, 
+                           nsim = 50,
                            resolution = 50,
                            verbose = FALSE, 
                            conf_int = 0.05)
@@ -1067,7 +1052,7 @@ kfun_df_road <- kfun_df_road$plotk
 kfun_lm_road <- kfunctions(road_network_lines, 
                            landmarks_sp,
                            start = 0, 
-                           end = 1000, 
+                           end = 250, 
                            step = 50, 
                            width = 50, 
                            nsim = 50, 
@@ -1088,7 +1073,7 @@ kfun_pt_road <- kfunctions(road_network_lines,
                            public_toilets_sp_sf,
                            start = 0, 
                            end = 1000, 
-                           step = 50, 
+                           step = 100, 
                            width = 50, 
                            nsim = 50,
                            agg = 100,
@@ -1156,7 +1141,7 @@ kfun_be_pedestrian <- kfun_be_pedestrian$plotk
 kfun_df_pedestrian <- kfunctions(pedestrian_network, 
                            drinking_fountain_sp,
                            start = 0, 
-                           end = 1000, 
+                           end = 250, 
                            step = 50, 
                            width = 50, 
                            nsim = 50, 
@@ -1175,7 +1160,7 @@ kfun_df_pedestrian <- kfun_df_pedestrian$plotk
 kfun_lm_pedestrian <- kfunctions(pedestrian_network, 
                            landmarks_sp,
                            start = 0, 
-                           end = 1000, 
+                           end = 250, 
                            step = 50, 
                            width = 50, 
                            nsim = 50, 
@@ -1225,7 +1210,7 @@ ggsave(file = "g&kplot/kfun_pt_pedestrian.png", plot = kfun_pt_pedestrian, width
 kfun_childcare_tram <- kfunctions(tram_network, 
                              childcare_sp_sf,
                              start = 0, 
-                             end = 1000, 
+                             end = 500, 
                              step = 50, 
                              width = 50, 
                              nsim = 50, 
@@ -1265,7 +1250,7 @@ kfun_be_tram <- kfun_be_tram$plotk
 kfun_df_tram <- kfunctions(tram_network, 
                            drinking_fountain_sp,
                            start = 0, 
-                           end = 1000, 
+                           end = 250, 
                            step = 50, 
                            width = 50, 
                            nsim = 50, 
@@ -1285,7 +1270,7 @@ kfun_df_tram <- kfun_df_tram$plotk
 kfun_lm_tram <- kfunctions(tram_network, 
                            landmarks_sp,
                            start = 0, 
-                           end = 1000, 
+                           end = 250, 
                            step = 50, 
                            width = 50, 
                            nsim = 50, 
