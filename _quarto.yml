@@ -19,6 +19,8 @@ website:
         text: Proposal
       - href: network_constraint_sp.qmd
         text: Project (Network Constrained Spatial Point)
+      - href: sp.qmd
+        text: Project (Spatial Point)
       - icon: github
         href: https://github.com/renjie-teo/spatial-bros
         
