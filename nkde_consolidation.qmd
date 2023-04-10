@@ -1,0 +1,77 @@
+---
+title: "NKDE_Consolidation"
+editor: visual
+---
+
+# Preparing the lixels objects
+
+```{r}
+#we let user_input_lx_length we set default 1000
+#we let user_input_mindist we set default 350 
+road_lixels_cc <- lixelize_lines(network_name, user_input_lx_length, mindist = user_input_mindist)
+```
+
+# Generating line centre points
+```{r}
+road_samples_cc <- lines_center(road_lixels_cc)
+```
+
+# Compute NKDE
+```{r}
+#we let user input kernel_type default = "quartic"
+#we let user input method_type default = "simple"
+road_network_cc_densities <- nkde(#network name, <- from RDS example road
+                  events = #spatial_point, <- from RDS example childcare
+                  w = rep(1,nrow(#spatial_point)), <- from RDS example childcare
+                  samples = #road_samples_cc, <- dependent on code line 16
+                  kernel_name = # "kernel_type",
+                  bw = 300, 
+                  div= "bw", 
+                  method = #"method_type", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+# Rescaling Density Values
+
+```{r}
+road_samples_cc$density <- road_network_cc_densities * 1000
+road_lixels_cc$density <- road_network_cc_densities * 1000
+```
+
+# Plotting NKDE
+
+```{r}
+tmap_options('view')
+road_networkKDE_cc <- tm_shape(#road_lixels_cc) + <- dependent on line 44
+  tm_lines(col="density")+
+  tm_shape(#spatial_point)+ <- from RDS example childcare
+  tm_dots(size = 0.03) +
+    tm_shape(#melbourne_localities) + you may need to double check this from RDS and add above
+      tm_polygons() 
+tmap_mode('plot')
+```
+
+
+# Network Constrained G- and K-Function Analysis
+
+```{r}
+kfun_childcare <- kfunctions(road_network_lines, 
+           childcare_sp_sf,
+           start = 0, # user input
+           end = 1000, # user input 
+           step = 100, 
+           width = 50, 
+           nsim = 100, # user input number of simulations
+           resolution = 50,
+           verbose = FALSE,
+           agg = 100, # user input let them pick 0 to 1000 
+           conf_int = 0.05)
+
+kfun_childcare$plotk
+```
