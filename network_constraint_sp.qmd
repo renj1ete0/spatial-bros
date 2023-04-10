@@ -400,6 +400,7 @@ tram_samples_pt <- lines_center(tram_lixels_pt)
 We are ready to compute the NetKDE by using the code chunk below.
 
 #### Childcare Centres NetKDE
+
 ```{r}
 road_network_cc_densities <- nkde(road_network_lines, 
                   events = childcare_sp_sf,
@@ -478,7 +479,6 @@ road_network_lm_densities <- nkde(road_network_lines,
                   verbose = FALSE)
 ```
 
-
 #### Public Toilets NetKDE
 
 ```{r}
@@ -529,6 +529,7 @@ road_networkKDE_cc <- tm_shape(road_lixels_cc) +
   tm_shape(childcare_spdf)+
   tm_dots(size = 0.03)
 ```
+
 #### Business Establishments
 
 ```{r}
@@ -538,6 +539,7 @@ road_networkKDE_be <- tm_shape(road_lixels_be) +
   tm_shape(business_est_sp)+
   tm_dots(size = 0.02)
 ```
+
 #### Drinking Fountain
 
 ```{r}
@@ -547,6 +549,7 @@ road_networkKDE_df <- tm_shape(road_lixels_df) +
   tm_shape(drinking_fountain_sp)+
   tm_dots(size = 0.03)
 ```
+
 #### Landmarks
 
 ```{r}
@@ -556,6 +559,7 @@ road_networkKDE_lm <- tm_shape(road_lixels_lm) +
   tm_shape(landmarks_sp)+
   tm_dots(size = 0.03)
 ```
+
 #### Public Toilets
 
 ```{r}
@@ -565,7 +569,8 @@ road_networkKDE_pt <- tm_shape(road_lixels_pt) +
   tm_shape(public_toilets_spdf)+
   tm_dots(size = 0.03)
 ```
-Saving road networks KDE to separate html file 
+
+Saving road networks KDE to separate html file
 
 ```{r}
 tmap_save(road_networkKDE_cc, "tmapnetworkKDEhtml/road_networkKDE_cc.html")
@@ -580,6 +585,7 @@ tmap_save(road_networkKDE_pt, "tmapnetworkKDEhtml/road_networkKDE_pt.html")
 We are ready to compute the NetKDE by using the code chunk below. When using the continuous and discontinuous methods, the calculation time and memory use can go wild if the network has many small edges (area with many of intersections and many events) - especially for pedestrian network. To avoid it, it is possible to set here a maximum depth. Considering that the kernel is divided at intersections, a value of max_depth value of 10 is set and should yield good estimates in most cases. (https://cran.r-project.org/web/packages/spNetwork/spNetwork.pdf)
 
 #### Childcare Centres NetKDE
+
 ```{r}
 pedestrian_network_cc_densities <- nkde(pedestrian_network, 
                   events = childcare_sp_sf,
@@ -658,7 +664,6 @@ pedestrian_network_lm_densities <- nkde(pedestrian_network,
                   verbose = FALSE)
 ```
 
-
 #### Public Toilets NetKDE
 
 ```{r}
@@ -709,6 +714,7 @@ pedestrian_networkKDE_cc <- tm_shape(pedestrian_lixels_cc) +
   tm_shape(childcare_spdf)+
   tm_dots(size = 0.03)
 ```
+
 #### Business Establishments
 
 ```{r}
@@ -718,6 +724,7 @@ pedestrian_networkKDE_be <- tm_shape(pedestrian_lixels_be) +
   tm_shape(business_est_sp)+
   tm_dots(size = 0.02)
 ```
+
 #### Drinking Fountain
 
 ```{r}
@@ -727,6 +734,7 @@ pedestrian_networkKDE_df <- tm_shape(pedestrian_lixels_df) +
   tm_shape(drinking_fountain_sp)+
   tm_dots(size = 0.03)
 ```
+
 #### Landmarks
 
 ```{r}
@@ -736,6 +744,7 @@ pedestrian_networkKDE_lm <- tm_shape(pedestrian_lixels_lm) +
   tm_shape(landmarks_sp)+
   tm_dots(size = 0.03)
 ```
+
 #### Public Toilets
 
 ```{r}
@@ -746,7 +755,7 @@ pedestrian_networkKDE_pt <- tm_shape(pedestrian_lixels_pt) +
   tm_dots(size = 0.03)
 ```
 
-Saving road networks KDE to separate html file 
+Saving road networks KDE to separate html file
 
 ```{r}
 tmap_save(pedestrian_networkKDE_cc, "tmapnetworkKDEhtml/pedestrian_networkKDE_cc.html")
@@ -761,6 +770,7 @@ tmap_save(pedestrian_networkKDE_pt, "tmapnetworkKDEhtml/pedestrian_networkKDE_pt
 We are ready to compute the NetKDE by using the code chunk below.
 
 #### Childcare Centres NetKDE
+
 ```{r}
 tram_network_cc_densities <- nkde(tram_network, 
                   events = childcare_sp_sf,
@@ -838,7 +848,6 @@ tram_network_lm_densities <- nkde(tram_network,
                   sparse = TRUE,
                   verbose = FALSE)
 ```
-
 
 #### Public Toielts NetKDE
 
@@ -931,7 +940,7 @@ tram_networkKDE_pt <- tm_shape(tram_lixels_pt) +
   tm_dots(size = 0.03)
 ```
 
-Saving tram networks KDE to separate html file 
+Saving tram networks KDE to separate html file
 
 ```{r}
 tmap_save(tram_networkKDE_cc, "tmapnetworkKDEhtml/tram_networkKDE_cc.html")
@@ -985,7 +994,7 @@ The CSR test is based on the assumption of the binomial point process which impl
 
 If this hypothesis is rejected, we may infer that the distribution of spatial points are spatially interacting and dependent on each other; as a result, they may form nonrandom patterns.
 
-### G & K Function 
+### G & K Function
 
 #### Childcare Centres with Road Network
 
@@ -1085,7 +1094,6 @@ kfun_pt_road <- kfunctions(road_network_lines,
 ```{r}
 kfun_pt_road <- kfun_pt_road$plotk
 ```
-
 
 ```{r}
 ggsave(file = "g&kplot/kfun_childcare_road.png", plot = kfun_childcare_road, width = 6, height = 4, dpi = 300)
@@ -1195,7 +1203,6 @@ kfun_pt_pedestrian <- kfunctions(pedestrian_network,
 kfun_pt_pedestrian <- kfun_pt_pedestrian$plotk
 ```
 
-
 ```{r}
 ggsave(file = "g&kplot/kfun_childcare_pedestrian.png", plot = kfun_childcare_pedestrian, width = 6, height = 4, dpi = 300)
 ggsave(file = "g&kplot/kfun_be_pedestrian.png", plot = kfun_be_pedestrian, width = 6, height = 4, dpi = 300)
@@ -1304,7 +1311,6 @@ kfun_pt_tram <- kfunctions(tram_network,
 ```{r}
 kfun_pt_tram <- kfun_pt_tram$plotk
 ```
-
 
 ```{r}
 ggsave(file = "g&kplot/kfun_childcare_tram.png", plot = kfun_childcare_tram, width = 6, height = 4, dpi = 300)
