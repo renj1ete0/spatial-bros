@@ -11,7 +11,7 @@ Spatial Points Analysis
 
 -   Network Constraint Spatial Point
 
--   Geographical Accessibility
+-   1st/2nd Order Spatial Point Pattern Analysis
 
 For each of the analyses, the application will provide users with kernel density maps, Geographical Accessibility maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.
 
