@@ -43,6 +43,7 @@ road_network <- st_read("data/geospatial/Roads Network", layer = "road-corridors
 road_network <- st_transform(road_network, crs = 7855)
 road_network_lines <- st_boundary(road_network) %>% 
                      st_cast("LINESTRING")
+write_rds(road_network_lines, "SpatialBros/rds/road_network_lines.rds")
 ```
 
 ### Melbourne City's Pedestrian Network
@@ -51,6 +52,7 @@ road_network_lines <- st_boundary(road_network) %>%
 pedestrian_network <- st_read("data/geospatial/Pedestrian Network/pedestrian-network.geojson")
 pedestrian_network <- st_transform(pedestrian_network, crs = 7855)
 pedestrian_network <- pedestrian_network[st_geometry_type(st_geometry(pedestrian_network)) == "LINESTRING",]
+write_rds(pedestrian_network, "SpatialBros/rds/pedestrian_network_lines.rds")
 ```
 
 ### Melbourne City's Tram Network
@@ -58,6 +60,7 @@ pedestrian_network <- pedestrian_network[st_geometry_type(st_geometry(pedestrian
 ```{r}
 tram_network <- st_read("data/geospatial/Trams Network", layer = "PTV_METRO_TRAM_ROUTE")
 tram_network <- st_transform(tram_network, crs = 7855)
+write_rds(tram_network, "SpatialBros/rds/tram_network_lines.rds")
 ```
 
 ### Localities
@@ -65,10 +68,10 @@ tram_network <- st_transform(tram_network, crs = 7855)
 Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.
 
 ```{r}
-localities = st_read("data/geospatial/Localities", layer = "vic_localities") 
-#melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
-#melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
-
+localities = st_read("data/geospatial/Localities", layer = "UCL_2021_AUST_GDA2020") 
+melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
+melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
+write_rds(melbourne_localities, "SpatialBros/rds/melbourne_localities.rds")
 ```
 
 ### Melbourne City's Local Government Areas
@@ -79,6 +82,7 @@ Local Government Areas file downloaded was entire Australia. Therefore, we need 
 local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
 melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
 melbourne_local_government_areas <- st_transform(melbourne_local_government_areas, crs = 7855)
+write_rds(melbourne_local_government_areas, "SpatialBros/rds/melbourne_local_government_areas.rds")
 ```
 
 ### Melbourne City's Business Establishments Spatial Point
@@ -87,7 +91,8 @@ To retrieve only latest as of 2021 business establishments and is not vacant.
 
 ```{r}
 business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021") %>% filter(trading_name != "Vacant")
-business_est_sp <- st_transform(business_est_sp, crs = 7855) 
+business_est_sp <- st_transform(business_est_sp, crs = 7855)
+write_rds(business_est_sp, "SpatialBros/rds/business_establishments.rds")
 ```
 
 ### Melbourne City's Drinking Fountain Spatial Point
@@ -95,6 +100,7 @@ business_est_sp <- st_transform(business_est_sp, crs = 7855)
 ```{r}
 drinking_fountain_sp <- st_read("data/geospatial/Drinking Fountain Spatial Point", layer = "drinking-fountains")
 drinking_fountain_sp <- st_transform(drinking_fountain_sp, crs = 7855)
+write_rds(drinking_fountain_sp, "SpatialBros/rds/drinking_fountain.rds")
 ```
 
 ### Melbourne City's Landmarks Spatial Point
@@ -102,6 +108,7 @@ drinking_fountain_sp <- st_transform(drinking_fountain_sp, crs = 7855)
 ```{r}
 landmarks_sp <- st_read("data/geospatial/Landmarks Spatial Point", layer = "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor")
 landmarks_sp <- st_transform(landmarks_sp, crs = 7855)
+write_rds(landmarks_sp, "SpatialBros/rds/landmarks.rds")
 ```
 
 ### Melbourne City's Childcare Centres Spatial Point
@@ -120,6 +127,7 @@ childcare_sp_sf <- st_as_sf(childcare_sp,
                        coords = c("lon", "lat"),
                        crs=4326) %>%
   st_transform(crs = 7855)
+write_rds(childcare_sp_sf, "SpatialBros/rds/childcare.rds")
 ```
 
 #### Converting to Spatial Point Data Frame
@@ -144,6 +152,7 @@ public_toilets_sp_sf <- st_as_sf(public_toilets_sp,
                        coords = c("lon", "lat"),
                        crs=4326) %>%
   st_transform(crs = 7855)
+write_rds(public_toilets_sp_sf, "SpatialBros/rds/public_toilets.rds")
 ```
 
 #### Converting to Spatial Point Data Frame
@@ -1066,12 +1075,14 @@ kfun_lm_road <- kfunctions(road_network_lines,
                            width = 50, 
                            nsim = 50, 
                            resolution = 50,
+                           agg = 100,
                            verbose = FALSE, 
                            conf_int = 0.05)
 ```
 
 ```{r}
-kfun_lm_road <- kfun_lm_road$plotk
+#kfun_lm_road <- kfun_lm_road$plotk
+kfun_lm_road$plotk
 ```
 
 #### Public Toilets with Road Network
