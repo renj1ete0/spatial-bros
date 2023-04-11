@@ -163,6 +163,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                     
                     ),
                     uiOutput("netKDEExpaliner"),
+                    imageOutput("nkde_example"),
+                    br(),
                   ),
                 tabPanel("Statistical Functions", 
                          sidebarLayout(
@@ -201,7 +203,11 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                              
                            ),
                          ),
-                         uiOutput("netStatsExplainer")
+                         uiOutput("netStatsExplainerp1"),
+                         imageOutput("gkpicture"),
+                         hr(),
+                         uiOutput("netStatsExplainerp2"),
+                         imageOutput("gkexample")
                     ),
                  ),
                  
@@ -320,6 +326,38 @@ server <- function(input, output) {
     },
     deleteFile = F)
     
+    output$nkde_example <- renderImage({
+      list(src = "www/nkde_example.png",
+           width = "auto",
+           height = "auto",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$empiricalkformula <- renderImage({
+      list(src = "www/empiricalkformula.png",
+           width = "auto",
+           height = "50%",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$gkpicture <- renderImage({
+      list(src = "www/gkpicture.png",
+           width = "auto",
+           height = "50%",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$gkexample <- renderImage({
+      list(src = "www/g&kexample.png",
+           width = "auto",
+           height = "auto",
+           align = 'center')
+    },
+    deleteFile = F)
+    
     # Home page UI
     output$projectMotivation <- renderUI(HTML("<h4> In today’s technological advancing world, there are many useful and interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geographical Geospatial data sets the foundation based on the geographical boundary locations and the Aspatial data are the records of observation that can be further prepared to be used to derive meaningful insights. 
                                               </h4> 
@@ -352,33 +390,48 @@ server <- function(input, output) {
                                    <img src = 'smu.png' width = 50%, height = 50%>"))
     
     output$netKDEExpaliner <- renderUI(HTML("
-                                            <h3> How to use? </h3>
+                                            <h3> To begin your analysis, you will start by </h3>
                                             <ol>
-                                              <li>Select your choice of network</li>
-                                              <li>Select your location of interest</li>
-                                              <li>Select your kernel of choice</li>
-                                              <li>Select your method of choice</li>
+                                              <li>Select your choice of locality.</li>
+                                              <li>Select your choice of network.</li>
+                                              <li>Select your location of interest.</li>
+                                              <li>Select your lixel length. We will recommend you to start with 500 metres. </li>
+                                              <li>Select your minimum lixel length. We will recommend you to start with 250 metres. </li>
+                                              <li>Select your kernel of choice.</li>
+                                              <li>Select your method of choice.</li>
+                                              <li>Click on 'Generate KDE Map' and you are ready to go!</li>
                                             </ol>
-                                            <h3> How do we understand the map output? </h3>
-                                            <p> A legend will be shown at the top left of the map. For the location of interest spatial points selected, the colour shade intensity of the network will get darker if there is a higher relative density. On contrary, if the colour shade intensity of the network is lighter, it represents a lower relative density alongside the network</p>
-
+                                            <hr>
+                                            <h3> Understanding an example </h3>
+                                            <p> A legend will be shown at the top left of the map. For the location of interest spatial points selected, the colour shade intensity of the network will get darker if there is a higher relative density.</p>
+                                            <p> On contrary, if the colour shade intensity of the network is lighter, it represents a lower relative density alongside the network</p>
                                                                                   "))
-    output$netStatsExplainer <- renderUI(HTML("
-    <h2> Welcome to the Network Constrained G&K Function Page </h2>
-    The K-function is a method used in spatial Point Pattern Analysis (PPA) to inspect the spatial distribution of a set of points. It allows you the user to assess if the set of points is more or less clustered that what we could expect from a given distribution. Most of the time, the set of point is compared with a random distribution.
-    <h3> How to use? </h3>
+    output$netStatsExplainerp1 <- renderUI(HTML("
+    <h3> Statistical function G&K </h3>
+    <hr>
+    <p>The K-function is a method used in spatial Point Pattern Analysis (PPA) to inspect the spatial distribution of a set of points. It allows the user to assess if the set of points is more or less clustered that what we could expect from a given distribution. </p>
+    <p> Most of the time, the set of point is compared with a random distribution.
+    The empirical K-function for a specified radius r is calculated with the following formula listed <a href ='https://cran.r-project.org/web/packages/spNetwork/vignettes/KNetworkFunctions.html'> here </a> </p>
+    <p> Basically, the K-function calculates for a radius r the proportion of cells with a value below r in the distance matrix between all the points Dij. In other words, the K-function estimates the average number of neighbours of a typical random point </p>
+    <p> A modified version of the K-function is the G-function (Pair Correlation Function). The regular K-function is calculated for subsequent disks with increasing radii and thus is cumulative in nature. The G-function uses rings instead of disks and permits the analysis of the points concentrations at different geographical scales. </p>"))
+    
+    
+    output$netStatsExplainerp2 <- renderUI(HTML("<h3> To begin your analysis, you will start by </h3>
     <ol>
       <li>Select your choice of network</li>
       <li>Select your location of interest</li>
-      <li> Enter number of simulations</li>
+      <li>Select your start value in (metres). We will recommend you to start with 0 to begin.</li>
+      <li>Select your end value in (metres). We will recommend you to end with 500 metres to begin.</li>
+      <li>Select your number of simulations. We will recommend you to start with 50 simulations to begin.</li>
+      <li>Select your aggregate value. We will recommend you to start with 0 to begin.</li>
+      <li>Click on 'Generate Statistical Results' and you are ready to go!</li>
     </ol>
     <h3> How do we understand the function output? </h3>
     <p> The grey area represents the function ‘envelope’. The ‘blue’ line represents the empirical function value </p>
-    <p> In the event if the observed value is above the envelope, we can reject the null hypothesis as the value is statistically significant. We can conclude that the spatial points resemble a clustered distribution</p>
-    <p> In the event if the observed value is outside the envelope, we can reject the null hypothesis as the value is statistically significant. We can conclude that the spatial points resemble a dispersed distribution. </p>
-    <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis as the value is not statistically significant. We can conclude the spatial points resemble a random distribution. </p>
-
-                                                                                  "))
+    <p> In the event if the observed value is above the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a clustered distribution</p>
+    <p> In the event if the observed value is outside the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a dispersed distribution. </p>
+    <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis (H1) as the value is not statistically significant. We can conclude the spatial points resemble a random distribution. </p>"))
+    
     
     output$introductiondescription <- renderUI(HTML(
     "<h4> You will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
