@@ -80,7 +80,21 @@ ui <- fluidPage(theme = shinytheme("darkly"),
         tabPanel("Network Constrained Point Pattern Analysis",
               titlePanel("Network Constrained Point Pattern Analysis"),
                  tabsetPanel(type = "tabs",
-                  tabPanel("Introduction", 
+                  tabPanel("Introduction",
+                           fluidRow(
+                             column(6,
+                                    h2("Welcome to the Network Constrained Point Pattern Analysis Page!"),
+                                    hr(),
+                                    uiOutput("introductiondescription")                         
+                                    
+                             ),
+                             column(6,
+                                    h2(),
+                                    imageOutput("introductionKernel")),
+                            ),
+                           
+                           
+                           
                   ),             
                   tabPanel("Network Kernel Density Estimation", 
                     sidebarLayout(
@@ -131,7 +145,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                     choices = list("Quartic" = "quartic",
                                                    "Triangle" = "triangle",
                                                    "Tricube" = "tricube",
-                                                   "Consine" = "cosine",
+                                                   "Cosine" = "cosine",
                                                    "Triweight" = "triweight",
                                                    "Epanechnikov" = "epanechnikov",
                                                    "Uniform" = "uniform")),
@@ -178,7 +192,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                          min = 100, max = 2000, value = 500, step = 50),
                              sliderInput(inputId = "n_sims", "Number of Simulations",
                                          min = 10, max = 300, value = 50, step = 5),
-                             sliderInput(inputId = "agg", "Aggegrate Value",
+                             sliderInput(inputId = "agg", "Aggregate Value",
                                        min = 0, max = 1000, value = 0, step = 50),
                              
                              actionButton("netKDEGenerateStats", "Generate Statistical Results"),
@@ -292,8 +306,16 @@ server <- function(input, output) {
     # Images
     output$childcare_image <- renderImage({
       list(src = "www/examplechildcare.png",
-           wdith = "100%",
+           width = "100%",
            height = 300,
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$introductionKernel <- renderImage({
+      list(src = "www/KernelDensity.png",
+           width = "auto",
+           height = "auto",
            align = 'center')
     },
     deleteFile = F)
@@ -330,26 +352,6 @@ server <- function(input, output) {
                                    <img src = 'smu.png' width = 50%, height = 50%>"))
     
     output$netKDEExpaliner <- renderUI(HTML("
-                                            <h2> Welcome to the Network Constrained Kernel Density Estimation Page </h2>
-                                            <p> Here you will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </p>
-                                            <p> We offer you the options of selecting 3 different types of networks particularly, road, pedestrian, and tram. </p>
-                                            <p> In addition you are allowed to pick your location of interest such as Childcare Centre, Business Establishments, Drinking Fountains, Landmarks and Public Toilets </p>
-                                            <p> For Kernel option, Quartic will be the default option! Here’s a brief explanation of each of the kernel method listed</p>
-                                            <ul> 
-                                            <li> Quartic: This kernel has a quartic shape and assigns more weight to points close to the centre than those further away. It has a slower decrease in weight towards the edges than triangular kernel. </li>
-                                            <li> Triangle: This kernel has a triangular shape with its maximum at zero and decreases linearly towards the edges. It assigns equal weight to all points within a bandwidth. </li>
-                                            <li> Tricube: This kernel has a cubic shape and assigns more weight to points close to the center than those further away. It has a slower decrease in weight towards the edges than the triangular kernel. </li> 
-                                            <li> Cosine: This kernel has a semicircular shape and assigns equal weight to all points within a bandwidth. It is most used in spectral analysis. </li> 
-                                            <li> Triweight: This kernel has a quartic shape and assigns more weight to points close to the center than those further away. It has a slower decrease in weight towards the edges than the tricube kernel </li> 
-                                            <li> Epanechnikov: This kernel has a parabolic shape and assigns more weight to points close to the center than those further away. It has a faster decrease in weight towards the edges than tricube and triweight kernels. </li> 
-                                            <li> Uniform: This kernel assigns equal weight to all points within a bandwidth, regardless of their distance from the center. It has a constant weight within the bandwidth and zero weight outside of it </li> 
-                                            </ul>
-                                            <p> For method option, Simple will be the default option! Here’s a brief explanation of each of the method listed</p>
-                                            <ul> 
-                                            <li> Simple: This method uses a linear activation function, which simply multiplies the input by a weight and adds a bias term. This is the simplest activation function and is sometimes used in the output layer of a neural network for regression problems. However, for most problems, non-linear activation functions are necessary to capture complex patterns in the data. </li>
-                                            <li> Continuous: This method uses a continuous activation function such as the sigmoid function or the hyperbolic tangent function. These functions smoothly transform the input values into an output value between 0 and 1 (for sigmoid) or -1 and 1 (for hyperbolic tangent). Continuous activation functions are commonly used in neural networks because they are smooth and differentiable, making them suitable for gradient-based optimization algorithms. </li>
-                                            <li> Discontinuous: This method uses a discontinuous activation function such as the step function or the sign function. These functions have a constant value for a range of input values and then abruptly switch to another constant value. Discontinuous activation functions are rarely used in neural networks due to their non-smoothness, which can cause optimization problems. </li> 
-                                            </ul> 
                                             <h3> How to use? </h3>
                                             <ol>
                                               <li>Select your choice of network</li>
@@ -377,6 +379,40 @@ server <- function(input, output) {
     <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis as the value is not statistically significant. We can conclude the spatial points resemble a random distribution. </p>
 
                                                                                   "))
+    
+    output$introductiondescription <- renderUI(HTML(
+    "<h4> You will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
+    <h4> There are 2 types of analysis that you can perform
+      <ol> 
+        <li> Network Kernel Density Estimation </li>
+        <li> G & K Function Analysis </li>
+      </ol>
+    </h4>
+    <h4> For each of the analysis, we offer you the options of selecting 
+      <ol> 
+        <li> Road Network </li>
+        <li> Pedestrian Network </li>
+        <li> Tram Network </li>
+      </ol>
+    </h4>
+    <h4> In addition you are allowed to pick your location of interest such as
+      <ol> 
+        <li> Childcare Centres </li>
+        <li> Business Establishments </li>
+        <li> Drinking Fountains </li>
+        <li> Landmarks </li>
+        <li> Public Toilets </li>
+      </ol>
+    </h4>
+    <h2> Benefits of performing Network Constrained Point Pattern Analysis </h2>
+    <hr>
+    <h4> 
+        <ol> 
+          <li> Accurate analysis: Network Constrained Point Pattern Analysis provides more accurate results compared to traditional point pattern analysis because it accounts for the underlying transportation network. This is particularly important in areas where the transportation network is dense and complex. </li> <br>
+          <li> Better decision-making: Network Constrained Point Pattern Analysis can provide insights into how the network infrastructure affects the spatial distribution of points, which can be valuable for decision-making related to urban planning, transportation planning, and public policy </li> <br>
+          <li> Improved resource allocation: Network Constrained Point Pattern Analysis can help optimize the allocation of resources, such as improving the accessibility to more drinking fountains/public toilets, by identifying areas with high concentrations of points and areas that are more accessible by the transportation network. </li>
+      </ol>
+    </h4>"))
     
 }
 
