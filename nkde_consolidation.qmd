@@ -12,11 +12,13 @@ road_lixels_cc <- lixelize_lines(network_name, user_input_lx_length, mindist = u
 ```
 
 # Generating line centre points
+
 ```{r}
 road_samples_cc <- lines_center(road_lixels_cc)
 ```
 
 # Compute NKDE
+
 ```{r}
 #we let user input kernel_type default = "quartic"
 #we let user input method_type default = "simple"
@@ -56,7 +58,6 @@ road_networkKDE_cc <- tm_shape(#road_lixels_cc) + <- dependent on line 44
       tm_polygons() 
 tmap_mode('plot')
 ```
-
 
 # Network Constrained G- and K-Function Analysis
 

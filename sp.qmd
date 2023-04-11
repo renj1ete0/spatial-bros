@@ -242,6 +242,7 @@ plot(melbourne_lga_owin)
 
 summary(melbourne_lga_owin)
 ```
+
 ### Combining Point Events Object and owin Object
 
 ```{r}
@@ -252,7 +253,6 @@ landmarks_melb_ppp = landmarks_ppp[melbourne_lga_owin]
 public_toilets_melb_ppp = public_toilets_ppp[melbourne_lga_owin]
 ```
 
-
 ```{r}
 summary(business_est_jit_melb_ppp)
 summary(childcare_melb_ppp)
@@ -260,7 +260,6 @@ summary(drinking_fountai_melb_ppp)
 summary(landmarks_melb_ppp)
 summary(public_toilets_melb_ppp)
 ```
-
 
 ```{r}
 plot(business_est_jit_melb_ppp)
@@ -279,7 +278,6 @@ drinking_fountai_melb_ppp.km <- rescale(drinking_fountai_melb_ppp, 1000, "km")
 landmarks_melb_ppp.km <- rescale(landmarks_melb_ppp, 1000, "km")
 public_toilets_melb_ppp.km <- rescale(public_toilets_melb_ppp, 1000, "km")
 ```
-
 
 ### KDE Different Kernel Methods
 
@@ -308,9 +306,6 @@ plot(density(business_est_jit_melb_ppp.km,
              main = "Disc")
 ```
 
-
-
-
 ### KDE Adaptive Bandwidth
 
 ```{r}
@@ -337,5 +332,3 @@ plot(kde_landmMB_adaptive)
 kde_pubtoilet_adaptive <- adaptive.density(public_toilets_melb_ppp.km, method = "kernel")
 plot(kde_pubtoilet_adaptive)
 ```
-
-

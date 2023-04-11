@@ -1,0 +1,43 @@
+```{r}
+install.packages("sf_1.0-9.tar.gz", repos = NULL, type="source")
+library(shiny)
+library(shinythemes)
+library(sp)
+library(sf)
+library(rgdal)
+library(spNetwork)
+library(tmap)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+```
+
+```{r}
+loc <- read_rds("rds/melbourne_localities.rds")
+```
+
+```{r}
+plot(loc)
+```
+
+```{r}
+boundary <- read_rds("rds/melbourne_local_government_areas.rds")
+```
+
+```{r}
+localities = st_read("test/", layer = "vic_localities") 
+```
+
+```{r}
+test <- localities %>% filter(LOC_NAME %in% c("Carlton", "Carlton North", "Docklands", "East Melbourne", "Flemington", "Kensington", "Melbourne", "North Melbourne", "Parkville", "Port Melbourne", "South Wharf", "South Yarra", "Southbank", "West Melbourne"))
+```
+
+```{r}
+plot(test)
+plot(boundary)
+```
+
+```{r}
+saveRDS(test, "rds/melbourne_localities.rds")
+```
