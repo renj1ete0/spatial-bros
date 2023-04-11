@@ -18,6 +18,10 @@ loc <- read_rds("rds/melbourne_localities.rds")
 ```
 
 ```{r}
+loc <- st_transform(loc, crs = 7855)
+```
+
+```{r}
 plot(loc)
 ```
 
@@ -26,7 +30,15 @@ boundary <- read_rds("rds/melbourne_local_government_areas.rds")
 ```
 
 ```{r}
+boundary <- st_transform(boundary, crs = 7855)
+```
+
+```{r}
 localities = st_read("test/", layer = "vic_localities") 
+```
+
+```{r}
+localities <- st_transform(localities, crs = 7855)
 ```
 
 ```{r}
@@ -40,4 +52,31 @@ plot(boundary)
 
 ```{r}
 saveRDS(test, "rds/melbourne_localities.rds")
+```
+
+```{r}
+test3
+boundary
+```
+
+```{r}
+test3 <- localities %>% filter(LOC_NAME == "Flemington")
+
+test2 <- st_intersection(boundary, localities)
+```
+
+```{r}
+plot(test2)
+```
+
+```{r}
+saveRDS(test2, "rds/melbourne_localities.rds")
+```
+
+```{r}
+net_lines <- read_rds("rds/road_network_lines.rds")
+net_lines
+
+
+hi <- st_intersection(net_lines, boundary)
 ```

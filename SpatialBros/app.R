@@ -80,6 +80,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
         tabPanel("Network Constrained Point Pattern Analysis",
               titlePanel("Network Constrained Point Pattern Analysis"),
                  tabsetPanel(type = "tabs",
+                  tabPanel("Introduction", 
+                  ),             
                   tabPanel("Network Kernel Density Estimation", 
                     sidebarLayout(
                       mainPanel(
@@ -88,6 +90,24 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                       sidebarPanel(
                         h4("Network Kernel Density Estimation Variable Inputs"),
                         h5("Network and Spatial Points"),
+                        selectInput(inputId = "localities",
+                                    label = "Localities",
+                                    choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
+                                                   "Carlton" = "Carlton",
+                                                   "Carlton North" = "Carlton North",
+                                                   "Docklands" = "Docklands",
+                                                   "East Melbourne" = "East Melbourne",
+                                                   "Flemington" = "Flemington",
+                                                   "Kensington" = "Kensington",
+                                                   "Melbourne" = "Melbourne",
+                                                   "North Melbourne" = "North Melbourne",
+                                                   "Parkville" = "Parkville",
+                                                   "Port Melbourne" = "Port Melbourne",
+                                                   "South Wharf" = "South Wharf",
+                                                   "South Yarra" = "South Yarra",
+                                                   "Southbank" = "Southbank",
+                                                   "West Melbourne" = "West Melbourne"
+                                    )),
                         selectInput(inputId = "network_type",
                                     label = "Types of Network",
                                     choices = list("Road Network" = "net_road",
@@ -144,7 +164,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                          choices = list("Road Network" = "net_road",
                                                         "Pedestrian Network" = "net_ped",
                                                         "Tram Network" = "net_tram")),
-                             selectInput(inputId = "location_of_interest",
+                             selectInput(inputId = "locs",
                                          label = "Location of Interest",
                                          choices = list("Childcare Centres" = "sf_childcare",
                                                         "Business Establishments" = "sf_business",
@@ -153,13 +173,13 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                         "Public Toilets" = "sf_pub_toilets")),
                              h5("Other Variables"),
                              sliderInput(inputId = "net_start", "Start",
-                                         min = 100, max = 2000, value = 350, step = 50),
+                                         min = 0, max = 2000, value = 350, step = 50),
                              sliderInput(inputId = "net_end", "End",
                                          min = 100, max = 2000, value = 500, step = 50),
                              sliderInput(inputId = "n_sims", "Number of Simulations",
                                          min = 10, max = 300, value = 50, step = 5),
                              sliderInput(inputId = "agg", "Aggegrate Value",
-                                         min = 100, max = 1500, value = 500, step = 50),
+                                       min = 0, max = 1000, value = 0, step = 50),
                              
                              actionButton("netKDEGenerateStats", "Generate Statistical Results"),
                              
@@ -190,19 +210,25 @@ server <- function(input, output) {
   
   observeEvent(input$netKDEGenerateStats, {
     id <<- showNotification(paste("Calculating Statisical Results..."), duration = 0, type = "message", closeButton=FALSE)
-    kfun_output <- kfunctions(get(input$network_type), 
-                                 get(input$location_of_interest),
-                                 start = noquote(input$net_start), # user input
-                                 end =  noquote(input$net_end), # user input 
-                                 step = 100, 
-                                 width = 50, 
-                                 nsim =  noquote(input$n_sims), # user input number of simulations
-                                 resolution = 50,
-                                 verbose = FALSE,
-                                 agg =  noquote(input$agg), # user input let them pick 0 to 1000 
-                                 conf_int = 0.05)
     
+    if (input$agg){
+      agg <- NULL
+    }
+    else{
+      agg <- input$agg
+    }
 
+    kfun_output <- kfunctions(get(input$network_type),
+                              get(input$locs),
+                               start = input$net_start, 
+                               end = input$net_end, 
+                               step = 50, 
+                               width = 50, 
+                               nsim = input$n_sims, 
+                               resolution = 50,
+                               verbose = FALSE, 
+                               conf_int = 0.05)
+    
     output$kfun <- renderPlotly({kfun_output$plotk})
     output$gfun <- renderPlotly({kfun_output$plotg})
     
@@ -213,11 +239,25 @@ server <- function(input, output) {
   
   observeEvent(input$netKDEGenerate, {
     id <<- showNotification(paste("Generating KDE Map..."), duration = 0, type = "message", closeButton=FALSE)
-    road_lixels_cc <- lixelize_lines(get(input$network_type), input$lx_length, mindist = input$lx_length_min)
+    if (input$localities == "Entire City of Melbourne"){
+      localities <- melb_localities
+      boundary <- melb_lga
+      network_type <- get(input$network_type)
+      loc_interest <- get(input$locs)
+    }
+    else {
+      localities <- melb_localities %>% filter(LOC_NAME == input$localities)
+      boundary <- localities
+      loc_interest <- st_intersection(get(input$locs), boundary)
+      network_type <- st_intersection(get(input$network_type), boundary) %>% st_cast("LINESTRING")
+      
+    }
+    
+    road_lixels_cc <- lixelize_lines(network_type, input$lx_length, mindist = input$lx_length_min)
     road_samples_cc <- lines_center(road_lixels_cc)
     road_network_cc_densities <- nkde(net_road,
-                                      events = get(input$location_of_interest),
-                                      w = rep(1,nrow(get(input$location_of_interest))), 
+                                      events = loc_interest,
+                                      w = rep(1,nrow(loc_interest)), 
                                       samples = road_samples_cc, 
                                       kernel_name =  noquote(input$kernel_name),
                                       bw = 300, 
@@ -227,19 +267,19 @@ server <- function(input, output) {
                                       tol = 1,
                                       grid_shape = c(1,1), 
                                       max_depth = 8,
-                                      agg = 10,
+                                      agg = agg,
                                       sparse = TRUE,
                                       verbose = FALSE)
     road_samples_cc$density <- road_network_cc_densities * 1000
     road_lixels_cc$density <- road_network_cc_densities * 1000
     output$mapPlot <- renderTmap({
-      tm_shape(melb_localities) +
+      tm_shape(localities) +
         tm_polygons("LOC_NAME", alpha=0.1) +
-        tm_shape(melb_lga) +
+        tm_shape(boundary) +
         tm_borders(lwd = 2.5, lty = 5,  col="blue") +
         tm_shape(road_lixels_cc) +
         tm_lines(lwd = 1.5, col = "density")+
-        tm_shape(get(input$location_of_interest))+ 
+        tm_shape(loc_interest)+ 
         tm_dots(size = 0.03, alpha = 0.6) 
     })
     
@@ -248,7 +288,7 @@ server <- function(input, output) {
     id <<- NULL    
     
   })
-    
+  
     # Images
     output$childcare_image <- renderImage({
       list(src = "www/examplechildcare.png",
