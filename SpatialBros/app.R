@@ -80,7 +80,21 @@ ui <- fluidPage(theme = shinytheme("darkly"),
         tabPanel("Network Constrained Point Pattern Analysis",
               titlePanel("Network Constrained Point Pattern Analysis"),
                  tabsetPanel(type = "tabs",
-                  tabPanel("Introduction", 
+                  tabPanel("Introduction",
+                           fluidRow(
+                             column(6,
+                                    h2("Welcome to the Network Constrained Point Pattern Analysis Page!"),
+                                    hr(),
+                                    uiOutput("introductiondescription")                         
+                                    
+                             ),
+                             column(6,
+                                    h2(),
+                                    imageOutput("introductionKernel")),
+                            ),
+                           
+                           
+                           
                   ),             
                   tabPanel("Network Kernel Density Estimation", 
                     sidebarLayout(
@@ -131,7 +145,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                     choices = list("Quartic" = "quartic",
                                                    "Triangle" = "triangle",
                                                    "Tricube" = "tricube",
-                                                   "Consine" = "cosine",
+                                                   "Cosine" = "cosine",
                                                    "Triweight" = "triweight",
                                                    "Epanechnikov" = "epanechnikov",
                                                    "Uniform" = "uniform")),
@@ -149,6 +163,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                     
                     ),
                     uiOutput("netKDEExpaliner"),
+                    imageOutput("nkde_example"),
+                    br(),
                   ),
                 tabPanel("Statistical Functions", 
                          sidebarLayout(
@@ -178,7 +194,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                          min = 100, max = 2000, value = 500, step = 50),
                              sliderInput(inputId = "n_sims", "Number of Simulations",
                                          min = 10, max = 300, value = 50, step = 5),
-                             sliderInput(inputId = "agg", "Aggegrate Value",
+                             sliderInput(inputId = "agg", "Aggregate Value",
                                        min = 0, max = 1000, value = 0, step = 50),
                              
                              actionButton("netKDEGenerateStats", "Generate Statistical Results"),
@@ -187,7 +203,11 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                              
                            ),
                          ),
-                         uiOutput("netStatsExplainer")
+                         uiOutput("netStatsExplainerp1"),
+                         imageOutput("gkpicture"),
+                         hr(),
+                         uiOutput("netStatsExplainerp2"),
+                         imageOutput("gkexample")
                     ),
                  ),
                  
@@ -292,8 +312,48 @@ server <- function(input, output) {
     # Images
     output$childcare_image <- renderImage({
       list(src = "www/examplechildcare.png",
-           wdith = "100%",
+           width = "100%",
            height = 300,
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$introductionKernel <- renderImage({
+      list(src = "www/KernelDensity.png",
+           width = "auto",
+           height = "auto",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$nkde_example <- renderImage({
+      list(src = "www/nkde_example.png",
+           width = "auto",
+           height = "auto",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$empiricalkformula <- renderImage({
+      list(src = "www/empiricalkformula.png",
+           width = "auto",
+           height = "50%",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$gkpicture <- renderImage({
+      list(src = "www/gkpicture.png",
+           width = "auto",
+           height = "50%",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    output$gkexample <- renderImage({
+      list(src = "www/g&kexample.png",
+           width = "auto",
+           height = "auto",
            align = 'center')
     },
     deleteFile = F)
@@ -330,53 +390,82 @@ server <- function(input, output) {
                                    <img src = 'smu.png' width = 50%, height = 50%>"))
     
     output$netKDEExpaliner <- renderUI(HTML("
-                                            <h2> Welcome to the Network Constrained Kernel Density Estimation Page </h2>
-                                            <p> Here you will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </p>
-                                            <p> We offer you the options of selecting 3 different types of networks particularly, road, pedestrian, and tram. </p>
-                                            <p> In addition you are allowed to pick your location of interest such as Childcare Centre, Business Establishments, Drinking Fountains, Landmarks and Public Toilets </p>
-                                            <p> For Kernel option, Quartic will be the default option! Here’s a brief explanation of each of the kernel method listed</p>
-                                            <ul> 
-                                            <li> Quartic: This kernel has a quartic shape and assigns more weight to points close to the centre than those further away. It has a slower decrease in weight towards the edges than triangular kernel. </li>
-                                            <li> Triangle: This kernel has a triangular shape with its maximum at zero and decreases linearly towards the edges. It assigns equal weight to all points within a bandwidth. </li>
-                                            <li> Tricube: This kernel has a cubic shape and assigns more weight to points close to the center than those further away. It has a slower decrease in weight towards the edges than the triangular kernel. </li> 
-                                            <li> Cosine: This kernel has a semicircular shape and assigns equal weight to all points within a bandwidth. It is most used in spectral analysis. </li> 
-                                            <li> Triweight: This kernel has a quartic shape and assigns more weight to points close to the center than those further away. It has a slower decrease in weight towards the edges than the tricube kernel </li> 
-                                            <li> Epanechnikov: This kernel has a parabolic shape and assigns more weight to points close to the center than those further away. It has a faster decrease in weight towards the edges than tricube and triweight kernels. </li> 
-                                            <li> Uniform: This kernel assigns equal weight to all points within a bandwidth, regardless of their distance from the center. It has a constant weight within the bandwidth and zero weight outside of it </li> 
-                                            </ul>
-                                            <p> For method option, Simple will be the default option! Here’s a brief explanation of each of the method listed</p>
-                                            <ul> 
-                                            <li> Simple: This method uses a linear activation function, which simply multiplies the input by a weight and adds a bias term. This is the simplest activation function and is sometimes used in the output layer of a neural network for regression problems. However, for most problems, non-linear activation functions are necessary to capture complex patterns in the data. </li>
-                                            <li> Continuous: This method uses a continuous activation function such as the sigmoid function or the hyperbolic tangent function. These functions smoothly transform the input values into an output value between 0 and 1 (for sigmoid) or -1 and 1 (for hyperbolic tangent). Continuous activation functions are commonly used in neural networks because they are smooth and differentiable, making them suitable for gradient-based optimization algorithms. </li>
-                                            <li> Discontinuous: This method uses a discontinuous activation function such as the step function or the sign function. These functions have a constant value for a range of input values and then abruptly switch to another constant value. Discontinuous activation functions are rarely used in neural networks due to their non-smoothness, which can cause optimization problems. </li> 
-                                            </ul> 
-                                            <h3> How to use? </h3>
+                                            <h3> To begin your analysis, you will start by </h3>
                                             <ol>
-                                              <li>Select your choice of network</li>
-                                              <li>Select your location of interest</li>
-                                              <li>Select your kernel of choice</li>
-                                              <li>Select your method of choice</li>
+                                              <li>Select your choice of locality.</li>
+                                              <li>Select your choice of network.</li>
+                                              <li>Select your location of interest.</li>
+                                              <li>Select your lixel length. We will recommend you to start with 500 metres. </li>
+                                              <li>Select your minimum lixel length. We will recommend you to start with 250 metres. </li>
+                                              <li>Select your kernel of choice.</li>
+                                              <li>Select your method of choice.</li>
+                                              <li>Click on 'Generate KDE Map' and you are ready to go!</li>
                                             </ol>
-                                            <h3> How do we understand the map output? </h3>
-                                            <p> A legend will be shown at the top left of the map. For the location of interest spatial points selected, the colour shade intensity of the network will get darker if there is a higher relative density. On contrary, if the colour shade intensity of the network is lighter, it represents a lower relative density alongside the network</p>
-
+                                            <hr>
+                                            <h3> Understanding an example </h3>
+                                            <p> A legend will be shown at the top left of the map. For the location of interest spatial points selected, the colour shade intensity of the network will get darker if there is a higher relative density.</p>
+                                            <p> On contrary, if the colour shade intensity of the network is lighter, it represents a lower relative density alongside the network</p>
                                                                                   "))
-    output$netStatsExplainer <- renderUI(HTML("
-    <h2> Welcome to the Network Constrained G&K Function Page </h2>
-    The K-function is a method used in spatial Point Pattern Analysis (PPA) to inspect the spatial distribution of a set of points. It allows you the user to assess if the set of points is more or less clustered that what we could expect from a given distribution. Most of the time, the set of point is compared with a random distribution.
-    <h3> How to use? </h3>
+    output$netStatsExplainerp1 <- renderUI(HTML("
+    <h3> Statistical function G&K </h3>
+    <hr>
+    <p>The K-function is a method used in spatial Point Pattern Analysis (PPA) to inspect the spatial distribution of a set of points. It allows the user to assess if the set of points is more or less clustered that what we could expect from a given distribution. </p>
+    <p> Most of the time, the set of point is compared with a random distribution.
+    The empirical K-function for a specified radius r is calculated with the following formula listed <a href ='https://cran.r-project.org/web/packages/spNetwork/vignettes/KNetworkFunctions.html'> here </a> </p>
+    <p> Basically, the K-function calculates for a radius r the proportion of cells with a value below r in the distance matrix between all the points Dij. In other words, the K-function estimates the average number of neighbours of a typical random point </p>
+    <p> A modified version of the K-function is the G-function (Pair Correlation Function). The regular K-function is calculated for subsequent disks with increasing radii and thus is cumulative in nature. The G-function uses rings instead of disks and permits the analysis of the points concentrations at different geographical scales. </p>"))
+    
+    
+    output$netStatsExplainerp2 <- renderUI(HTML("<h3> To begin your analysis, you will start by </h3>
     <ol>
       <li>Select your choice of network</li>
       <li>Select your location of interest</li>
-      <li> Enter number of simulations</li>
+      <li>Select your start value in (metres). We will recommend you to start with 0 to begin.</li>
+      <li>Select your end value in (metres). We will recommend you to end with 500 metres to begin.</li>
+      <li>Select your number of simulations. We will recommend you to start with 50 simulations to begin.</li>
+      <li>Select your aggregate value. We will recommend you to start with 0 to begin.</li>
+      <li>Click on 'Generate Statistical Results' and you are ready to go!</li>
     </ol>
     <h3> How do we understand the function output? </h3>
     <p> The grey area represents the function ‘envelope’. The ‘blue’ line represents the empirical function value </p>
-    <p> In the event if the observed value is above the envelope, we can reject the null hypothesis as the value is statistically significant. We can conclude that the spatial points resemble a clustered distribution</p>
-    <p> In the event if the observed value is outside the envelope, we can reject the null hypothesis as the value is statistically significant. We can conclude that the spatial points resemble a dispersed distribution. </p>
-    <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis as the value is not statistically significant. We can conclude the spatial points resemble a random distribution. </p>
-
-                                                                                  "))
+    <p> In the event if the observed value is above the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a clustered distribution</p>
+    <p> In the event if the observed value is outside the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a dispersed distribution. </p>
+    <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis (H1) as the value is not statistically significant. We can conclude the spatial points resemble a random distribution. </p>"))
+    
+    
+    output$introductiondescription <- renderUI(HTML(
+    "<h4> You will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
+    <h4> There are 2 types of analysis that you can perform
+      <ol> 
+        <li> Network Kernel Density Estimation </li>
+        <li> G & K Function Analysis </li>
+      </ol>
+    </h4>
+    <h4> For each of the analysis, we offer you the options of selecting 
+      <ol> 
+        <li> Road Network </li>
+        <li> Pedestrian Network </li>
+        <li> Tram Network </li>
+      </ol>
+    </h4>
+    <h4> In addition you are allowed to pick your location of interest such as
+      <ol> 
+        <li> Childcare Centres </li>
+        <li> Business Establishments </li>
+        <li> Drinking Fountains </li>
+        <li> Landmarks </li>
+        <li> Public Toilets </li>
+      </ol>
+    </h4>
+    <h2> Benefits of performing Network Constrained Point Pattern Analysis </h2>
+    <hr>
+    <h4> 
+        <ol> 
+          <li> Accurate analysis: Network Constrained Point Pattern Analysis provides more accurate results compared to traditional point pattern analysis because it accounts for the underlying transportation network. This is particularly important in areas where the transportation network is dense and complex. </li> <br>
+          <li> Better decision-making: Network Constrained Point Pattern Analysis can provide insights into how the network infrastructure affects the spatial distribution of points, which can be valuable for decision-making related to urban planning, transportation planning, and public policy </li> <br>
+          <li> Improved resource allocation: Network Constrained Point Pattern Analysis can help optimize the allocation of resources, such as improving the accessibility to more drinking fountains/public toilets, by identifying areas with high concentrations of points and areas that are more accessible by the transportation network. </li>
+      </ol>
+    </h4>"))
     
 }
 
