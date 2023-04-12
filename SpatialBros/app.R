@@ -13,6 +13,9 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(plotly)
+library(spatstat)
+library(maptools)
+library(raster)
 
 sf_childcare <- read_rds("rds/childcare.rds")
 sf_business <- read_rds("rds/business_establishments.rds")
@@ -36,6 +39,13 @@ ui <- fluidPage(theme = shinytheme("darkly"),
           type="text/css",
           "#childcare_image img {max-width: 100%; width: 100%; height: auto}",
           ".navbar {background-color: rgb(48, 48, 48)}",
+          " #clark {
+                      color: grey;
+                      background: rgba(0, 0, 0, 0);
+                      border-color: grey;
+                      border-style: solid;
+                      border-width: 2px;
+                    }"
         )),
         tabPanel("Home Page",
                  fluidRow(
@@ -70,6 +80,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
         # 2nd Tab
         tabPanel("Data Exploration",
                  titlePanel("Data Exploration"),
+                 hr(),
                  tabsetPanel(type = "tabs",
                              tabPanel("Introduction",
                              ),
@@ -128,7 +139,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                              tabPanel("Spatial Points",
                                       sidebarLayout(
                                         mainPanel(
-                                          tmapOutput("DataExpMapSpat", width = "100%", height = "700")
+                                          tmapOutput("DataExpMapStat", width = "100%", height = "700")
                                         ),
                                         sidebarPanel(
                                           h4("Network Kernel Density Estimation Variable Inputs"),
@@ -179,11 +190,141 @@ ui <- fluidPage(theme = shinytheme("darkly"),
         
         tabPanel("Spatial Point Pattern Analysis",
                  titlePanel("Kernel Density Estimation"),
+                 hr(),
+                   tabsetPanel(type = "tabs",
+                               tabPanel("Introduction",
+                               ),             
+                               tabPanel("1st Order Spatial Point Pattern Analysis",
+                                        sidebarLayout(
+                                          mainPanel(
+                                            tmapOutput("mapFOKDE", width = "100%", height = "700")
+                                          ),
+                                          sidebarPanel(
+                                            shinyjs::useShinyjs(),
+                                            h4("Kernel Density Estimation Variable Inputs"),
+                                            h5("Spatial Points"),
+                                            selectInput(inputId = "kde_localities",
+                                                        label = "Localities",
+                                                        choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
+                                                                       "Carlton" = "Carlton",
+                                                                       "Carlton North" = "Carlton North",
+                                                                       "Docklands" = "Docklands",
+                                                                       "East Melbourne" = "East Melbourne",
+                                                                       "Flemington" = "Flemington",
+                                                                       "Kensington" = "Kensington",
+                                                                       "Melbourne" = "Melbourne",
+                                                                       "North Melbourne" = "North Melbourne",
+                                                                       "Parkville" = "Parkville",
+                                                                       "Port Melbourne" = "Port Melbourne",
+                                                                       "South Wharf" = "South Wharf",
+                                                                       "South Yarra" = "South Yarra",
+                                                                       "Southbank" = "Southbank",
+                                                                       "West Melbourne" = "West Melbourne"
+                                                        )),
+                                            selectInput(inputId = "kde_locs",
+                                                        label = "Location of Interest",
+                                                        choices = list("Childcare Centres" = "sf_childcare",
+                                                                       "Business Establishments" = "sf_business",
+                                                                       "Drinking Fountain" = "sf_drinking_fountain",
+                                                                       "Landmarks" = "sf_landmarks",
+                                                                       "Public Toilets" = "sf_pub_toilets")),
+                                            h5("Kernel Density Estimation Methods"),
+                                            selectInput(inputId = "kde_bandwidth_type",
+                                                        label = "Choose the bandwidth to be used:",
+                                                        choices = list("Fixed Bandwidth" = "fixed",
+                                                                       "Adaptive Bandwidth" = "adaptive")),
+                                            selectInput(inputId = "kde_kernel_name",
+                                                        label = "Choose the kernel to be used:",
+                                                        choices = list("Quartic" = "quartic",
+                                                                       "Epanechnikov" = "epanechnikov",
+                                                                       "Gaussian" = "gaussian")),
+                                            selectInput(inputId = "kde_method_name",
+                                                        label = "Select the Method to be used",
+                                                        choices = list("Simple" = "simple",
+                                                                       "Discontinuous" = "discontinuous",
+                                                                       "Continuous" = "Continuous")),
+                                            h5("Clark Evans Test Confidence"),
+                                            selectInput(inputId = "kde_confidence",
+                                                        label = "Select the Confidence to be used",
+                                                        choices = list("95%" = 39,
+                                                                       "99%" = 199,
+                                                                       "99.9%" = 1999)),
+                                            
+                                            
+                                            actionButton("GenerateKDE", "Generate KDE Map"),
+                                            
+                                            h5("Please note: The map will take a few minutes to generate after clicking the button."),
+                                            
+                                          ),
+                                          
+                                        ),
+                                        h3("Clark and Evans Test"),
+                                        hr(),
+                                        h5("Results will be shown in the block below if analysis has been run."),
+                                        verbatimTextOutput("clark"),
+                                        
+                               ),
+                               tabPanel("2nd Order Spatial Point Pattern Analysis",
+                                       sidebarLayout(
+                                         mainPanel(
+                                           plotlyOutput("gplot"),
+                                           plotlyOutput("kplot"),
+                                         ),
+                                         sidebarPanel(
+                                           shinyjs::useShinyjs(),
+                                           h4("G/K Function Variable Inputs"),
+                                           h5("Spatial Points"),
+                                           selectInput(inputId = "statSO_localities",
+                                                       label = "Localities",
+                                                       choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
+                                                                      "Carlton" = "Carlton",
+                                                                      "Carlton North" = "Carlton North",
+                                                                      "Docklands" = "Docklands",
+                                                                      "East Melbourne" = "East Melbourne",
+                                                                      "Flemington" = "Flemington",
+                                                                      "Kensington" = "Kensington",
+                                                                      "Melbourne" = "Melbourne",
+                                                                      "North Melbourne" = "North Melbourne",
+                                                                      "Parkville" = "Parkville",
+                                                                      "Port Melbourne" = "Port Melbourne",
+                                                                      "South Wharf" = "South Wharf",
+                                                                      "South Yarra" = "South Yarra",
+                                                                      "Southbank" = "Southbank",
+                                                                      "West Melbourne" = "West Melbourne"
+                                                       )),
+                                           selectInput(inputId = "statSO_locs",
+                                                       label = "Location of Interest",
+                                                       choices = list("Childcare Centres" = "sf_childcare",
+                                                                      "Business Establishments" = "sf_business",
+                                                                      "Drinking Fountain" = "sf_drinking_fountain",
+                                                                      "Landmarks" = "sf_landmarks",
+                                                                      "Public Toilets" = "sf_pub_toilets")),
+                                           h5("G/K Function Parameters"),
+                                           selectInput(inputId = "statSO_confidence",
+                                                       label = "Select the Confidence to be used",
+                                                       choices = list("95%" = "39",
+                                                                      "99%" = "199",
+                                                                      "99.9%" = "1999")),
+                                           
+                                           
+                                           actionButton("GenerateSO", "Generate Analysis"),
+                                           
+                                           h5("Please note: The analysis will take a few minutes to generate after clicking the button."),                                         ),
+                                         
+                                       ),
+
+                                              
+                                        
+                               ),
+                             
+                   ),          
+                 
                  ),
         
         # 3rd Tab
         tabPanel("Network Constrained Point Pattern Analysis",
               titlePanel("Network Constrained Point Pattern Analysis"),
+              hr(),
                  tabsetPanel(type = "tabs",
                   tabPanel("Introduction",
                            fluidRow(
@@ -245,6 +386,10 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                         sliderInput(inputId = "lx_length_min", "Min. Lixel Length",
                                     min = 100, max = 1500, value = 350, step = 50),
                         h5("Kernel Density Estimation Methods"),
+                        selectInput(inputId = "netKDEAdaptive",
+                                    label = "Choose the bandwidth method to be used:",
+                                    choices = list("Fixed Bandwidth" = "fixed",
+                                                   "Adaptive Bandwidth" = "adaptive")),
                         selectInput(inputId = "kernel_name",
                                     label = "Choose the kernel to be used:",
                                     choices = list("Quartic" = "quartic",
@@ -280,12 +425,30 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                            sidebarPanel(
                              h4("Statistical Function Variable Inputs"),
                              h5("Network and Spatial Points"),
-                             selectInput(inputId = "network_type",
+                             selectInput(inputId = "netstatlocalities",
+                                         label = "Localities",
+                                         choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
+                                                        "Carlton" = "Carlton",
+                                                        "Carlton North" = "Carlton North",
+                                                        "Docklands" = "Docklands",
+                                                        "East Melbourne" = "East Melbourne",
+                                                        "Flemington" = "Flemington",
+                                                        "Kensington" = "Kensington",
+                                                        "Melbourne" = "Melbourne",
+                                                        "North Melbourne" = "North Melbourne",
+                                                        "Parkville" = "Parkville",
+                                                        "Port Melbourne" = "Port Melbourne",
+                                                        "South Wharf" = "South Wharf",
+                                                        "South Yarra" = "South Yarra",
+                                                        "Southbank" = "Southbank",
+                                                        "West Melbourne" = "West Melbourne"
+                                         )),
+                             selectInput(inputId = "netstatnetwork_type",
                                          label = "Types of Network",
                                          choices = list("Road Network" = "net_road",
                                                         "Pedestrian Network" = "net_ped",
                                                         "Tram Network" = "net_tram")),
-                             selectInput(inputId = "locs",
+                             selectInput(inputId = "netstatlocs",
                                          label = "Location of Interest",
                                          choices = list("Childcare Centres" = "sf_childcare",
                                                         "Business Establishments" = "sf_business",
@@ -293,13 +456,13 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                         "Landmarks" = "sf_landmarks",
                                                         "Public Toilets" = "sf_pub_toilets")),
                              h5("Other Variables"),
-                             sliderInput(inputId = "net_start", "Start",
-                                         min = 0, max = 2000, value = 350, step = 50),
-                             sliderInput(inputId = "net_end", "End",
-                                         min = 100, max = 2000, value = 500, step = 50),
-                             sliderInput(inputId = "n_sims", "Number of Simulations",
+                             sliderInput(inputId = "netstatnet_start", "Start",
+                                         min = 0, max = 2000, value = 100, step = 50),
+                             sliderInput(inputId = "netstatnet_end", "End",
+                                         min = 100, max = 5000, value = 500, step = 50),
+                             sliderInput(inputId = "netstatn_sims", "Number of Simulations",
                                          min = 10, max = 300, value = 50, step = 5),
-                             sliderInput(inputId = "agg", "Aggregate Value",
+                             sliderInput(inputId = "netstatagg", "Aggregate Value",
                                        min = 0, max = 1000, value = 0, step = 50),
                              
                              actionButton("netKDEGenerateStats", "Generate Statistical Results"),
@@ -341,6 +504,13 @@ server <- function(input, output) {
   })
   
   output$DataExpMapSpat <- renderTmap({
+    tm_shape(melb_localities) +
+      tm_polygons("LOC_NAME", alpha=0.1) +
+      tm_shape(melb_lga) +
+      tm_borders(lwd = 2, lty = 5,  col="blue") 
+  })
+
+  output$mapFOKDE <- renderTmap({
     tm_shape(melb_localities) +
       tm_polygons("LOC_NAME", alpha=0.1) +
       tm_shape(melb_lga) +
@@ -414,21 +584,33 @@ server <- function(input, output) {
   
   observeEvent(input$netKDEGenerateStats, {
     id <<- showNotification(paste("Calculating Statisical Results..."), duration = 0, type = "message", closeButton=FALSE)
+    if (input$netstatlocalities == "Entire City of Melbourne"){
+      localities <- melb_localities
+      boundary <- melb_lga
+      loc_interest <- get(input$netstatlocs)
+      network_type <- get(input$netstatnetwork_type)
+    }
+    else {
+      localities <- melb_localities %>% filter(LOC_NAME == input$netstatlocalities)
+      boundary <- localities
+      loc_interest <- st_intersection(get(input$netstatlocs), boundary)
+      network_type <- st_intersection(get(input$netstatnetwork_type), boundary) %>% st_cast("LINESTRING")
+    }
     
-    if (input$agg == 0){
+    if (input$netstatagg == 0){
       agg <- NULL
     }
     else{
-      agg <- input$agg
+      agg <- input$netstatagg
     }
 
-    kfun_output <- kfunctions(get(input$network_type),
-                              get(input$locs),
-                               start = input$net_start, 
-                               end = input$net_end, 
+    kfun_output <- kfunctions(network_type,
+                              loc_interest,
+                               start = input$netstatnet_start, 
+                               end = input$netstatnet_end, 
                                step = 50, 
                                width = 50, 
-                               nsim = input$n_sims, 
+                               nsim = input$netstatn_sims, 
                                resolution = 50,
                                verbose = FALSE,
                                agg = agg,
@@ -455,18 +637,37 @@ server <- function(input, output) {
       boundary <- localities
       loc_interest <- st_intersection(get(input$locs), boundary)
       network_type <- st_intersection(get(input$network_type), boundary) %>% st_cast("LINESTRING")
-      
     }
+    
+    if (input$netKDEAdaptive == "adaptive"){
+      adaptive = TRUE
+      trim_bw = 8000
+    }
+    else{
+      adaptive = FALSE
+      trim_bw = NULL
+    }
+    
+    cv_scores <- bw_cv_likelihood_calc(c(50,8000),50,
+                             network_type, loc_interest,
+                             rep(1,nrow(loc_interest)),
+                             input$kernel_name, input$method_name, verbose=FALSE, check=TRUE)
+    max_index <- which.max(cv_scores[,2])
+    max_bandwidth <- cv_scores[max_index, 1]
+    id <<- showNotification(paste(max_bandwidth), duration = 0, type = "message", closeButton=FALSE)
+    id <<- showNotification(paste(cv_scores[max_index, 2]), duration = 0, type = "message", closeButton=FALSE)
     
     road_lixels_cc <- lixelize_lines(network_type, input$lx_length, mindist = input$lx_length_min)
     road_samples_cc <- lines_center(road_lixels_cc)
-    road_network_cc_densities <- nkde(net_road,
+    road_network_cc_densities <- nkde(network_type,
                                       events = loc_interest,
                                       w = rep(1,nrow(loc_interest)), 
                                       samples = road_samples_cc, 
                                       kernel_name =  noquote(input$kernel_name),
-                                      bw = 300, 
+                                      bw = max_bandwidth, 
+                                      trim_bw = trim_bw,
                                       div= "bw", 
+                                      adaptive = adaptive,
                                       method = noquote(input$method_name), 
                                       digits = 3, 
                                       tol = 1,
@@ -493,6 +694,175 @@ server <- function(input, output) {
     id <<- NULL    
     
   })
+  
+  #KDE 1st ORDER
+  
+  #Monitor buttons
+  
+  observeEvent(input$kde_bandwidth_type, {
+    if(input$kde_bandwidth_type == "adaptive") {
+      shinyjs::disable('kde_kernel_name') 
+      shinyjs::disable('kde_method_name') 
+    } else {
+      shinyjs::enable('kde_kernel_name')
+      shinyjs::enable('kde_method_name')
+    }
+  }, ignoreNULL = T)
+  
+  
+  
+  #Main Func
+  
+  observeEvent(input$GenerateKDE, {
+    id <<- showNotification(paste("Generating KDE Map..."), duration = 0, type = "message", closeButton=FALSE)
+    if (input$kde_localities == "Entire City of Melbourne"){
+      localities <- melb_localities
+      boundary <- melb_lga
+      loc_interest <- get(input$kde_locs)
+    }
+    else {
+      localities <- melb_localities %>% filter(LOC_NAME == input$kde_localities)
+      boundary <- localities
+      loc_interest <- st_intersection(get(input$kde_locs), boundary)
+    }
+    
+    # CONVERT TO PPP
+    
+    loc_interest.gsp <- as_Spatial(loc_interest)
+    loc_interest.spc <- as(loc_interest.gsp, "SpatialPoints")
+    loc_interest.ppp <- as(loc_interest.spc, "ppp")
+    
+    # Handling duplicated events
+    
+    if (any(duplicated(loc_interest.ppp))){
+      loc_interest.ppp <- rjitter(loc_interest.ppp,
+                                  retry = TRUE,
+                                  nsim = 1,
+                                  drop = TRUE)
+    }
+    
+    #OWIN
+    boundary.spat <- as_Spatial(boundary)
+    boundary.sp <- as(boundary.spat, "SpatialPolygons")
+    boundary.owin <- as(boundary.sp, "owin")
+    
+    #Combining OWIN
+    
+    loc_interest.ppp = loc_interest.ppp[boundary.owin]
+    loc_interest_obj.km <- rescale(loc_interest.ppp, 1000, "km")
+    
+    # KDE
+    
+    if (input$kde_bandwidth_type == "adaptive"){
+      kde <- adaptive.density(loc_interest.ppp, method="kernel")
+    }
+    else{
+      kde <- density(loc_interest.ppp, sigma = bw.diggle, edge = TRUE, kernel = input$kde_kernel_name, main = input$kde_method_name)
+    }
+
+    #RASTER
+    kde.grid <- as.SpatialGridDataFrame.im(kde)
+    kde_raster <- raster(kde.grid)
+    crs(kde_raster) <- st_crs(7855)$wkt 
+    
+    output$mapFOKDE <- renderTmap({
+      tm_shape(localities) +
+        
+      tm_borders(alpha = 0.3) +
+        tm_shape(boundary) +
+        tm_borders(lwd = 2.5, lty = 5,  col="blue") +
+        tm_shape(kde_raster) +
+        tm_raster("v", alpha = 0.7)
+    })
+    
+    # CLARK EVANS
+    
+    output$clark <- renderPrint(clarkevans.test(loc_interest.ppp, correction="none", clipregion = NULL, alternative=c("two.sided"), nsim=input$kde_confidence))
+    
+    if (!is.null(id))
+      removeNotification(id)
+    id <<- NULL    
+    
+  })
+  
+  
+  #Main Func
+  
+  observeEvent(input$GenerateSO, {
+    id <<- showNotification(paste("Generating Second Order Analysis..."), duration = 0, type = "message", closeButton=FALSE)
+    
+    if (input$statSO_localities == "Entire City of Melbourne"){
+      localities <- melb_localities
+      boundary <- melb_lga
+      loc_interest <- get(input$statSO_locs)
+    }
+    else {
+      localities <- melb_localities %>% filter(LOC_NAME == input$statSO_localities)
+      boundary <- localities
+      loc_interest <- st_intersection(get(input$statSO_locs), boundary)
+    }
+    
+    # CONVERT TO PPP
+    
+    loc_interest.gsp <- as_Spatial(loc_interest)
+    loc_interest.spc <- as(loc_interest.gsp, "SpatialPoints")
+    loc_interest.ppp <- as(loc_interest.spc, "ppp")
+    
+    # Handling duplicated events
+    
+    if (any(duplicated(loc_interest.ppp))){
+      loc_interest.ppp <- rjitter(loc_interest.ppp,
+                                  retry = TRUE,
+                                  nsim = 1,
+                                  drop = TRUE)
+    }
+    
+    #OWIN
+    boundary.spat <- as_Spatial(boundary)
+    boundary.sp <- as(boundary.spat, "SpatialPolygons")
+    boundary.owin <- as(boundary.sp, "owin")
+    
+    #Combining OWIN
+    loc_interest.ppp = loc_interest.ppp[boundary.owin]
+
+    # G/K
+    id2 <<- showNotification(paste("Running Monte Carlo Simulation for G/K Functions - ", input$statSO_confidence, "Simulations..."), duration = 0, type = "default", closeButton=FALSE)
+    
+    G <- envelope(loc_interest.ppp, Gest, nsim = as.integer(input$statSO_confidence))
+    K <- envelope(loc_interest.ppp, Kest, nsim = as.integer(input$statSO_confidence), rank = 1, glocal = TRUE)
+    
+    if (!is.null(id2))
+      removeNotification(id2)
+    id2 <<- NULL    
+    
+    gplot <- ggplot(G, aes(x = r)) +
+      geom_ribbon(aes(ymin = lo, ymax = hi), fill = "darkgray", outline.type = "both", lty = 11) +
+      geom_line(aes(y = obs), color = "black") +
+      geom_line(aes(y = theo), color = "red", lty = 11) +
+      labs(x = "Distance", y = "G Function")
+
+    kplot <- ggplot(K, aes(x = r)) +
+      geom_ribbon(aes(ymin = lo, ymax = hi), fill = "darkgray", outline.type = "both", lty = 11) +
+      geom_line(aes(y = obs), color = "black") +
+      geom_line(aes(y = theo), color = "red", lty = 11) +
+      labs(x = "Distance", y = "K Function")
+    
+    
+    output$gplot <- renderPlotly({gplot})
+    output$kplot <- renderPlotly({kplot})
+    
+    
+    if (!is.null(id))
+      removeNotification(id)
+    id <<- NULL    
+    
+  })
+  
+  
+  
+  
+  
+  
   
     # Images
     output$childcare_image <- renderImage({
@@ -619,21 +989,21 @@ server <- function(input, output) {
     
     
     output$introductiondescription <- renderUI(HTML(
-    "<h4> You will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
-    <h4> There are 2 types of analysis that you can perform
+    "<h5> You will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
+    <h5> There are 2 types of analysis that you can perform
       <ol> 
         <li> Network Kernel Density Estimation </li>
         <li> G & K Function Analysis </li>
       </ol>
-    </h4>
-    <h4> For each of the analysis, we offer you the options of selecting 
+    </h5>
+    <h5> For each of the analysis, we offer you the options of selecting 
       <ol> 
         <li> Road Network </li>
         <li> Pedestrian Network </li>
         <li> Tram Network </li>
       </ol>
-    </h4>
-    <h4> In addition you are allowed to pick your location of interest such as
+    </h5>
+    <h5> In addition you are allowed to pick your location of interest such as
       <ol> 
         <li> Childcare Centres </li>
         <li> Business Establishments </li>
@@ -641,16 +1011,16 @@ server <- function(input, output) {
         <li> Landmarks </li>
         <li> Public Toilets </li>
       </ol>
-    </h4>
+    </h5>
     <h2> Benefits of performing Network Constrained Point Pattern Analysis </h2>
     <hr>
-    <h4> 
+    <h5> 
         <ol> 
           <li> Accurate analysis: Network Constrained Point Pattern Analysis provides more accurate results compared to traditional point pattern analysis because it accounts for the underlying transportation network. This is particularly important in areas where the transportation network is dense and complex. </li> <br>
           <li> Better decision-making: Network Constrained Point Pattern Analysis can provide insights into how the network infrastructure affects the spatial distribution of points, which can be valuable for decision-making related to urban planning, transportation planning, and public policy </li> <br>
           <li> Improved resource allocation: Network Constrained Point Pattern Analysis can help optimize the allocation of resources, such as improving the accessibility to more drinking fountains/public toilets, by identifying areas with high concentrations of points and areas that are more accessible by the transportation network. </li>
       </ol>
-    </h4>"))
+    </h5>"))
     
 }
 
