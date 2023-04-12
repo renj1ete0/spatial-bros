@@ -33,19 +33,37 @@ net_tram <- read_rds("rds/tram_network_lines.rds")
 
 # Define UI for application
 ui <- fluidPage(theme = shinytheme("darkly"),
-      navbarPage(
-        "Spatial Bros",
+      navbarPage(                                                
+        title = div(a(img(src='logo.png',
+                          style="margin-top: -18px;padding-right:10px;padding-bottom:10px",
+                          height = 60), href="https://spatialbros.netlify.app/")),
         tags$head(tags$style(
           type="text/css",
           "#childcare_image img {max-width: 100%; width: 100%; height: auto}",
           ".navbar {background-color: rgb(48, 48, 48)}",
-          " #clark {
+          " #clark{
                       color: grey;
                       background: rgba(0, 0, 0, 0);
                       border-color: grey;
                       border-style: solid;
                       border-width: 2px;
-                    }"
+                    }",
+          " #netKDESettings {
+                      color: grey;
+                      background: rgba(0, 0, 0, 0);
+                      border-color: grey;
+                      border-style: solid;
+                      border-width: 2px;
+                    }",
+          " #KDESettings {
+                      color: grey;
+                      background: rgba(0, 0, 0, 0);
+                      border-color: grey;
+                      border-style: solid;
+                      border-width: 2px;
+                    }",
+          
+          
         )),
         tabPanel("Home Page",
                  fluidRow(
@@ -142,6 +160,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                           tmapOutput("DataExpMapStat", width = "100%", height = "700")
                                         ),
                                         sidebarPanel(
+                                          shinyjs::useShinyjs(),
                                           h4("Network Kernel Density Estimation Variable Inputs"),
                                           h5("Network and Spatial Points"),
                                           selectInput(inputId = "dataspatlocalities",
@@ -169,7 +188,10 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                                      "Drinking Fountain" = "sf_drinking_fountain",
                                                                      "Landmarks" = "sf_landmarks",
                                                                      "Public Toilets" = "sf_pub_toilets")),
-
+                                          selectInput(inputId = "dataspatsublocs",
+                                                      label = "Specific Themes/Sub-Categories",
+                                                      choices = list()),
+                                          
                                           actionButton("DataSpat", "Generate Map and Data Table"),
                                           
                                           h5("Please note: The map and data will take a few moments to generate after clicking the button."),
@@ -228,6 +250,9 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                                        "Drinking Fountain" = "sf_drinking_fountain",
                                                                        "Landmarks" = "sf_landmarks",
                                                                        "Public Toilets" = "sf_pub_toilets")),
+                                            selectInput(inputId = "kdesublocs",
+                                                        label = "Specific Themes/Sub-Categories",
+                                                        choices = list()),
                                             h5("Kernel Density Estimation Methods"),
                                             selectInput(inputId = "kde_bandwidth_type",
                                                         label = "Choose the bandwidth to be used:",
@@ -299,6 +324,9 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                                       "Drinking Fountain" = "sf_drinking_fountain",
                                                                       "Landmarks" = "sf_landmarks",
                                                                       "Public Toilets" = "sf_pub_toilets")),
+                                           selectInput(inputId = "statSO_sublocs",
+                                                       label = "Specific Themes/Sub-Categories",
+                                                       choices = list()),
                                            h5("G/K Function Parameters"),
                                            selectInput(inputId = "statSO_confidence",
                                                        label = "Select the Confidence to be used",
@@ -345,9 +373,12 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                   tabPanel("Network Kernel Density Estimation", 
                     sidebarLayout(
                       mainPanel(
-                        tmapOutput("mapPlot", width = "100%", height = "700")
+                        tmapOutput("mapPlot", width = "100%", height = "700"),
+                        br(),
+                        verbatimTextOutput("netKDESettings"),
                       ),
                       sidebarPanel(
+                        shinyjs::useShinyjs(),
                         h4("Network Kernel Density Estimation Variable Inputs"),
                         h5("Network and Spatial Points"),
                         selectInput(inputId = "localities",
@@ -380,16 +411,15 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                    "Drinking Fountain" = "sf_drinking_fountain",
                                                    "Landmarks" = "sf_landmarks",
                                                    "Public Toilets" = "sf_pub_toilets")),
+                        selectInput(inputId = "netsublocs",
+                                    label = "Specific Themes/Sub-Categories",
+                                    choices = list()),
                         h5("Lixels"),
                         sliderInput(inputId = "lx_length", "Length of Lixel",
                                     min = 100, max = 1500, value = 700, step = 50),
                         sliderInput(inputId = "lx_length_min", "Min. Lixel Length",
                                     min = 100, max = 1500, value = 350, step = 50),
                         h5("Kernel Density Estimation Methods"),
-                        selectInput(inputId = "netKDEAdaptive",
-                                    label = "Choose the bandwidth method to be used:",
-                                    choices = list("Fixed Bandwidth" = "fixed",
-                                                   "Adaptive Bandwidth" = "adaptive")),
                         selectInput(inputId = "kernel_name",
                                     label = "Choose the kernel to be used:",
                                     choices = list("Quartic" = "quartic",
@@ -423,6 +453,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                              plotlyOutput("gfun"),
                            ),
                            sidebarPanel(
+                             shinyjs::useShinyjs(),
                              h4("Statistical Function Variable Inputs"),
                              h5("Network and Spatial Points"),
                              selectInput(inputId = "netstatlocalities",
@@ -455,6 +486,9 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                         "Drinking Fountain" = "sf_drinking_fountain",
                                                         "Landmarks" = "sf_landmarks",
                                                         "Public Toilets" = "sf_pub_toilets")),
+                             selectInput(inputId = "netstatsublocs",
+                                         label = "Specific Themes/Sub-Categories",
+                                         choices = list()),
                              h5("Other Variables"),
                              sliderInput(inputId = "netstatnet_start", "Start",
                                          min = 0, max = 2000, value = 100, step = 50),
@@ -486,7 +520,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
 
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
   id <- NULL
   
   output$mapPlot <- renderTmap({
@@ -503,7 +537,7 @@ server <- function(input, output) {
       tm_borders(lwd = 2, lty = 5,  col="blue") 
   })
   
-  output$DataExpMapSpat <- renderTmap({
+  output$DataExpMapStat <- renderTmap({
     tm_shape(melb_localities) +
       tm_polygons("LOC_NAME", alpha=0.1) +
       tm_shape(melb_lga) +
@@ -517,10 +551,92 @@ server <- function(input, output) {
       tm_borders(lwd = 2, lty = 5,  col="blue") 
   })
   
+  
+  observeEvent(input$dataspatlocs,{
+    if (input$dataspatlocs == "sf_business"){
+      shinyjs::enable('dataspatsublocs')
+      options <- sort(unique(sf_business$industry_anzsic4_description))
+      updateSelectInput(session, "dataspatsublocs",
+                        choices = c("All", options)
+                        )
+    }
+    else if (input$dataspatlocs == "sf_landmarks"){
+      shinyjs::enable('dataspatsublocs')
+      options <- sort(unique(sf_landmarks$theme))
+      updateSelectInput(session, "dataspatsublocs",
+                        choices = c("All", options)
+                        )
+    }
+    else{
+      shinyjs::disable('dataspatsublocs')
+    }
+  })
+  
+  observeEvent(input$netstatlocs,{
+    if (input$netstatlocs == "sf_business"){
+      shinyjs::enable('netstatsublocs')
+      options <- sort(unique(sf_business$industry_anzsic4_description))
+      updateSelectInput(session, "netstatsublocs",
+                        choices = c("All", options)
+      )
+    }
+    else if (input$netstatlocs == "sf_landmarks"){
+      shinyjs::enable('netstatsublocs')
+      options <- sort(unique(sf_landmarks$theme))
+      updateSelectInput(session, "netstatsublocs",
+                        choices = c("All", options)
+      )
+    }
+    else{
+      shinyjs::disable('netstatsublocs')
+    }
+  })
+  
+  observeEvent(input$locs,{
+    if (input$locs == "sf_business"){
+      shinyjs::enable('netsublocs')
+      options <- sort(unique(sf_business$industry_anzsic4_description))
+      updateSelectInput(session, "netsublocs",
+                        choices = c("All", options)
+      )
+    }
+    else if (input$locs == "sf_landmarks"){
+      shinyjs::enable('netsublocs')
+      options <- sort(unique(sf_landmarks$theme))
+      updateSelectInput(session, "netsublocs",
+                        choices = c("All", options)
+      )
+    }
+    else{
+      shinyjs::disable('netsublocs')
+    }
+  })
+  
+  observeEvent(input$statSO_locs,{
+    if (input$statSO_locs == "sf_business"){
+      shinyjs::enable('statSO_sublocs')
+      options <- sort(unique(sf_business$industry_anzsic4_description))
+      updateSelectInput(session, "statSO_sublocs",
+                        choices = c("All", options)
+      )
+    }
+    else if (input$statSO_locs == "sf_landmarks"){
+      shinyjs::enable('statSO_sublocs')
+      options <- sort(unique(sf_landmarks$theme))
+      updateSelectInput(session, "statSO_sublocs",
+                        choices = c("All", options)
+      )
+    }
+    else{
+      shinyjs::disable('statSO_sublocs')
+    }
+  })
+  
   #DATA EXPLORATION
   
   observeEvent(input$DataNet, {
     id <<- showNotification(paste("Generating Map and Data table..."), duration = 0, type = "message", closeButton=FALSE)
+
     if (input$datanetlocalities == "Entire City of Melbourne"){
       localities <- melb_localities
       boundary <- melb_lga
@@ -552,18 +668,52 @@ server <- function(input, output) {
   
   observeEvent(input$DataSpat, {
     id <<- showNotification(paste("Generating Map and Data table..."), duration = 0, type = "message", closeButton=FALSE)
+    
+    listing <- input$dataspatsublocs
+    
+    if (input$dataspatlocs == "sf_business"){
+      if (listing == "All"){
+        datalocs <- sf_business
+      }
+      else{
+        datalocs <- sf_business %>% filter(industry_anzsic4_description == listing)
+      }
+      
+      
+    }
+    else if (input$dataspatlocs == "sf_landmarks"){
+      if (listing == "All"){
+        datalocs <- sf_landmarks
+      }
+      else{
+        datalocs <- sf_landmarks %>% filter(theme == listing)
+      }
+    }
+    else{
+      datalocs <- get(input$dataspatlocs)
+    }
+
     if (input$dataspatlocalities == "Entire City of Melbourne"){
       localities <- melb_localities
       boundary <- melb_lga
-      loc_interest <- get(input$dataspatlocs)
+      loc_interest <- datalocs
     }
     else {
       localities <- melb_localities %>% filter(LOC_NAME == input$dataspatlocalities)
       boundary <- localities
-      loc_interest <- st_intersection(get(input$dataspatlocs), boundary)
+      loc_interest <- st_intersection(datalocs, boundary)
     }
     
-    output$DataExpMapSpat <- renderTmap({
+    if (nrow(st_intersection(datalocs, boundary)) == 0){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$netstatlocalities, "has no spatial points to be analysed. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
+    }
+    
+    output$DataExpMapStat <- renderTmap({
       tm_shape(localities) +
         tm_polygons("LOC_NAME", alpha=0.1) +
         tm_shape(boundary) +
@@ -580,21 +730,52 @@ server <- function(input, output) {
     
   })
   
-  
-  
   observeEvent(input$netKDEGenerateStats, {
     id <<- showNotification(paste("Calculating Statisical Results..."), duration = 0, type = "message", closeButton=FALSE)
+    
+    listing <- input$netstatsublocs
+    
+    if (input$netstatlocs == "sf_business"){
+      if (listing == "All"){
+        datalocs <- sf_business
+      }
+      else{
+        datalocs <- sf_business %>% filter(industry_anzsic4_description == listing)
+      }
+    }
+    else if (input$netstatlocs == "sf_landmarks"){
+      if (listing == "All"){
+        datalocs <- sf_landmarks
+      }
+      else{
+        datalocs <- sf_landmarks %>% filter(theme == listing)
+      }
+    }
+    else{
+      datalocs <- get(input$netstatlocs)
+    }
+    
     if (input$netstatlocalities == "Entire City of Melbourne"){
       localities <- melb_localities
       boundary <- melb_lga
-      loc_interest <- get(input$netstatlocs)
+      loc_interest <- datalocs
       network_type <- get(input$netstatnetwork_type)
     }
     else {
       localities <- melb_localities %>% filter(LOC_NAME == input$netstatlocalities)
       boundary <- localities
-      loc_interest <- st_intersection(get(input$netstatlocs), boundary)
+      loc_interest <- st_intersection(datalocs, boundary)
       network_type <- st_intersection(get(input$netstatnetwork_type), boundary) %>% st_cast("LINESTRING")
+    }
+  
+
+    if (nrow(st_intersection(datalocs, boundary)) == 0){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$netstatlocalities, "has no spatial points to be analysed. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
     }
     
     if (input$netstatagg == 0){
@@ -626,37 +807,78 @@ server <- function(input, output) {
   
   observeEvent(input$netKDEGenerate, {
     id <<- showNotification(paste("Generating KDE Map..."), duration = 0, type = "message", closeButton=FALSE)
+    
+    listing <- input$netsublocs
+    
+    if (input$locs == "sf_business"){
+      if (listing == "All"){
+        datalocs <- sf_business
+      }
+      else{
+        datalocs <- sf_business %>% filter(industry_anzsic4_description == listing)
+      }
+    }
+    else if (input$locs == "sf_landmarks"){
+      if (listing == "All"){
+        datalocs <- sf_landmarks
+      }
+      else{
+        datalocs <- sf_landmarks %>% filter(theme == listing)
+      }
+    }
+    else{
+      datalocs <- get(input$locs)
+    }
+    
     if (input$localities == "Entire City of Melbourne"){
       localities <- melb_localities
       boundary <- melb_lga
       network_type <- get(input$network_type)
-      loc_interest <- get(input$locs)
+      loc_interest <- datalocs
     }
     else {
       localities <- melb_localities %>% filter(LOC_NAME == input$localities)
       boundary <- localities
-      loc_interest <- st_intersection(get(input$locs), boundary)
+      loc_interest <- st_intersection(datalocs, boundary)
       network_type <- st_intersection(get(input$network_type), boundary) %>% st_cast("LINESTRING")
     }
     
-    if (input$netKDEAdaptive == "adaptive"){
-      adaptive = TRUE
-      trim_bw = 8000
+    if (nrow(loc_interest) == 0){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$localities, "has no spatial points to be analysed. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
     }
-    else{
-      adaptive = FALSE
-      trim_bw = NULL
+    else if (nrow(loc_interest) == 1){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$localities, "has only one spatial points to be analysed and is insufficient for the analysis. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
     }
     
-    cv_scores <- bw_cv_likelihood_calc(c(50,8000),50,
+    id2 <<- showNotification(paste("Calculating NetworkKDE Bandwidth..."), duration = 0, type = "default", closeButton=FALSE)
+    
+    cv_scores <- bw_cv_likelihood_calc(c(100,900),20,
                              network_type, loc_interest,
                              rep(1,nrow(loc_interest)),
                              input$kernel_name, input$method_name, verbose=FALSE, check=TRUE)
-    max_index <- which.max(cv_scores[,2])
-    max_bandwidth <- cv_scores[max_index, 1]
-    id <<- showNotification(paste(max_bandwidth), duration = 0, type = "message", closeButton=FALSE)
-    id <<- showNotification(paste(cv_scores[max_index, 2]), duration = 0, type = "message", closeButton=FALSE)
+    max_index <- which.max(cv_scores$cv_scores)
+    max_bandwidth <- cv_scores$bw[max_index]
     
+    output$netKDESettings <- renderText(paste("NetKDE Bandwidth Selection:", max_bandwidth))
+    
+    if (!is.null(id2))
+      removeNotification(id2)
+    id2 <<- NULL    
+    
+    id2 <<- showNotification(paste("Calculating Network Kernel Density Estimate..."), duration = 0, type = "default", closeButton=FALSE)
+    
+
+        
     road_lixels_cc <- lixelize_lines(network_type, input$lx_length, mindist = input$lx_length_min)
     road_samples_cc <- lines_center(road_lixels_cc)
     road_network_cc_densities <- nkde(network_type,
@@ -665,9 +887,9 @@ server <- function(input, output) {
                                       samples = road_samples_cc, 
                                       kernel_name =  noquote(input$kernel_name),
                                       bw = max_bandwidth, 
-                                      trim_bw = trim_bw,
                                       div= "bw", 
-                                      adaptive = adaptive,
+                                      adaptive = FALSE,
+                                      trim_bw = NULL,
                                       method = noquote(input$method_name), 
                                       digits = 3, 
                                       tol = 1,
@@ -676,18 +898,30 @@ server <- function(input, output) {
                                       agg = 10,
                                       sparse = TRUE,
                                       verbose = FALSE)
+    
     road_samples_cc$density <- road_network_cc_densities * 1000
     road_lixels_cc$density <- road_network_cc_densities * 1000
+    
+    if (!is.null(id2))
+      removeNotification(id2)
+    id2 <<- NULL    
+    
+    id2 <<- showNotification(paste("Plotting map..."), duration = 0, type = "default", closeButton=FALSE)
+    
     output$mapPlot <- renderTmap({
       tm_shape(localities) +
         tm_polygons("LOC_NAME", alpha=0.1) +
         tm_shape(boundary) +
         tm_borders(lwd = 2.5, lty = 5,  col="blue") +
         tm_shape(road_lixels_cc) +
-        tm_lines(lwd = 1.5, col = "density")+
+        tm_lines(lwd = 1.5, col="density")+
         tm_shape(loc_interest)+ 
         tm_dots(size = 0.03, alpha = 0.6) 
     })
+    
+    if (!is.null(id2))
+      removeNotification(id2)
+    id2 <<- NULL    
     
     if (!is.null(id))
       removeNotification(id)
@@ -709,21 +943,80 @@ server <- function(input, output) {
     }
   }, ignoreNULL = T)
   
-  
+  observeEvent(input$kde_locs,{
+    if (input$kde_locs == "sf_business"){
+      shinyjs::enable('kdesublocs')
+      options <- sort(unique(sf_business$industry_anzsic4_description))
+      updateSelectInput(session, "kdesublocs",
+                        choices = c("All", options)
+      )
+    }
+    else if (input$kde_locs == "sf_landmarks"){
+      shinyjs::enable('kdesublocs')
+      options <- sort(unique(sf_landmarks$theme))
+      updateSelectInput(session, "kdesublocs",
+                        choices = c("All", options)
+      )
+    }
+    else{
+      shinyjs::disable('kdesublocs')
+    }
+  })
   
   #Main Func
   
   observeEvent(input$GenerateKDE, {
     id <<- showNotification(paste("Generating KDE Map..."), duration = 0, type = "message", closeButton=FALSE)
+    
+    listing <- input$kdesublocs
+    
+    if (input$kde_locs == "sf_business"){
+      if (listing == "All"){
+        datalocs <- sf_business
+      }
+      else{
+        datalocs <- sf_business %>% filter(industry_anzsic4_description == listing)
+      }
+    }
+    else if (input$kde_locs == "sf_landmarks"){
+      if (listing == "All"){
+        datalocs <- sf_landmarks
+      }
+      else{
+        datalocs <- sf_landmarks %>% filter(theme == listing)
+      }
+    }
+    else{
+      datalocs <- get(input$kde_locs)
+    }
+    
     if (input$kde_localities == "Entire City of Melbourne"){
       localities <- melb_localities
       boundary <- melb_lga
-      loc_interest <- get(input$kde_locs)
+      loc_interest <- datalocs
     }
     else {
       localities <- melb_localities %>% filter(LOC_NAME == input$kde_localities)
       boundary <- localities
-      loc_interest <- st_intersection(get(input$kde_locs), boundary)
+      
+      loc_interest <- st_intersection(datalocs, boundary)
+    }
+
+        if (nrow(loc_interest) == 0){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$kde_localities, "has no spatial points to be analysed. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
+    }
+    else if (nrow(loc_interest) == 1){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$kde_localities, "has only one spatial points to be analysed and is insufficient for the analysis. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
     }
     
     # CONVERT TO PPP
@@ -791,15 +1084,55 @@ server <- function(input, output) {
   observeEvent(input$GenerateSO, {
     id <<- showNotification(paste("Generating Second Order Analysis..."), duration = 0, type = "message", closeButton=FALSE)
     
+    
+    listing <- input$statSO_sublocs
+    
+    if (input$statSO_locs == "sf_business"){
+      if (listing == "All"){
+        datalocs <- sf_business
+      }
+      else{
+        datalocs <- sf_business %>% filter(industry_anzsic4_description == listing)
+      }
+    }
+    else if (input$statSO_locs == "sf_landmarks"){
+      if (listing == "All"){
+        datalocs <- sf_landmarks
+      }
+      else{
+        datalocs <- sf_landmarks %>% filter(theme == listing)
+      }
+    }
+    else{
+      datalocs <- get(input$statSO_locs)
+    }
+    
     if (input$statSO_localities == "Entire City of Melbourne"){
       localities <- melb_localities
       boundary <- melb_lga
-      loc_interest <- get(input$statSO_locs)
+      loc_interest <- datalocs
     }
     else {
       localities <- melb_localities %>% filter(LOC_NAME == input$statSO_localities)
       boundary <- localities
-      loc_interest <- st_intersection(get(input$statSO_locs), boundary)
+      loc_interest <- st_intersection(datalocs, boundary)
+    }
+    
+    if (nrow(loc_interest) == 0){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$statSO_localities, "has no spatial points to be analysed. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
+    }
+    else if (nrow(loc_interest) == 1){
+      if (!is.null(id))
+        removeNotification(id)
+      id <<- NULL    
+      
+      showNotification(paste(listing, "in", input$statSO_localities, "has only one spatial points to be analysed and is insufficient for the analysis. The analysis has been terminated."), duration = 0, type = "warning")
+      return()
     }
     
     # CONVERT TO PPP
@@ -942,7 +1275,7 @@ server <- function(input, output) {
                                    <br><br>
                                    <p> This project is done for IS415 Geospatial Analytics & Application under the guidance of Professor Kam Tin Seong </p>
                                    <br>
-                                   <img src = 'smu.png' width = 50%, height = 50%>"))
+                                   <img src = 'smu.png' width = 70%, height = 70%>"))
     
     output$netKDEExpaliner <- renderUI(HTML("
                                             <h3> To begin your analysis, you will start by </h3>
