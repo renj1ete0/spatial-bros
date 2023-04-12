@@ -62,7 +62,7 @@ boundary
 ```{r}
 test3 <- localities %>% filter(LOC_NAME == "Flemington")
 
-test2 <- st_intersection(boundary, localities)
+test2 <- st_intersection(boundary, test)
 ```
 
 ```{r}

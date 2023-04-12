@@ -70,6 +70,111 @@ ui <- fluidPage(theme = shinytheme("darkly"),
         # 2nd Tab
         tabPanel("Data Exploration",
                  titlePanel("Data Exploration"),
+                 tabsetPanel(type = "tabs",
+                             tabPanel("Introduction",
+                             ),
+                             tabPanel("Network",
+                                      sidebarLayout(
+                                        mainPanel(
+                                          tmapOutput("DataExpMapNet", width = "100%", height = "700")
+                                        ),
+                                        sidebarPanel(
+                                          h4("Network Kernel Density Estimation Variable Inputs"),
+                                          h5("Network and Spatial Points"),
+                                          selectInput(inputId = "datanetlocalities",
+                                                      label = "Localities",
+                                                      choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
+                                                                     "Carlton" = "Carlton",
+                                                                     "Carlton North" = "Carlton North",
+                                                                     "Docklands" = "Docklands",
+                                                                     "East Melbourne" = "East Melbourne",
+                                                                     "Flemington" = "Flemington",
+                                                                     "Kensington" = "Kensington",
+                                                                     "Melbourne" = "Melbourne",
+                                                                     "North Melbourne" = "North Melbourne",
+                                                                     "Parkville" = "Parkville",
+                                                                     "Port Melbourne" = "Port Melbourne",
+                                                                     "South Wharf" = "South Wharf",
+                                                                     "South Yarra" = "South Yarra",
+                                                                     "Southbank" = "Southbank",
+                                                                     "West Melbourne" = "West Melbourne"
+                                                      )),
+                                          selectInput(inputId = "datanetnetwork_type",
+                                                      label = "Types of Network",
+                                                      choices = list("Road Network" = "net_road",
+                                                                     "Pedestrian Network" = "net_ped",
+                                                                     "Tram Network" = "net_tram")),
+                                          
+                                          actionButton("DataNet", "Generate Map and Data Table"),
+                                          
+                                          h5("Please note: The map and data will take a few moments to generate after clicking the button."),
+                                          
+                                        ),
+                                        
+                                      ),
+                                      
+                                      br(),
+                                      h3("Data Table"),
+                                      hr(),
+                                      h5("Results will be shown in the table below if dataset is selected."),
+                                      dataTableOutput('DataExpTabNet')
+                                      
+                                      
+                                       
+                                      
+                                      
+                                      
+                             ),
+                             tabPanel("Spatial Points",
+                                      sidebarLayout(
+                                        mainPanel(
+                                          tmapOutput("DataExpMapSpat", width = "100%", height = "700")
+                                        ),
+                                        sidebarPanel(
+                                          h4("Network Kernel Density Estimation Variable Inputs"),
+                                          h5("Network and Spatial Points"),
+                                          selectInput(inputId = "dataspatlocalities",
+                                                      label = "Localities",
+                                                      choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
+                                                                     "Carlton" = "Carlton",
+                                                                     "Carlton North" = "Carlton North",
+                                                                     "Docklands" = "Docklands",
+                                                                     "East Melbourne" = "East Melbourne",
+                                                                     "Flemington" = "Flemington",
+                                                                     "Kensington" = "Kensington",
+                                                                     "Melbourne" = "Melbourne",
+                                                                     "North Melbourne" = "North Melbourne",
+                                                                     "Parkville" = "Parkville",
+                                                                     "Port Melbourne" = "Port Melbourne",
+                                                                     "South Wharf" = "South Wharf",
+                                                                     "South Yarra" = "South Yarra",
+                                                                     "Southbank" = "Southbank",
+                                                                     "West Melbourne" = "West Melbourne"
+                                                      )),
+                                          selectInput(inputId = "dataspatlocs",
+                                                      label = "Location of Interest",
+                                                      choices = list("Childcare Centres" = "sf_childcare",
+                                                                     "Business Establishments" = "sf_business",
+                                                                     "Drinking Fountain" = "sf_drinking_fountain",
+                                                                     "Landmarks" = "sf_landmarks",
+                                                                     "Public Toilets" = "sf_pub_toilets")),
+
+                                          actionButton("DataSpat", "Generate Map and Data Table"),
+                                          
+                                          h5("Please note: The map and data will take a few moments to generate after clicking the button."),
+                                          
+                                        ),
+                                        
+                                      ),      
+                                      br(),
+                                      h3("Data Table"),
+                                      hr(),
+                                      h5("Results will be shown in the table below if dataset is selected."),
+                                      dataTableOutput('DataExpTabSpat')
+                                      
+                             ),
+                             
+                 ),
         ),
         
         tabPanel("Spatial Point Pattern Analysis",
@@ -99,7 +204,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                   tabPanel("Network Kernel Density Estimation", 
                     sidebarLayout(
                       mainPanel(
-                        tmapOutput("mapPlot", width = "100%", height = "780")
+                        tmapOutput("mapPlot", width = "100%", height = "700")
                       ),
                       sidebarPanel(
                         h4("Network Kernel Density Estimation Variable Inputs"),
@@ -127,7 +232,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                     choices = list("Road Network" = "net_road",
                                                    "Pedestrian Network" = "net_ped",
                                                    "Tram Network" = "net_tram")),
-                        selectInput(inputId = "location_of_interest",
+                        selectInput(inputId = "locs",
                                     label = "Location of Interest",
                                     choices = list("Childcare Centres" = "sf_childcare",
                                                    "Business Establishments" = "sf_business",
@@ -228,10 +333,89 @@ server <- function(input, output) {
       tm_borders(lwd = 2, lty = 5,  col="blue") 
   })
   
+  output$DataExpMapNet <- renderTmap({
+    tm_shape(melb_localities) +
+      tm_polygons("LOC_NAME", alpha=0.1) +
+      tm_shape(melb_lga) +
+      tm_borders(lwd = 2, lty = 5,  col="blue") 
+  })
+  
+  output$DataExpMapSpat <- renderTmap({
+    tm_shape(melb_localities) +
+      tm_polygons("LOC_NAME", alpha=0.1) +
+      tm_shape(melb_lga) +
+      tm_borders(lwd = 2, lty = 5,  col="blue") 
+  })
+  
+  #DATA EXPLORATION
+  
+  observeEvent(input$DataNet, {
+    id <<- showNotification(paste("Generating Map and Data table..."), duration = 0, type = "message", closeButton=FALSE)
+    if (input$datanetlocalities == "Entire City of Melbourne"){
+      localities <- melb_localities
+      boundary <- melb_lga
+      network_type <- get(input$datanetnetwork_type)
+    }
+    else {
+      localities <- melb_localities %>% filter(LOC_NAME == input$datanetlocalities)
+      boundary <- localities
+      network_type <- st_intersection(get(input$datanetnetwork_type), boundary) %>% st_cast("LINESTRING")
+      
+    }
+    
+    output$DataExpMapNet <- renderTmap({
+      tm_shape(localities) +
+        tm_polygons("LOC_NAME", alpha=0.1) +
+        tm_shape(boundary) +
+        tm_borders(lwd = 2.5, lty = 5,  col="blue") +
+        tm_shape(network_type) +
+        tm_lines(lwd = 1.5)
+    })
+    
+    output$DataExpTabNet <- renderDataTable(network_type)
+    
+    if (!is.null(id))
+      removeNotification(id)
+    id <<- NULL    
+    
+  })
+  
+  observeEvent(input$DataSpat, {
+    id <<- showNotification(paste("Generating Map and Data table..."), duration = 0, type = "message", closeButton=FALSE)
+    if (input$dataspatlocalities == "Entire City of Melbourne"){
+      localities <- melb_localities
+      boundary <- melb_lga
+      loc_interest <- get(input$dataspatlocs)
+    }
+    else {
+      localities <- melb_localities %>% filter(LOC_NAME == input$dataspatlocalities)
+      boundary <- localities
+      loc_interest <- st_intersection(get(input$dataspatlocs), boundary)
+    }
+    
+    output$DataExpMapSpat <- renderTmap({
+      tm_shape(localities) +
+        tm_polygons("LOC_NAME", alpha=0.1) +
+        tm_shape(boundary) +
+        tm_borders(lwd = 2.5, lty = 5,  col="blue") +
+        tm_shape(loc_interest)+ 
+        tm_dots(size = 0.03, alpha = 0.6) 
+    })
+    
+    output$DataExpTabSpat <- renderDataTable(loc_interest)
+    
+    if (!is.null(id))
+      removeNotification(id)
+    id <<- NULL    
+    
+  })
+  
+  
+  
   observeEvent(input$netKDEGenerateStats, {
     id <<- showNotification(paste("Calculating Statisical Results..."), duration = 0, type = "message", closeButton=FALSE)
     
-    if (input$agg){
+    if (input$agg == 0){
       agg <- NULL
     }
     else{
@@ -246,7 +430,8 @@ server <- function(input, output) {
                                width = 50, 
                                nsim = input$n_sims, 
                                resolution = 50,
-                               verbose = FALSE, 
+                               verbose = FALSE,
+                               agg = agg,
                                conf_int = 0.05)
     
     output$kfun <- renderPlotly({kfun_output$plotk})
@@ -287,7 +472,7 @@ server <- function(input, output) {
                                       tol = 1,
                                       grid_shape = c(1,1), 
                                       max_depth = 8,
-                                      agg = agg,
+                                      agg = 10,
                                       sparse = TRUE,
                                       verbose = FALSE)
     road_samples_cc$density <- road_network_cc_densities * 1000
