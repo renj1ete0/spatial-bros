@@ -18,3 +18,6 @@ For each of the analyses, the application will provide users with kernel density
 ## Contents
 
 1.  [Project Proposal](/proposal.html)
+2.  Project Poster
+3.  [Interactive Shiny Application](https://renjieteo.shinyapps.io/SpatialBros/)
+4.  Practice Research Paper
