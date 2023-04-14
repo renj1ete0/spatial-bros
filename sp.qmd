@@ -1,4 +1,5 @@
 ---
+x`---
 title: "Project: Spatial Bros"
 description: "Exploring 1st and 2nd Order Spatial Point Analysis"
 author: "Spatial Bros"
@@ -331,4 +332,17 @@ plot(kde_landmMB_adaptive)
 ```{r}
 kde_pubtoilet_adaptive <- adaptive.density(public_toilets_melb_ppp.km, method = "kernel")
 plot(kde_pubtoilet_adaptive)
+```
+
+```{r}
+  kde.grid <- as.SpatialGridDataFrame.im(kde_pubtoilet_adaptive)
+  kde_raster <- raster(kde.grid)
+kde.grid <- CRS(SRS_string = "EPSG:7855")
+tm_shape(kde_raster) +
+  tm_raster("v")
+
+```
+
+```{r}
+kde.grid
 ```
