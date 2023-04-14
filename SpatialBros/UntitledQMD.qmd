@@ -1,3 +1,8 @@
+---
+execute:
+  eval: false
+---
+
 ```{r}
 install.packages("sf_1.0-9.tar.gz", repos = NULL, type="source")
 library(shiny)

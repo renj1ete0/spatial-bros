@@ -1,6 +1,8 @@
 ---
 title: "NKDE_Consolidation"
 editor: visual
+execute:
+  enabled: false
 ---
 
 # Preparing the lixels objects

@@ -1,5 +1,4 @@
 ---
-x`---
 title: "Project: Spatial Bros"
 description: "Exploring 1st and 2nd Order Spatial Point Analysis"
 author: "Spatial Bros"
@@ -8,7 +7,7 @@ number-sections: true
 categories: ["spatial point analysis"]
 title-block-banner: true
 execute:
-  eval: true
+  eval: false
   echo: true
   warning: false
 ---

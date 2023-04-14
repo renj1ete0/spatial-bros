@@ -217,11 +217,26 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                  hr(),
                    tabsetPanel(type = "tabs",
                                tabPanel("Introduction",
+                                        fluidRow(
+                                          column(6,
+                                                 h2("Welcome to the Spatial Point Pattern Analysis!"),
+                                                 hr(),
+                                                 uiOutput("introkde")                         
+                                                 
+                                          ),
+                                          column(6,
+                                                 h2(),
+                                                 imageOutput("introKDEinfo")),
+                                        ),
                                ),             
                                tabPanel("1st Order Spatial Point Pattern Analysis",
                                         sidebarLayout(
                                           mainPanel(
-                                            tmapOutput("mapFOKDE", width = "100%", height = "700")
+                                            tmapOutput("mapFOKDE", width = "100%", height = "700"),
+                                            h3("Clark and Evans Test"),
+                                            hr(),
+                                            h5("Results will be shown in the block below if analysis has been run."),
+                                            verbatimTextOutput("clark"),
                                           ),
                                           sidebarPanel(
                                             shinyjs::useShinyjs(),
@@ -285,10 +300,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                           ),
                                           
                                         ),
-                                        h3("Clark and Evans Test"),
-                                        hr(),
-                                        h5("Results will be shown in the block below if analysis has been run."),
-                                        verbatimTextOutput("clark"),
+                                        uiOutput("sppastuff"),
                                         
                                ),
                                tabPanel("2nd Order Spatial Point Pattern Analysis",
@@ -343,7 +355,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                            h5("Please note: The analysis will take a few minutes to generate after clicking the button."),                                         ),
                                          
                                        ),
-
+                                       uiOutput("KDEstats"),
+                                       
                                               
                                         
                                ),
@@ -360,7 +373,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                   tabPanel("Introduction",
                            fluidRow(
                              column(6,
-                                    h2("Welcome to the Network Constrained Point Pattern Analysis Page!"),
+                                    h2("Welcome to the Network Constrained Point Pattern Analysis!"),
                                     hr(),
                                     uiOutput("introductiondescription")                         
                                     
@@ -1072,7 +1085,7 @@ server <- function(input, output, session) {
     
     # CLARK EVANS
     
-    output$clark <- renderPrint(clarkevans.test(loc_interest.ppp, correction="none", clipregion = NULL, alternative=c("two.sided"), nsim=input$kde_confidence))
+    output$clark <- renderPrint(clarkevans.test(loc_interest.ppp, correction="none", clipregion = NULL, alternative=c("two.sided"), nsim=as.integer(input$kde_confidence)))
     
     if (!is.null(id))
       removeNotification(id)
@@ -1218,6 +1231,15 @@ server <- function(input, output, session) {
     },
     deleteFile = F)
     
+    output$introKDEinfo <- renderImage({
+      list(src = "www/SPPAIntro.png",
+           width = "100%",
+           height = "auto",
+           align = 'center')
+    },
+    deleteFile = F)
+    
+    
     
     # Home page UI
     output$projectMotivation <- renderUI(HTML("<h4> In today’s technological advancing world, there are many useful and interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geographical Geospatial data sets the foundation based on the geographical boundary locations and the Aspatial data are the records of observation that can be further prepared to be used to derive meaningful insights. 
@@ -1281,7 +1303,7 @@ server <- function(input, output, session) {
                                             <p>Lixels are point samples along existing network lines to calculate the density of points near the region. 'Length of Lixel' defines the typical length between such point and 'Min. Lixel Length' defines the minimum if the typical length cannot be fufilled.</p>
                                             <h4>Kernel Density Estimation Methods</h4>
                                             <p>An inforgraphic has been prepared below:</p>
-                                            <img src='KernelDensity.png' height='50%'>
+                                            <img src='KernelDensity.png' width='50%'>
                                                                                   "))
     output$netStatsExplainerp1 <- renderUI(HTML("
     <h3> Statistical Functions - G & K </h3>
@@ -1307,6 +1329,9 @@ server <- function(input, output, session) {
     <h3>Interpreting the Results</h3>
     <hr>
     <img src='g&kexample.png' height='600'>
+        <br>
+    <p>Observed values - Black Line</p>
+
     <p>Upper plot - K function, lower plot - G function, the plot is interactive, you may mouse over at various points in the graph to inspect the exact values </p>
     <p>Hypothesis:</p>
     <p>H0: The distribution of spatial points are randomly distributed</p>
@@ -1329,40 +1354,35 @@ server <- function(input, output, session) {
                                                 "))
     
     output$introductiondescription <- renderUI(HTML(
-      "<h3> Here are a few easy steps to start your analysis!</h3>
-    <ol>
-      <li>Select your choice of network</li>
-      <li>Select your location of interest</li>
-      <li>Select your start value in (metres). We will recommend you to start with 0 to begin.</li>
-      <li>Select your end value in (metres). We will recommend you to end with 500 metres to begin.</li>
-      <li>Select your number of simulations. We will recommend you to start with 50 simulations to begin.</li>
-      <li>Select your aggregate value. We will recommend you to start with 0 to begin.</li>
-      <li>Click on 'Generate Statistical Results' and you are ready to go!</li>
-    </ol>
-    <h3>Interpreting the Results</h3>
+      "<h4> You will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
+    <h4> There are 2 types of analysis that you can perform</h4>
+      <ol> 
+        <li> Network Kernel Density Estimation </li>
+        <li> G & K Function Analysis </li>
+      </ol>
+    <h4> For each of the analysis, we offer you the options of selecting </h4>
+      <ol> 
+        <li> Road Network </li>
+        <li> Pedestrian Network </li>
+        <li> Tram Network </li>
+      </ol>
+    <h4> In addition you are allowed to pick your location of interest such as</h4>
+      <ol> 
+        <li> Childcare Centres </li>
+        <li> Business Establishments </li>
+        <li> Drinking Fountains </li>
+        <li> Landmarks </li>
+        <li> Public Toilets </li>
+      </ol>
+    <h3> Benefits of performing Network Constrained Point Pattern Analysis </h3>
     <hr>
-    <img src='g&kexample.png' height='600' width='100%'>
-    <p>Upper plot - K function, lower plot - G function, the plot is interactive, you may mouse over at various points in the graph to inspect the exact values </p>
-    <p>Hypothesis:</p>
-    <p>H0: The distribution of spatial points are randomly distributed</p>
-    <p>H1: The distribution of spatial points are not randomly distributed</p>
-    <br>
-    <p> The grey area represents the function ‘envelope’. The ‘blue’ line represents the empirical function value </p>
-    <p> In the event if the observed value is above the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a <b>clustered distribution<b?</p>
-    <p> In the event if the observed value is below the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a <b>dispersed distribution</b> </p>
-    <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis (H1) as the value is not statistically significant. We can conclude the spatial points resemble a <b>random distribution</b></p>
-    <p> Note: the distances relates to the distance at which the spatial points exhibits a certain pattern</p>
-    <h3>Key Function FAQ</h3>
-    <hr>
-    <h4>Start/End</h4>
-    <p>Distances for statistical analysis to be run and plotted</p>
-    <h4>Number of Simulations</h4>
-    <p>How many simulations to run the statistical analysis. The more simulations, the more accurate the results will be.</p>
-    <h4>Aggregate Value</h4>
-    <p>Points within that radius will be aggregated (in metres)</p>
-    <p>o - Null (no aggregation) | >0 - Aggregation of points</p>
-                                                "))    
-    
+        <ol> 
+          <li> Accurate analysis: Network Constrained Point Pattern Analysis provides more accurate results compared to traditional point pattern analysis because it accounts for the underlying transportation network. This is particularly important in areas where the transportation network is dense and complex. </li> <br>
+          <li> Better decision-making: Network Constrained Point Pattern Analysis can provide insights into how the network infrastructure affects the spatial distribution of points, which can be valuable for decision-making related to urban planning, transportation planning, and public policy </li> <br>
+          <li> Improved resource allocation: Network Constrained Point Pattern Analysis can help optimize the allocation of resources, such as improving the accessibility to more drinking fountains/public toilets, by identifying areas with high concentrations of points and areas that are more accessible by the transportation network. </li>
+      </ol>
+"))
+      
     output$IntroData <- renderUI(HTML(
       "<h3> Welcome to Data Exploration</h3>
       <hr>
@@ -1392,6 +1412,120 @@ server <- function(input, output, session) {
       <li>Click on 'Generate Map and Data Table' and you are ready to go!</li>
     </ol>
                                                 "))    
+    
+    output$introkde <- renderUI(HTML(
+      "<h4> You will be able to perform spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
+    <p> There are 2 types of analysis that you can perform </p>
+      <ol> 
+        <li> Kernel Density Estimation </li>
+        <li> G & K Function Analysis </li>
+      </ol>
+    <p> For each of the analysis, we offer you the options of selecting </p>
+      <ol> 
+        <li> Childcare Centres </li>
+        <li> Business Establishments </li>
+        <li> Drinking Fountains </li>
+        <li> Landmarks </li>
+        <li> Public Toilets </li>
+      </ol>
+    <h3> Benefits of performing Spatial Point Pattern Analysis </h3>
+    <hr>
+    <p> 
+        <ol> 
+          <li>Statistical benefits: Spatial Point Pattern Analysis helps to identify and statistically conclude the underlying spatial patterns in data and detect clustering or disperson of points over traditional point pattern analysis. </li> <br>
+          <li> Better decision-making: Spatial Point Pattern Analysis can provide insights of the spatial distribution of points, which can be valuable for decision-making related to urban planning, and public policy </li> <br>
+      </ol>
+    </p>"))
+    
+    
+    output$KDEstats <- renderUI(HTML("
+    <h3>2nd Order Spatial Point Pattern Analysis and Statistical Functions - G & K </h3>
+    <hr>
+    <p>2nd Spatial Point Pattern Analysis analyses effects of interaction between point pattern events.</p>
+    <img src='gkpicture.png' height='300'>
+    <p>The G / K-function is a method used in spatial Point Pattern Analysis (PPA) to inspect the spatial distribution of a set of points. It allows the user to assess if the set of points is more or less clustered that what we could expect from a given distribution. </p>
+    <p> Most of the time, the set of point is compared with a random distribution.
+    The empirical K-function for a specified radius r is calculated with the following formula listed: <a href ='https://www.rdocumentation.org/packages/spatstat/versions/1.64-1/topics/Gest'> G Function </a> <a href ='https://www.rdocumentation.org/packages/spatstat/versions/1.64-1/topics/Kest'> K Function </a> </p>
+    <p> Basically, the K-function calculates for a radius r the proportion of cells with a value below r in the distance matrix between all the points Dij. In other words, the K-function estimates the average number of neighbours of a typical random point </p>
+    <p> A modified version of the K-function is the G-function (Pair Correlation Function). The regular K-function is calculated for subsequent disks with increasing radii and thus is cumulative in nature. The G-function uses rings instead of disks and permits the analysis of the points concentrations at different geographical scales. </p>
+      <ol>
+      <li>Select your location of interest</li>
+      <li>Select your start value in (metres). We will recommend you to start with 0 to begin.</li>
+      <li>Select your end value in (metres). We will recommend you to end with 500 metres to begin.</li>
+      <li>Select the confidence level to perfom the statistical testing.</li>
+      <li>Click on 'Generate Analysis' and you are ready to go!</li>
+    </ol>
+    <h3>Interpreting the Results</h3>
+    <hr>
+    <img src='gkKDEeg.png' height='600'>
+    <br>
+    <p>Observed values - Black Line</p>
+    <p>Upper plot - K function, lower plot - G function, the plot is interactive, you may mouse over at various points in the graph to inspect the exact values </p>
+    <p>Hypothesis:</p>
+    <p>H0: The distribution of spatial points are randomly distributed</p>
+    <p>H1: The distribution of spatial points are not randomly distributed</p>
+    <br>
+    <p> The grey area represents the function ‘envelope’. The ‘blue’ line represents the empirical function value </p>
+    <p> In the event if the observed value is above the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a <b>clustered distribution<b?</p>
+    <p> In the event if the observed value is below the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a <b>dispersed distribution</b> </p>
+    <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis (H1) as the value is not statistically significant. We can conclude the spatial points resemble a <b>random distribution</b></p>
+    <p> Note: the distances relates to the distance at which the spatial points exhibits a certain pattern</p>
+    <h3>Key Function FAQ</h3>
+    <hr>
+    <h4>Start/End</h4>
+    <p>Distances for statistical analysis to be run and plotted</p>
+    <h4>Confidence Level</h4>
+    <p>How many simulations to run the statistical analysis. The number of simulations are mapped as follows: </p>
+    <p>95% - 39 | 99% - 199 | 99.9% - 1999</p>
+    <p>Given by the following formula: alpha = 2 * nrank / (1 + nsim) where nrank = 1</p>
+    <p>95% and 99% are typical confidence levels used</p> 
+                                     "))
+    
+    output$sppastuff <- renderUI(HTML("
+                                            <h3>Kernel Density Estimation Map and 1st Order Spatial Point Pattern Analysis</h3>
+                                            <hr>
+                                            <p>1st Spatial Point Pattern Analysis analyses point pattern events and its effects with the environment. We provide several point pattern (such as Business Establishment, Drinking Fountains) options to explore the effects of spatial point patterns and densities. These could be used to investigate the density of point patterns, such as the amount of drinking fountains to inform the planning and installing of more drinking fountains.</p>
+                                            <h3> To begin your analysis, you can start by </h3>
+                                            <ol>
+                                              <li>Select your choice of locality</li>
+                                              <li>Select your location of interest and subcategories/theme if required</li>
+                                              <li>Select your kernel of choice</li>
+                                              <li>Select your method of choice</li>
+                                              <li>Click on 'Generate KDE Map' and you are ready to go!</li>
+                                            </ol>
+                                            <h3>Interpeting the Results</h3>
+                                            <hr>
+                                            <img src='sppa.png' height='600'>
+                                            <br>
+                                            <p> A legend will be shown at the top right side of the map. The colour shade intensity of the network will get darker if there is a higher relative density of spatial points specified (location of interest).</p>
+                                            <p> On contrary, if the colour shade intensity of the network is lighter, it represents a lower relative density alongside the network</p>
+                                            <p> The 'Clark and Evans Test' is a nearest neighbour test to analyse and statistically conclude point pattern events and its effects with the environment.
+                                            <br>
+                                            <p>Hypothesis:</p>
+                                            <p>H0: The distribution of spatial points are randomly distributed</p>
+                                            <p>H1: The distribution of spatial points are not randomly distributed</p>
+                                            <br>
+                                            <p> If the p-value is less than the alpha of the confidence selected (ie. alpha will be 0.05 if confidence selected is 95%), we reject H0 (null hypothesis) that the spatial points are randomly distributed</p>
+                                            <p> If the p-value is more than the alpha of the confidence selected (ie. alpha will be 0.05 if confidence selected is 95%), we cannot reject H0 (null hypothesis) that the spatial points are randomly distributed</p>
+                                            <p> If H0 is rejected:</p>
+                                            <p> In the event if the R < 1, we We can conclude that the spatial points resemble a <b>clustered distribution<b?</p>
+                                            <p> In the event if the R > 1, we can conclude that the spatial points resemble a <b>dispersed distribution</b> </p>
+                                            <h3>Key Function FAQ</h3>
+                                            <hr>
+                                            <h4>Confidence Level</h4>
+                                            <p>How many simulations to run the statistical analysis. The number of simulations are mapped as follows: </p>
+                                            <p>95% - 39 | 99% - 199 | 99.9% - 1999</p>
+                                            <p>Given by the following formula: alpha = 2 * nrank / (1 + nsim) where nrank = 1</p>
+                                            <p>95% and 99% are typical confidence levels used</p> 
+                                            
+                                            <h4>Kernel Density Estimation Methods</h4>
+                                            <h5>Bandwidth Type</h5>
+                                            <p>Fixed: Appropriate bandwidth will be selected by algorithm to generate Kernel Density Estimate</p>
+                                            <p>Adaptive: Appropriate bandwidth will be selected by algorithm to generate Kernel Density Estimate. Adaptive kernel is suitable to provide a smoother estimate when dealing with varying spatial point distributions. An example could be urban vs rural typologies where urban may have more spatial points over rural.</p><br>
+                                            <img src='sppakernel.png' width='50%'>
+                                                                                  "))
+    
+    
     
     
     
