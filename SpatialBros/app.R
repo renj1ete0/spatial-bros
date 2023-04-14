@@ -1190,12 +1190,6 @@ server <- function(input, output, session) {
     
   })
   
-  
-  
-  
-  
-  
-  
     # Images
     output$childcare_image <- renderImage({
       list(src = "www/examplechildcare.png",
@@ -1206,7 +1200,7 @@ server <- function(input, output, session) {
     deleteFile = F)
     
     output$introductionKernel <- renderImage({
-      list(src = "www/KernelDensity.png",
+      list(src = "www/NSPPAInfo.png",
            width = "auto",
            height = "auto",
            align = 'center')
