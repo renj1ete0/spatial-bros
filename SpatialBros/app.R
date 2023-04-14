@@ -40,6 +40,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
         tags$head(tags$style(
           type="text/css",
           "#childcare_image img {max-width: 100%; width: 100%; height: auto}",
+          "#introductionkernel img {max-width: 100%; width: 100%; height: auto}",
           ".navbar {background-color: rgb(48, 48, 48)}",
           " #clark{
                       color: grey;
@@ -101,8 +102,7 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                  hr(),
                  tabsetPanel(type = "tabs",
                              tabPanel("Introduction",
-                                      
-                                      
+                                      uiOutput("IntroData"),
                              ),
                              tabPanel("Network",
                                       sidebarLayout(
@@ -110,8 +110,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                           tmapOutput("DataExpMapNet", width = "100%", height = "700")
                                         ),
                                         sidebarPanel(
-                                          h4("Network Kernel Density Estimation Variable Inputs"),
-                                          h5("Network and Spatial Points"),
+                                          h4("Data Exploration Variable Inputs"),
+                                          h5("Network"),
                                           selectInput(inputId = "datanetlocalities",
                                                       label = "Localities",
                                                       choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
@@ -163,8 +163,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                         ),
                                         sidebarPanel(
                                           shinyjs::useShinyjs(),
-                                          h4("Network Kernel Density Estimation Variable Inputs"),
-                                          h5("Network and Spatial Points"),
+                                          h4("Data Exploration Variable Inputs"),
+                                          h5("Spatial Points"),
                                           selectInput(inputId = "dataspatlocalities",
                                                       label = "Localities",
                                                       choices = list("Entire City of Melbourne" = "Entire City of Melbourne",
@@ -185,8 +185,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                       )),
                                           selectInput(inputId = "dataspatlocs",
                                                       label = "Location of Interest",
-                                                      choices = list("Childcare Centres" = "sf_childcare",
-                                                                     "Business Establishments" = "sf_business",
+                                                      choices = list("Business Establishments" = "sf_business",
+                                                                     "Childcare Centres" = "sf_childcare",
                                                                      "Drinking Fountain" = "sf_drinking_fountain",
                                                                      "Landmarks" = "sf_landmarks",
                                                                      "Public Toilets" = "sf_pub_toilets")),
@@ -247,8 +247,8 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                         )),
                                             selectInput(inputId = "kde_locs",
                                                         label = "Location of Interest",
-                                                        choices = list("Childcare Centres" = "sf_childcare",
-                                                                       "Business Establishments" = "sf_business",
+                                                        choices = list("Business Establishments" = "sf_business",
+                                                                       "Childcare Centres" = "sf_childcare",
                                                                        "Drinking Fountain" = "sf_drinking_fountain",
                                                                        "Landmarks" = "sf_landmarks",
                                                                        "Public Toilets" = "sf_pub_toilets")),
@@ -321,8 +321,9 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                        )),
                                            selectInput(inputId = "statSO_locs",
                                                        label = "Location of Interest",
-                                                       choices = list("Childcare Centres" = "sf_childcare",
+                                                       choices = list(
                                                                       "Business Establishments" = "sf_business",
+                                                                      "Childcare Centres" = "sf_childcare",
                                                                       "Drinking Fountain" = "sf_drinking_fountain",
                                                                       "Landmarks" = "sf_landmarks",
                                                                       "Public Toilets" = "sf_pub_toilets")),
@@ -408,8 +409,9 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                    "Tram Network" = "net_tram")),
                         selectInput(inputId = "locs",
                                     label = "Location of Interest",
-                                    choices = list("Childcare Centres" = "sf_childcare",
+                                    choices = list(
                                                    "Business Establishments" = "sf_business",
+                                                   "Childcare Centres" = "sf_childcare",
                                                    "Drinking Fountain" = "sf_drinking_fountain",
                                                    "Landmarks" = "sf_landmarks",
                                                    "Public Toilets" = "sf_pub_toilets")),
@@ -482,8 +484,9 @@ ui <- fluidPage(theme = shinytheme("darkly"),
                                                         "Tram Network" = "net_tram")),
                              selectInput(inputId = "netstatlocs",
                                          label = "Location of Interest",
-                                         choices = list("Childcare Centres" = "sf_childcare",
+                                         choices = list(
                                                         "Business Establishments" = "sf_business",
+                                                        "Childcare Centres" = "sf_childcare",
                                                         "Drinking Fountain" = "sf_drinking_fountain",
                                                         "Landmarks" = "sf_landmarks",
                                                         "Public Toilets" = "sf_pub_toilets")),
@@ -1201,7 +1204,7 @@ server <- function(input, output, session) {
     
     output$introductionKernel <- renderImage({
       list(src = "www/NSPPAInfo.png",
-           width = "auto",
+           width = "100%",
            height = "auto",
            align = 'center')
     },
@@ -1326,38 +1329,71 @@ server <- function(input, output, session) {
                                                 "))
     
     output$introductiondescription <- renderUI(HTML(
-    "<h5> You will be able to perform network constrained spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network for City of Melbourne, Australia! </h4>
-    <h5> There are 2 types of analysis that you can perform
-      <ol> 
-        <li> Network Kernel Density Estimation </li>
-        <li> G & K Function Analysis </li>
-      </ol>
-    </h5>
-    <h5> For each of the analysis, we offer you the options of selecting 
-      <ol> 
-        <li> Road Network </li>
-        <li> Pedestrian Network </li>
-        <li> Tram Network </li>
-      </ol>
-    </h5>
-    <h5> In addition you are allowed to pick your location of interest such as
-      <ol> 
-        <li> Childcare Centres </li>
-        <li> Business Establishments </li>
-        <li> Drinking Fountains </li>
-        <li> Landmarks </li>
-        <li> Public Toilets </li>
-      </ol>
-    </h5>
-    <h2> Benefits of performing Network Constrained Point Pattern Analysis </h2>
+      "<h3> Here are a few easy steps to start your analysis!</h3>
+    <ol>
+      <li>Select your choice of network</li>
+      <li>Select your location of interest</li>
+      <li>Select your start value in (metres). We will recommend you to start with 0 to begin.</li>
+      <li>Select your end value in (metres). We will recommend you to end with 500 metres to begin.</li>
+      <li>Select your number of simulations. We will recommend you to start with 50 simulations to begin.</li>
+      <li>Select your aggregate value. We will recommend you to start with 0 to begin.</li>
+      <li>Click on 'Generate Statistical Results' and you are ready to go!</li>
+    </ol>
+    <h3>Interpreting the Results</h3>
     <hr>
-    <h5> 
-        <ol> 
-          <li> Accurate analysis: Network Constrained Point Pattern Analysis provides more accurate results compared to traditional point pattern analysis because it accounts for the underlying transportation network. This is particularly important in areas where the transportation network is dense and complex. </li> <br>
-          <li> Better decision-making: Network Constrained Point Pattern Analysis can provide insights into how the network infrastructure affects the spatial distribution of points, which can be valuable for decision-making related to urban planning, transportation planning, and public policy </li> <br>
-          <li> Improved resource allocation: Network Constrained Point Pattern Analysis can help optimize the allocation of resources, such as improving the accessibility to more drinking fountains/public toilets, by identifying areas with high concentrations of points and areas that are more accessible by the transportation network. </li>
-      </ol>
-    </h5>"))
+    <img src='g&kexample.png' height='600' width='100%'>
+    <p>Upper plot - K function, lower plot - G function, the plot is interactive, you may mouse over at various points in the graph to inspect the exact values </p>
+    <p>Hypothesis:</p>
+    <p>H0: The distribution of spatial points are randomly distributed</p>
+    <p>H1: The distribution of spatial points are not randomly distributed</p>
+    <br>
+    <p> The grey area represents the function ‘envelope’. The ‘blue’ line represents the empirical function value </p>
+    <p> In the event if the observed value is above the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a <b>clustered distribution<b?</p>
+    <p> In the event if the observed value is below the envelope, we can reject the null hypothesis (H0) as the value is statistically significant. We can conclude that the spatial points resemble a <b>dispersed distribution</b> </p>
+    <p> On contrary, if the observed value is inside the envelope, we cannot reject the null hypothesis (H1) as the value is not statistically significant. We can conclude the spatial points resemble a <b>random distribution</b></p>
+    <p> Note: the distances relates to the distance at which the spatial points exhibits a certain pattern</p>
+    <h3>Key Function FAQ</h3>
+    <hr>
+    <h4>Start/End</h4>
+    <p>Distances for statistical analysis to be run and plotted</p>
+    <h4>Number of Simulations</h4>
+    <p>How many simulations to run the statistical analysis. The more simulations, the more accurate the results will be.</p>
+    <h4>Aggregate Value</h4>
+    <p>Points within that radius will be aggregated (in metres)</p>
+    <p>o - Null (no aggregation) | >0 - Aggregation of points</p>
+                                                "))    
+    
+    output$IntroData <- renderUI(HTML(
+      "<h3> Welcome to Data Exploration</h3>
+      <hr>
+      <p> Here, you can explore the network and spatial point datasets in the City of Melbourne included in the interaction application.</p>
+      <h3>Included datasets</h3>
+      <hr>
+      <h4>Network</h4>
+      <ul>
+        <li>Road Network - City of Melbourne</li>
+        <li>Pedestrian Network - City of Melbourne</li>
+        <li>Tram Network - City of Melbourne</li>
+      </ul>
+      <h4>Spatial Points</h4>
+      <ul>
+        <li>Childcare Centres</li>
+        <li>Business Establishments - Sub-categories by Industry Name</li>  
+        <li>Drinking Fountains</li>
+        <li>Landmarks - Themes</li>
+        <li>Public Toilets</li>
+      </ul>
+      <h3> To start off:</h3>
+      <hr>
+    <ol>
+      <li>Select the Network / Spatial Points tab to explore network or spatial points</li>
+      <li>Select the localities</li>
+      <li>Select the location of interest and any specific themes or sub-categories if necessary</li>
+      <li>Click on 'Generate Map and Data Table' and you are ready to go!</li>
+    </ol>
+                                                "))    
+    
+    
     
 }
 
