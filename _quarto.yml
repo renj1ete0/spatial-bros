@@ -26,7 +26,7 @@ website:
         
   page-footer:
     background: dark
-    left: "Spatial Bros: Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility" 
+    left: "Spatial Bros: Exploring Spatial Point and Network-Constrained Spatial Point Analysis" 
     right: 
       - icon: github
         href: https://github.com/renjie-teo/spatial-bros

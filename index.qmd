@@ -1,6 +1,6 @@
 ---
 title: "Spatial Bros"
-description: "Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility"
+description: "Exploring Spatial Point and Network-Constrained Spatial Point Analysis"
 ---
 
 ## About the Project
@@ -9,12 +9,27 @@ The Spatial Bros is created to assist non-technical savvy users in performing ge
 
 Spatial Points Analysis
 
--   Network Constraint Spatial Point
+-   Network Constrained Spatial Point
+
+    -   Network Constrained Kernel Density Map
+
+    -   Network Constrained G/K Statistical Functions
 
 -   1st/2nd Order Spatial Point Pattern Analysis
 
-For each of the analyses, the application will provide users with kernel density maps, Geographical Accessibility maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.
+    -   Network Constrained Kernel Density Map
+
+    -   Network Constrained G/K Statistical Functions
+
+For each of the analyses, the application will provide users with kernel density maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.
+
+Some of the use cases could incldue
+
+...
 
 ## Contents
 
 1.  [Project Proposal](/proposal.html)
+2.  Project Poster
+3.  [Interactive Shiny Application](https://renjieteo.shinyapps.io/SpatialBros/)
+4.  Practice Research Paper
