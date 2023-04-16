@@ -30,6 +30,7 @@ Some of the use cases could incldue
 ## Contents
 
 1.  [Project Proposal](/proposal.html)
-2.  Project Poster
+2.  [Project Poster](https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20Poster.pdf)
 3.  [Interactive Shiny Application](https://renjieteo.shinyapps.io/SpatialBros/)
-4.  Practice Research Paper
+4.  [Practice Research Paper](https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20Research%20Report.pdf)
+5.  [User Guide](https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20User%20Guide.pdf)
