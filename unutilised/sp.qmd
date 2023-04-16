@@ -1,0 +1,347 @@
+---
+title: "Project: Spatial Bros"
+description: "Exploring 1st and 2nd Order Spatial Point Analysis"
+author: "Spatial Bros"
+date: "09/04/2023"
+number-sections: true
+categories: ["spatial point analysis"]
+title-block-banner: true
+execute:
+  eval: false
+  echo: true
+  warning: false
+---
+
+# Spatial Point Pattern Analysis
+
+## Project Overview
+
+Spatial Point Patterns Analysis.
+
+The spatial point event can be locations of childcare centre for example.
+
+More information with regards to data sources used for this project can be found at the [proposal](https://spatialbros.netlify.app/proposal.html#data-sources)
+
+## Installing the R packages
+
+In this project, x packages will be used
+
+```{r}
+pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr, dplyr, ggplot2, spatstat, maptools)
+```
+
+## Data Import and Preparation
+
+### Localities
+
+Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.
+
+```{r eval=FALSE}
+localities = st_read("data/geospatial/Localities", layer = "vic_localities") 
+#melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
+#melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
+
+```
+
+### Melbourne City's Local Government Areas
+
+Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.
+
+```{r}
+local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
+melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
+melbourne_local_government_areas <- st_transform(melbourne_local_government_areas, crs = 7855)
+```
+
+### Melbourne City's Business Establishments Spatial Point
+
+To retrieve only latest as of 2021 business establishments and is not vacant.
+
+```{r}
+business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021") %>% filter(trading_name != "Vacant")
+business_est_sp <- st_transform(business_est_sp, crs = 7855) 
+```
+
+### Melbourne City's Drinking Fountain Spatial Point
+
+```{r}
+drinking_fountain_sp <- st_read("data/geospatial/Drinking Fountain Spatial Point", layer = "drinking-fountains")
+drinking_fountain_sp <- st_transform(drinking_fountain_sp, crs = 7855)
+```
+
+### Melbourne City's Landmarks Spatial Point
+
+```{r}
+landmarks_sp <- st_read("data/geospatial/Landmarks Spatial Point", layer = "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor")
+landmarks_sp <- st_transform(landmarks_sp, crs = 7855)
+```
+
+### Melbourne City's Childcare Centres Spatial Point
+
+```{r}
+childcare_sp <- read_csv("data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv")
+
+```
+
+#### Creating a simple feature data frame from Childcare Centres Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's GDA2020 / MGA zone 55 -- EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+childcare_sp_sf <- st_as_sf(childcare_sp, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+```
+
+#### Converting to Spatial Point Data Frame
+
+```{r}
+childcare_spdf <- as(childcare_sp_sf, "Spatial")
+childcare_spdf
+```
+
+### Melbourne City's Public Toilets Spatial Point
+
+```{r}
+public_toilets_sp <- read_csv("data/geospatial/Public Toilets Spatial Point/public-toilets.csv")
+```
+
+#### Creating a simple feature data frame from Public Toilets Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's GDA2020 / MGA zone 55 -- EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+public_toilets_sp_sf <- st_as_sf(public_toilets_sp, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+```
+
+#### Converting to Spatial Point Data Frame
+
+```{r}
+public_toilets_spdf <- as(public_toilets_sp_sf, "Spatial")
+public_toilets_spdf
+```
+
+## Visualising the Geospatial Data
+
+### Melbourne City's Business Establishments
+
+```{r}
+tmap_mode("view")
+  tm_shape(business_est_sp) +
+  tm_dots("industry_anzsic4_description", size = 0.02, popup.vars = c("industry_anzsic4_description" = "industry_anzsic4_description"))
+```
+
+### Melbourne City's Childcare Centres
+
+```{r}
+tmap_mode("view")
+  tm_shape(childcare_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's Drinking Fountain
+
+```{r}
+tmap_mode('view')
+ tm_shape(drinking_fountain_sp) +
+ tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's Landmarks
+
+```{r}
+tmap_mode('view')
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's Public Toilets
+
+```{r}
+tmap_mode('view')
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+## First-Order Spatial Pointers Analysis
+
+Using spatstat, we will
+
+### Converting sf Dataframe to sp's Spatial\* Class
+
+```{r}
+business_est_gsp <- as_Spatial(business_est_sp)
+childcare_gsp <- as_Spatial(childcare_sp_sf)
+drinking_fountain_gsp <- as_Spatial(drinking_fountain_sp)
+landmarks_gsp <- as_Spatial(landmarks_sp)
+public_toilets_gsp <- as_Spatial(public_toilets_sp_sf)
+```
+
+### Converting sp's Spatial\* Class to Generic sp format
+
+```{r}
+business_est_spc <- as(business_est_gsp, "SpatialPoints")
+childcare_spc <- as(childcare_gsp, "SpatialPoints")
+drinking_fountain_spc <- as(drinking_fountain_gsp, "SpatialPoints")
+landmarks_spc <- as(landmarks_gsp, "SpatialPoints")
+public_toilets_spc <- as(public_toilets_gsp, "SpatialPoints")
+```
+
+### Converting Generic sp to spatstat's ppp format
+
+```{r}
+business_est_ppp <- as.ppp(business_est_spc)
+childcare_ppp <- as.ppp(childcare_spc)
+drinking_fountain_ppp <- as.ppp(drinking_fountain_spc)
+landmarks_ppp <- as.ppp(landmarks_spc)
+public_toilets_ppp <- as.ppp(public_toilets_spc)
+```
+
+### Handling Duplicated Points
+
+```{r}
+any(duplicated(business_est_ppp))
+any(duplicated(childcare_ppp))
+any(duplicated(drinking_fountain_ppp))
+any(duplicated(landmarks_ppp))
+any(duplicated(public_toilets_ppp))
+```
+
+### Finding duplicated events in Business Establishments
+
+```{r}
+multiplicity(business_est_ppp)
+sum(multiplicity(business_est_ppp) > 1)
+```
+
+Handling duplicated events using jitter to slightly offset them
+
+```{r}
+business_est_ppp_jit <- rjitter(business_est_ppp,
+                             retry = TRUE,
+                             nsim = 1,
+                             drop = TRUE)
+
+any(duplicated(business_est_ppp_jit))
+```
+
+### Creating OWIN Object
+
+```{r}
+melbourne_lga_spat <- as_Spatial(melbourne_local_government_areas)
+melbourne_lga_sp <- as(melbourne_lga_spat, "SpatialPolygons")
+melbourne_lga_owin <- as(melbourne_lga_sp, "owin")
+```
+
+```{r}
+plot(melbourne_lga_owin)
+
+summary(melbourne_lga_owin)
+```
+
+### Combining Point Events Object and owin Object
+
+```{r}
+business_est_jit_melb_ppp = business_est_ppp_jit[melbourne_lga_owin]
+childcare_melb_ppp = childcare_ppp[melbourne_lga_owin]
+drinking_fountai_melb_ppp = drinking_fountain_ppp[melbourne_lga_owin]
+landmarks_melb_ppp = landmarks_ppp[melbourne_lga_owin]
+public_toilets_melb_ppp = public_toilets_ppp[melbourne_lga_owin]
+```
+
+```{r}
+summary(business_est_jit_melb_ppp)
+summary(childcare_melb_ppp)
+summary(drinking_fountai_melb_ppp)
+summary(landmarks_melb_ppp)
+summary(public_toilets_melb_ppp)
+```
+
+```{r}
+plot(business_est_jit_melb_ppp)
+plot(childcare_melb_ppp)
+plot(drinking_fountai_melb_ppp)
+plot(landmarks_melb_ppp)
+plot(public_toilets_melb_ppp)
+```
+
+### Rescaling KDE Values to KM
+
+```{r}
+business_est_jit_melb_ppp.km <- rescale(business_est_jit_melb_ppp, 1000, "km")
+childcare_melb_ppp.km <- rescale(childcare_melb_ppp, 1000, "km")
+drinking_fountai_melb_ppp.km <- rescale(drinking_fountai_melb_ppp, 1000, "km")
+landmarks_melb_ppp.km <- rescale(landmarks_melb_ppp, 1000, "km")
+public_toilets_melb_ppp.km <- rescale(public_toilets_melb_ppp, 1000, "km")
+```
+
+### KDE Different Kernel Methods
+
+```{r}
+
+par(mfrow=c(2,2))
+plot(density(business_est_jit_melb_ppp.km, 
+             sigma = bw.ppl, 
+             edge = TRUE, 
+             kernel = "gaussian"), 
+             main = "Gaussian")
+plot(density(business_est_jit_melb_ppp.km, 
+             sigma = bw.ppl, 
+             edge = TRUE, 
+             kernel = "epanechnikov"), 
+             main = "Epanechnikov")
+plot(density(business_est_jit_melb_ppp.km, 
+             sigma = bw.ppl, 
+             edge = TRUE, 
+             kernel = "quartic"), 
+             main = "Quartic")
+plot(density(business_est_jit_melb_ppp.km, 
+             sigma = bw.ppl, 
+             edge = TRUE, 
+             kernel = "disc"), 
+             main = "Disc")
+```
+
+### KDE Adaptive Bandwidth
+
+```{r}
+kde_businessMB_adaptive <- adaptive.density(business_est_jit_melb_ppp.km, method = "kernel")
+plot(kde_businessMB_adaptive)
+```
+
+```{r}
+kde_childcareMB_adaptive <- adaptive.density(childcare_melb_ppp.km, method = "kernel")
+plot(kde_childcareMB_adaptive)
+```
+
+```{r}
+kde_drinkMB_adaptive <- adaptive.density(drinking_fountai_melb_ppp.km, method = "kernel")
+plot(kde_drinkMB_adaptive)
+```
+
+```{r}
+kde_landmMB_adaptive <- adaptive.density(landmarks_melb_ppp.km, method = "kernel")
+plot(kde_landmMB_adaptive)
+```
+
+```{r}
+kde_pubtoilet_adaptive <- adaptive.density(public_toilets_melb_ppp.km, method = "kernel")
+plot(kde_pubtoilet_adaptive)
+```
+
+```{r}
+  kde.grid <- as.SpatialGridDataFrame.im(kde_pubtoilet_adaptive)
+  kde_raster <- raster(kde.grid)
+kde.grid <- CRS(SRS_string = "EPSG:7855")
+tm_shape(kde_raster) +
+  tm_raster("v")
+
+```
+
+```{r}
+kde.grid
+```

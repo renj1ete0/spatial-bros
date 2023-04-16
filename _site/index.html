@@ -94,12 +94,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data.qmd">
+    <a class="nav-link" href="./data.html">
  <span class="menu-text">Data Pre-processing</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="https://renjieteo.shinyapps.io/SpatialBros/">
- <span class="menu-text">spatialbros - Shiny Web App</span></a>
+ <span class="menu-text">Spatial Bros - Shiny Web App</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros"><i class="bi bi-github" role="img">
@@ -128,14 +128,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#about-the-project" id="toc-about-the-project" class="nav-link active" data-scroll-target="#about-the-project">About the Project</a></li>
-  <li><a href="#use-cases" id="toc-use-cases" class="nav-link" data-scroll-target="#use-cases">Use Cases</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#about-the-project" id="toc-about-the-project" class="nav-link" data-scroll-target="#about-the-project">About the Project</a></li>
+  <li><a href="#fun-areas-to-explore" id="toc-fun-areas-to-explore" class="nav-link" data-scroll-target="#fun-areas-to-explore">Fun Areas to Explore</a></li>
   <li><a href="#contents" id="toc-contents" class="nav-link" data-scroll-target="#contents">Contents</a></li>
+  <li><a href="#special-thanks" id="toc-special-thanks" class="nav-link" data-scroll-target="#special-thanks">Special Thanks</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -172,10 +174,21 @@ Note
 <p>Note: The Spatial Bros shiny web application may take up to 3 minutes to load fully, please wait patiently, thank you.</p>
 </div>
 </div>
-<section id="about-the-project" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-project">About the Project</h2>
-<p>The City of Melbourne has many datasets that are readily available to the public, through <a href="https://data.melbourne.vic.gov.au/pages/home/">City of Melbourne Open Data</a> and <a href="https://www.data.vic.gov.au/">Data Vic</a>. Yet, this only fufills the first part of ‘accessibility of data’ through the democratisation of datasets by the government.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/datademocratisation.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>The City of Melbourne has many datasets that are readily available to the public, through <a href="https://data.melbourne.vic.gov.au/pages/home/">City of Melbourne Open Data</a> and <a href="https://www.data.vic.gov.au/">Data Vic</a>. Yet, this only fufills the first part of ‘data access’ by providing datasets on their websites available for download and simple spatial points exploration using the interactive map provided.</p>
 <p>Users who are not trained in geospatial analysis or GIS are unable to perform their own analysis to understand spatial pattern or trends behind their neighbourhood which could help citizens or outsiders to understand the city better and possibly formulate citizen efforts.</p>
+<p>These are important pointers as the true democratisation of data should allow users to be empowered with tools to comfortably analyse datasets with ease and come up with their analysis and conclusions.</p>
+</section>
+<section id="about-the-project" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="about-the-project">About the Project</h2>
+<p class="page-columns page-full"><img src="imgs/titleblock.png" class="column-screen img-fluid" width="910"></p>
+<p><em>Network Constrained Spatial Point Pattern Analysis of Accomodation in City of Melbourne by Road Network</em></p>
 <p>The Spatial Bros is created to fufill the next step of data democratisation to assist non-technical savvy users in performing geographical point pattern analysis to gain insights from open data. Our application will assist users with 2 kinds of analysis as shown:</p>
 <p>Spatial Points Analysis</p>
 <ul>
@@ -192,19 +205,33 @@ Note
 </ul></li>
 </ul>
 <p>For each of the analyses, the application will provide users with kernel density maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.</p>
+<p>Users can look forward to a simple-to-use interface, with clear instructions to understand the functionality of each feature, explanations of each option and instructions on interpreting the output data to come up with their conclusions.</p>
 </section>
-<section id="use-cases" class="level2">
-<h2 class="anchored" data-anchor-id="use-cases">Use Cases</h2>
+<section id="fun-areas-to-explore" class="level2">
+<h2 class="anchored" data-anchor-id="fun-areas-to-explore">Fun Areas to Explore</h2>
+<p>Here are some locations of interest you can explore and analyse to get started!</p>
+<ol type="1">
+<li><p>Drinking Fountains</p></li>
+<li><p>Business Establishments &gt; Vacant Space</p></li>
+<li><p>Public Toilets</p></li>
+<li><p>Business Establishments &gt; Accomodation</p></li>
+<li><p>Business Establishments &gt; Convenience Store</p></li>
+</ol>
 </section>
 <section id="contents" class="level2">
 <h2 class="anchored" data-anchor-id="contents">Contents</h2>
 <ol type="1">
-<li><a href="./proposal.html">Project Proposal</a></li>
-<li><a href="https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20Poster.pdf">Project Poster</a></li>
-<li><a href="https://renjieteo.shinyapps.io/SpatialBros/">Interactive Shiny Application</a></li>
-<li><a href="https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20Research%20Report.pdf">Practice Research Paper</a></li>
-<li><a href="https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20User%20Guide.pdf">User Guide</a></li>
+<li><p><a href="./proposal.html">Project Proposal</a></p></li>
+<li><p><a href="Spatial Bros Poster.pdf">Project Poster</a></p></li>
+<li><p><a href="https://renjieteo.shinyapps.io/SpatialBros/">Interactive Shiny Application</a></p></li>
+<li><p><a href="Spatial Bros Research Report.pdf">Practice Research Paper</a></p></li>
+<li><p><a href="Spatial Bros User Guide.pdf">User Guide</a></p></li>
 </ol>
+</section>
+<section id="special-thanks" class="level2">
+<h2 class="anchored" data-anchor-id="special-thanks">Special Thanks</h2>
+<p>This project is done for IS415 Geospatial Analytics &amp; Application under the guidance of Professor Kam Tin Seong.</p>
+<p><img src="SpatialBros/www/smu.png" class="img-fluid" width="248"> <img src="SpatialBros/www/logo.png" class="img-fluid" width="357"></p>
 
 
 </section>

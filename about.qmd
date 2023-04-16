@@ -16,6 +16,8 @@ The Spatial Bros consists of three members from the School of Computing and Info
 >
 > Harnessing the skillsets and experiences gained from working with and leading work teams in various sectors, I am committed to taking on increasing roles and responsibilities to ultimately embark on the goal of innovating and contributing to smart city solutions. Other than that, I enjoy playing pool and singing my heart out during my free time!
 
+[LinkedIn](https://www.linkedin.com/in/harith-oh-yee-choon/)
+
 ## Ming Rong
 
 ![](imgs/mingrong.jpg){style="border-radius: 50%" width="250"}
@@ -26,6 +28,8 @@ The Spatial Bros consists of three members from the School of Computing and Info
 >
 > I am just an everyday student striving to live another day in this fast pace and ever changing society. Beyond that, I can be found on the streets running or cycling.
 
+[LinkedIn](https://www.linkedin.com/in/kwek-ming-rong-9230a360/)
+
 ## Ren Jie
 
 ![](imgs/renjie.JPG){style="border-radius: 50%" width="250"}
@@ -35,3 +39,5 @@ The Spatial Bros consists of three members from the School of Computing and Info
 > My interests are in urban science and urban planning. I am excited to learn more about geospatial analytics from this course which will value-add to my individualised second major in Urban Science at the College of Integrative Studies, where I aim to utilise, integrate and interpret data from the city into innovative solutions for cities of the future.
 >
 > I enjoy hiking and cycling during my free time, or enjoying the good food in Singapore!
+
+[LinkedIn](https://www.linkedin.com/in/renjieteo/)

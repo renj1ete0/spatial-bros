@@ -1,10 +1,11 @@
 ---
 title: "Project Proposal: Spatial Bros"
-description: "Exploring Network-Constrained Spatial Point Analysis and Geographical Accessibility"
+description: "Exploring 1st, 2nd Order Spatial Point Analysis and Network-Constrained Spatial Point Analysis"
 author: "Spatial Bros"
 date: "03/05/2023"
+date-modified: "04/15/2023"
 number-sections: true
-categories: ["proposal", "network-constrained spatial point analysis", "geographical accessibility"]
+categories: ["proposal", "network-constrained spatial point analysis", "spatial point pattern analysis"]
 title-block-banner: true
 ---
 
@@ -26,7 +27,11 @@ For each of the analyses, the application will provide users with kernel density
 
 In today's technological advancing world, there are many interesting spatial data sources that exist in the forms of Geospatial and Aspatial format. Geospatial data is the foundation based on the foundation of geographical boundary locations and Aspatial data are the observations recorded that can be used to generate derive insights.
 
-Despite that, there are not many people who are knowledgeable and trained to perform such analysis. Without the fundamental knowledge and appropriate training, any results based on the analysis performed could be inaccurate.
+The City of Melbourne has many datasets that are readily available to the public, through [City of Melbourne Open Data](https://data.melbourne.vic.gov.au/pages/home/) and [Data Vic](https://www.data.vic.gov.au/). Yet, this only fufills the first part of 'data access' by providing datasets on their websites available for download and simple spatial points exploration using the interactive map provided.
+
+Users who are not trained in geospatial analysis or GIS are unable to perform their own analysis to understand spatial pattern or trends behind their neighbourhood which could help citizens or outsiders to understand the city better and possibly formulate citizen efforts.
+
+These are important pointers as the true democratisation of data should allow users to be empowered with tools to comfortably analyse datasets with ease and come up with their analysis and conclusions.
 
 Hence, our group's main focus is to perform our analysis and develop a web-based geospatial tool using R Shiny with regards to Point Pattern Analysis particularly on Network-Constrained Point Pattern Analysis (NCPPA) and 1st/2nd Order Kernel Density Estimation (KDE). We hope this application can empower and educate users and conduct the analysis they want regardless of their technical expertise to gain further insights from geospatial data. 
 

@@ -1,0 +1,174 @@
+---
+title: "Data Pre-processing"
+description: "Exploring Network-Constrained Spatial Point Analysis"
+author: "Spatial Bros"
+date: "03/27/2023"
+date-modified: "04/15/2023"
+number-sections: true
+categories: ["Exploratory Data Analysis"]
+title-block-banner: true
+execute:
+  eval: false
+  echo: true
+  warning: false
+---
+
+## Page Overview
+
+This page contains steps to replicate the pre-processed datasets used on the Shiny Web Application. They are pre-processed ahead of time to prevent reprocessing on each load, which lengthens and complicates the process of loading the Shiny Web Application for each session.
+
+## Brief Overview of Steps
+
+Datasets are converted to sf Dataframes and stored as RDS with its corresponding Projected Coordinate System (EPSG:7855 of GDA2020 Zone 55).
+
+GDA2020 datasets were obtained from the relavant sources.
+
+Further processing to ppp or spatial\* formats are done within R, since 1st, 2nd Order Spatial Point Pattern Analysis and Network Constrained Spatial Point Pattern Analysis requires different formats. These helps to reduce the number of dataset formats we need to store in RDS.
+
+## Datasets Used
+
+The datasets used are documented in the [Project Proposal](proposal.qmd) and can be obtained from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria).
+
+Code to manipulate the data are listed below:
+
+## Installing the R packages
+
+In this project, x packages will be used
+
+```{r}
+pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr, dplyr, ggplot2)
+```
+
+## Data Import and Preparation
+
+### Melbourne City's Road Network
+
+Importing of shapefile, converting to EPSG of 7855 and converting Geometry Type to LINGSTRING.
+
+```{r}
+road_network <- st_read("data/geospatial/Roads Network", layer = "road-corridors")
+road_network <- st_transform(road_network, crs = 7855)
+road_network_lines <- st_boundary(road_network) %>% 
+                     st_cast("LINESTRING")
+write_rds(road_network_lines, "SpatialBros/rds/road_network_lines.rds")
+```
+
+### Melbourne City's Pedestrian Network
+
+```{r}
+pedestrian_network <- st_read("data/geospatial/Pedestrian Network/pedestrian-network.geojson")
+pedestrian_network <- st_transform(pedestrian_network, crs = 7855)
+pedestrian_network <- pedestrian_network[st_geometry_type(st_geometry(pedestrian_network)) == "LINESTRING",]
+write_rds(pedestrian_network, "SpatialBros/rds/pedestrian_network_lines.rds")
+```
+
+### Melbourne City's Tram Network
+
+```{r}
+tram_network <- st_read("data/geospatial/Trams Network", layer = "PTV_METRO_TRAM_ROUTE")
+tram_network <- st_transform(tram_network, crs = 7855)
+write_rds(tram_network, "SpatialBros/rds/tram_network_lines.rds")
+```
+
+### Melbourne City's Local Government Areas
+
+Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.
+
+```{r}
+local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
+melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
+melbourne_local_government_areas <- st_transform(melbourne_local_government_areas, crs = 7855)
+write_rds(melbourne_local_government_areas, "SpatialBros/rds/melbourne_local_government_areas.rds")
+```
+
+### Melbourne City's Local Government Areas
+
+Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.
+
+```{r}
+local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
+melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
+melbourne_local_government_areas <- st_transform(melbourne_local_government_areas, crs = 7855)
+write_rds(melbourne_local_government_areas, "SpatialBros/rds/melbourne_local_government_areas.rds")
+```
+
+### Localities
+
+Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.
+
+```{r}
+localities = st_read("data/geospatial/Localities", layer = "UCL_2021_AUST_GDA2020") 
+melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
+melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
+
+```
+
+Next, since some LGA's may exceed the city limits of the City of Melbourne, we want to reduce the region of these LGA's to fit City of Melbourne's city limits to be able to perform our analysis as the datasets only provides data within City of Melbourne city limits.
+
+```{r}
+melbourne_localities_filtered <- st_intersection(local_government_areas, melbourne_localities)
+write_rds(melbourne_localities_filtered, "SpatialBros/rds/melbourne_localities.rds")
+```
+
+### Melbourne City's Business Establishments Spatial Point
+
+To retrieve only latest as of 2021 business establishments.
+
+```{r}
+business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021")
+business_est_sp <- st_transform(business_est_sp, crs = 7855)
+write_rds(business_est_sp, "SpatialBros/rds/business_establishments.rds")
+```
+
+### Melbourne City's Drinking Fountain Spatial Point
+
+```{r}
+drinking_fountain_sp <- st_read("data/geospatial/Drinking Fountain Spatial Point", layer = "drinking-fountains")
+drinking_fountain_sp <- st_transform(drinking_fountain_sp, crs = 7855)
+write_rds(drinking_fountain_sp, "SpatialBros/rds/drinking_fountain.rds")
+```
+
+### Melbourne City's Landmarks Spatial Point
+
+```{r}
+landmarks_sp <- st_read("data/geospatial/Landmarks Spatial Point", layer = "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor")
+landmarks_sp <- st_transform(landmarks_sp, crs = 7855)
+write_rds(landmarks_sp, "SpatialBros/rds/landmarks.rds")
+```
+
+### Melbourne City's Childcare Centres Spatial Point
+
+```{r}
+childcare_sp <- read_csv("data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv")
+
+```
+
+#### Creating a simple feature data frame from Childcare Centres Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's GDA2020 / MGA zone 55 -- EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+childcare_sp_sf <- st_as_sf(childcare_sp, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+write_rds(childcare_sp_sf, "SpatialBros/rds/childcare.rds")
+```
+
+### Melbourne City's Public Toilets Spatial Point
+
+```{r}
+public_toilets_sp <- read_csv("data/geospatial/Public Toilets Spatial Point/public-toilets.csv")
+```
+
+#### Creating a simple feature data frame from Public Toilets Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's GDA2020 / MGA zone 55 -- EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+public_toilets_sp_sf <- st_as_sf(public_toilets_sp, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+write_rds(public_toilets_sp_sf, "SpatialBros/rds/public_toilets.rds")
+```

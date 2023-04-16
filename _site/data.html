@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Spatial Bros">
+<meta name="dcterms.date" content="2023-03-27">
+<meta name="description" content="Exploring Network-Constrained Spatial Point Analysis">
+
+<title>Data Pre-processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="logo.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./imgs/logo.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">
+ <span class="menu-text">About Us</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./proposal.html">
+ <span class="menu-text">Proposal</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./data.html" aria-current="page">
+ <span class="menu-text">Data Pre-processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://renjieteo.shinyapps.io/SpatialBros/">
+ <span class="menu-text">Spatial Bros - Shiny Web App</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-reader-toggle nav-link" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Data Pre-processing</h1>
+                  <div>
+        <div class="description">
+          Exploring Network-Constrained Spatial Point Analysis
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Exploratory Data Analysis</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Spatial Bros </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 27, 2023</p>
+      </div>
+    </div>
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">April 15, 2023</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#page-overview" id="toc-page-overview" class="nav-link active" data-scroll-target="#page-overview"><span class="toc-section-number">1</span>  Page Overview</a></li>
+  <li><a href="#brief-overview-of-steps" id="toc-brief-overview-of-steps" class="nav-link" data-scroll-target="#brief-overview-of-steps"><span class="toc-section-number">2</span>  Brief Overview of Steps</a></li>
+  <li><a href="#datasets-used" id="toc-datasets-used" class="nav-link" data-scroll-target="#datasets-used"><span class="toc-section-number">3</span>  Datasets Used</a></li>
+  <li><a href="#installing-the-r-packages" id="toc-installing-the-r-packages" class="nav-link" data-scroll-target="#installing-the-r-packages"><span class="toc-section-number">4</span>  Installing the R packages</a></li>
+  <li><a href="#data-import-and-preparation" id="toc-data-import-and-preparation" class="nav-link" data-scroll-target="#data-import-and-preparation"><span class="toc-section-number">5</span>  Data Import and Preparation</a>
+  <ul class="collapse">
+  <li><a href="#melbourne-citys-road-network" id="toc-melbourne-citys-road-network" class="nav-link" data-scroll-target="#melbourne-citys-road-network"><span class="toc-section-number">5.1</span>  Melbourne City’s Road Network</a></li>
+  <li><a href="#melbourne-citys-pedestrian-network" id="toc-melbourne-citys-pedestrian-network" class="nav-link" data-scroll-target="#melbourne-citys-pedestrian-network"><span class="toc-section-number">5.2</span>  Melbourne City’s Pedestrian Network</a></li>
+  <li><a href="#melbourne-citys-tram-network" id="toc-melbourne-citys-tram-network" class="nav-link" data-scroll-target="#melbourne-citys-tram-network"><span class="toc-section-number">5.3</span>  Melbourne City’s Tram Network</a></li>
+  <li><a href="#melbourne-citys-local-government-areas" id="toc-melbourne-citys-local-government-areas" class="nav-link" data-scroll-target="#melbourne-citys-local-government-areas"><span class="toc-section-number">5.4</span>  Melbourne City’s Local Government Areas</a></li>
+  <li><a href="#melbourne-citys-local-government-areas-1" id="toc-melbourne-citys-local-government-areas-1" class="nav-link" data-scroll-target="#melbourne-citys-local-government-areas-1"><span class="toc-section-number">5.5</span>  Melbourne City’s Local Government Areas</a></li>
+  <li><a href="#localities" id="toc-localities" class="nav-link" data-scroll-target="#localities"><span class="toc-section-number">5.6</span>  Localities</a></li>
+  <li><a href="#melbourne-citys-business-establishments-spatial-point" id="toc-melbourne-citys-business-establishments-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-business-establishments-spatial-point"><span class="toc-section-number">5.7</span>  Melbourne City’s Business Establishments Spatial Point</a></li>
+  <li><a href="#melbourne-citys-drinking-fountain-spatial-point" id="toc-melbourne-citys-drinking-fountain-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-drinking-fountain-spatial-point"><span class="toc-section-number">5.8</span>  Melbourne City’s Drinking Fountain Spatial Point</a></li>
+  <li><a href="#melbourne-citys-landmarks-spatial-point" id="toc-melbourne-citys-landmarks-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-landmarks-spatial-point"><span class="toc-section-number">5.9</span>  Melbourne City’s Landmarks Spatial Point</a></li>
+  <li><a href="#melbourne-citys-childcare-centres-spatial-point" id="toc-melbourne-citys-childcare-centres-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-childcare-centres-spatial-point"><span class="toc-section-number">5.10</span>  Melbourne City’s Childcare Centres Spatial Point</a></li>
+  <li><a href="#melbourne-citys-public-toilets-spatial-point" id="toc-melbourne-citys-public-toilets-spatial-point" class="nav-link" data-scroll-target="#melbourne-citys-public-toilets-spatial-point"><span class="toc-section-number">5.11</span>  Melbourne City’s Public Toilets Spatial Point</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="page-overview" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="page-overview"><span class="header-section-number">1</span> Page Overview</h2>
+<p>This page contains steps to replicate the pre-processed datasets used on the Shiny Web Application. They are pre-processed ahead of time to prevent reprocessing on each load, which lengthens and complicates the process of loading the Shiny Web Application for each session.</p>
+</section>
+<section id="brief-overview-of-steps" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="brief-overview-of-steps"><span class="header-section-number">2</span> Brief Overview of Steps</h2>
+<p>Datasets are converted to sf Dataframes and stored as RDS with its corresponding Projected Coordinate System (EPSG:7855 of GDA2020 Zone 55).</p>
+<p>GDA2020 datasets were obtained from the relavant sources.</p>
+<p>Further processing to ppp or spatial* formats are done within R, since 1st, 2nd Order Spatial Point Pattern Analysis and Network Constrained Spatial Point Pattern Analysis requires different formats. These helps to reduce the number of dataset formats we need to store in RDS.</p>
+</section>
+<section id="datasets-used" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="datasets-used"><span class="header-section-number">3</span> Datasets Used</h2>
+<p>The datasets used are documented in the <a href="./proposal.html">Project Proposal</a> and can be obtained from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria).</p>
+<p>Code to manipulate the data are listed below:</p>
+</section>
+<section id="installing-the-r-packages" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="installing-the-r-packages"><span class="header-section-number">4</span> Installing the R packages</h2>
+<p>In this project, x packages will be used</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sp, sf, rgdal, spNetwork, tmap, readr, dplyr, ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-import-and-preparation" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="data-import-and-preparation"><span class="header-section-number">5</span> Data Import and Preparation</h2>
+<section id="melbourne-citys-road-network" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="melbourne-citys-road-network"><span class="header-section-number">5.1</span> Melbourne City’s Road Network</h3>
+<p>Importing of shapefile, converting to EPSG of 7855 and converting Geometry Type to LINGSTRING.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>road_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Roads Network"</span>, <span class="at">layer =</span> <span class="st">"road-corridors"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>road_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(road_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>road_network_lines <span class="ot">&lt;-</span> <span class="fu">st_boundary</span>(road_network) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">st_cast</span>(<span class="st">"LINESTRING"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(road_network_lines, <span class="st">"SpatialBros/rds/road_network_lines.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-pedestrian-network" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="melbourne-citys-pedestrian-network"><span class="header-section-number">5.2</span> Melbourne City’s Pedestrian Network</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Pedestrian Network/pedestrian-network.geojson"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(pedestrian_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> pedestrian_network[<span class="fu">st_geometry_type</span>(<span class="fu">st_geometry</span>(pedestrian_network)) <span class="sc">==</span> <span class="st">"LINESTRING"</span>,]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(pedestrian_network, <span class="st">"SpatialBros/rds/pedestrian_network_lines.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-tram-network" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="melbourne-citys-tram-network"><span class="header-section-number">5.3</span> Melbourne City’s Tram Network</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Trams Network"</span>, <span class="at">layer =</span> <span class="st">"PTV_METRO_TRAM_ROUTE"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(tram_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(tram_network, <span class="st">"SpatialBros/rds/tram_network_lines.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-local-government-areas" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="melbourne-citys-local-government-areas"><span class="header-section-number">5.4</span> Melbourne City’s Local Government Areas</h3>
+<p>Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>local_government_areas <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Local Government Areas"</span>, <span class="at">layer =</span> <span class="st">"LGA_2022_AUST_GDA2020"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">=</span> local_government_areas[local_government_areas<span class="sc">$</span>LGA_NAME22 <span class="sc">==</span> <span class="st">"Melbourne"</span>,]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(melbourne_local_government_areas, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(melbourne_local_government_areas, <span class="st">"SpatialBros/rds/melbourne_local_government_areas.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-local-government-areas-1" class="level3" data-number="5.5">
+<h3 data-number="5.5" class="anchored" data-anchor-id="melbourne-citys-local-government-areas-1"><span class="header-section-number">5.5</span> Melbourne City’s Local Government Areas</h3>
+<p>Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>local_government_areas <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Local Government Areas"</span>, <span class="at">layer =</span> <span class="st">"LGA_2022_AUST_GDA2020"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">=</span> local_government_areas[local_government_areas<span class="sc">$</span>LGA_NAME22 <span class="sc">==</span> <span class="st">"Melbourne"</span>,]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(melbourne_local_government_areas, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(melbourne_local_government_areas, <span class="st">"SpatialBros/rds/melbourne_local_government_areas.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="localities" class="level3" data-number="5.6">
+<h3 data-number="5.6" class="anchored" data-anchor-id="localities"><span class="header-section-number">5.6</span> Localities</h3>
+<p>Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>localities <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Localities"</span>, <span class="at">layer =</span> <span class="st">"UCL_2021_AUST_GDA2020"</span>) </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>melbourne_localities <span class="ot">&lt;-</span> localities[localities<span class="sc">$</span>UCL_NAME21 <span class="sc">==</span> <span class="st">"Melbourne"</span>, ]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>melbourne_localities <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(melbourne_localities, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, since some LGA’s may exceed the city limits of the City of Melbourne, we want to reduce the region of these LGA’s to fit City of Melbourne’s city limits to be able to perform our analysis as the datasets only provides data within City of Melbourne city limits.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>melbourne_localities_filtered <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(local_government_areas, melbourne_localities)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(melbourne_localities_filtered, <span class="st">"SpatialBros/rds/melbourne_localities.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-business-establishments-spatial-point" class="level3" data-number="5.7">
+<h3 data-number="5.7" class="anchored" data-anchor-id="melbourne-citys-business-establishments-spatial-point"><span class="header-section-number">5.7</span> Melbourne City’s Business Establishments Spatial Point</h3>
+<p>To retrieve only latest as of 2021 business establishments.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>business_est_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(census_year <span class="sc">==</span> <span class="st">"2021"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>business_est_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(business_est_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(business_est_sp, <span class="st">"SpatialBros/rds/business_establishments.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-drinking-fountain-spatial-point" class="level3" data-number="5.8">
+<h3 data-number="5.8" class="anchored" data-anchor-id="melbourne-citys-drinking-fountain-spatial-point"><span class="header-section-number">5.8</span> Melbourne City’s Drinking Fountain Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Drinking Fountain Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"drinking-fountains"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(drinking_fountain_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(drinking_fountain_sp, <span class="st">"SpatialBros/rds/drinking_fountain.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-landmarks-spatial-point" class="level3" data-number="5.9">
+<h3 data-number="5.9" class="anchored" data-anchor-id="melbourne-citys-landmarks-spatial-point"><span class="header-section-number">5.9</span> Melbourne City’s Landmarks Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>landmarks_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Landmarks Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"landmarks-and-places-of-interest-including-schools-theatres-health-services-spor"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>landmarks_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(landmarks_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(landmarks_sp, <span class="st">"SpatialBros/rds/landmarks.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="melbourne-citys-childcare-centres-spatial-point" class="level3" data-number="5.10">
+<h3 data-number="5.10" class="anchored" data-anchor-id="melbourne-citys-childcare-centres-spatial-point"><span class="header-section-number">5.10</span> Melbourne City’s Childcare Centres Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>childcare_sp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings" class="level4" data-number="5.10.1">
+<h4 data-number="5.10.1" class="anchored" data-anchor-id="creating-a-simple-feature-data-frame-from-childcare-centres-spatial-point-listings"><span class="header-section-number">5.10.1</span> Creating a simple feature data frame from Childcare Centres Spatial Point listings</h4>
+<p>Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne’s GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>childcare_sp_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(childcare_sp, </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(childcare_sp_sf, <span class="st">"SpatialBros/rds/childcare.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="melbourne-citys-public-toilets-spatial-point" class="level3" data-number="5.11">
+<h3 data-number="5.11" class="anchored" data-anchor-id="melbourne-citys-public-toilets-spatial-point"><span class="header-section-number">5.11</span> Melbourne City’s Public Toilets Spatial Point</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>public_toilets_sp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/geospatial/Public Toilets Spatial Point/public-toilets.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="creating-a-simple-feature-data-frame-from-public-toilets-spatial-point-listings" class="level4" data-number="5.11.1">
+<h4 data-number="5.11.1" class="anchored" data-anchor-id="creating-a-simple-feature-data-frame-from-public-toilets-spatial-point-listings"><span class="header-section-number">5.11.1</span> Creating a simple feature data frame from Public Toilets Spatial Point listings</h4>
+<p>Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne’s GDA2020 / MGA zone 55 – EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>public_toilets_sp_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(public_toilets_sp, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(public_toilets_sp_sf, <span class="st">"SpatialBros/rds/public_toilets.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Spatial Bros: Exploring Spatial Point and Network-Constrained Spatial Point Analysis</div>   
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

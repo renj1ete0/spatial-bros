@@ -1,0 +1,1332 @@
+---
+title: "Project: Spatial Bros"
+description: "Exploring Network-Constrained Spatial Point Analysis"
+author: "Spatial Bros"
+date: "27/03/2023"
+number-sections: true
+categories: ["network-constrained spatial point analysis"]
+title-block-banner: true
+execute:
+  eval: false
+  echo: true
+  warning: false
+---
+
+# Network Constrained Spatial Point Pattern Analysis
+
+## Project Overview
+
+Network constrained Spatial Point Patterns Analysis (NetSPAA) is a collection of spatial point patterns analysis methods special developed for analysing spatial point event occurs on or alongside network.
+
+The spatial point event can be locations of childcare centre for example.
+
+The network, on the other hand can be a road network for example.
+
+More information with regards to data sources used for this project can be found at the [proposal](https://spatialbros.netlify.app/proposal.html#data-sources)
+
+## Installing the R packages
+
+In this project, x packages will be used
+
+```{r}
+pacman::p_load(sp, sf, rgdal, spNetwork, tmap, readr, dplyr, ggplot2)
+```
+
+## Data Import and Preparation
+
+### Melbourne City's Road Network
+
+Importing of shapefile, converting to EPSG of 7855 and converting Geometry Type to LINGSTRING.
+
+```{r}
+road_network <- st_read("data/geospatial/Roads Network", layer = "road-corridors")
+road_network <- st_transform(road_network, crs = 7855)
+road_network_lines <- st_boundary(road_network) %>% 
+                     st_cast("LINESTRING")
+write_rds(road_network_lines, "SpatialBros/rds/road_network_lines.rds")
+```
+
+### Melbourne City's Pedestrian Network
+
+```{r}
+pedestrian_network <- st_read("data/geospatial/Pedestrian Network/pedestrian-network.geojson")
+pedestrian_network <- st_transform(pedestrian_network, crs = 7855)
+pedestrian_network <- pedestrian_network[st_geometry_type(st_geometry(pedestrian_network)) == "LINESTRING",]
+write_rds(pedestrian_network, "SpatialBros/rds/pedestrian_network_lines.rds")
+```
+
+### Melbourne City's Tram Network
+
+```{r}
+tram_network <- st_read("data/geospatial/Trams Network", layer = "PTV_METRO_TRAM_ROUTE")
+tram_network <- st_transform(tram_network, crs = 7855)
+write_rds(tram_network, "SpatialBros/rds/tram_network_lines.rds")
+```
+
+### Localities
+
+Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.
+
+```{r}
+localities = st_read("data/geospatial/Localities", layer = "UCL_2021_AUST_GDA2020") 
+melbourne_localities <- localities[localities$UCL_NAME21 == "Melbourne", ]
+melbourne_localities <- st_transform(melbourne_localities, crs = 7855)
+write_rds(melbourne_localities, "SpatialBros/rds/melbourne_localities.rds")
+```
+
+### Melbourne City's Local Government Areas
+
+Local Government Areas file downloaded was entire Australia. Therefore, we need to filter to retrieve Local Government Areas of Melbourne.
+
+```{r}
+local_government_areas = st_read("data/geospatial/Local Government Areas", layer = "LGA_2022_AUST_GDA2020")
+melbourne_local_government_areas = local_government_areas[local_government_areas$LGA_NAME22 == "Melbourne",]
+melbourne_local_government_areas <- st_transform(melbourne_local_government_areas, crs = 7855)
+write_rds(melbourne_local_government_areas, "SpatialBros/rds/melbourne_local_government_areas.rds")
+```
+
+### Melbourne City's Business Establishments Spatial Point
+
+To retrieve only latest as of 2021 business establishments and is not vacant.
+
+```{r}
+business_est_sp <- st_read("data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson") %>% filter(census_year == "2021") %>% filter(trading_name != "Vacant")
+business_est_sp <- st_transform(business_est_sp, crs = 7855)
+write_rds(business_est_sp, "SpatialBros/rds/business_establishments.rds")
+```
+
+### Melbourne City's Drinking Fountain Spatial Point
+
+```{r}
+drinking_fountain_sp <- st_read("data/geospatial/Drinking Fountain Spatial Point", layer = "drinking-fountains")
+drinking_fountain_sp <- st_transform(drinking_fountain_sp, crs = 7855)
+write_rds(drinking_fountain_sp, "SpatialBros/rds/drinking_fountain.rds")
+```
+
+### Melbourne City's Landmarks Spatial Point
+
+```{r}
+landmarks_sp <- st_read("data/geospatial/Landmarks Spatial Point", layer = "landmarks-and-places-of-interest-including-schools-theatres-health-services-spor")
+landmarks_sp <- st_transform(landmarks_sp, crs = 7855)
+write_rds(landmarks_sp, "SpatialBros/rds/landmarks.rds")
+```
+
+### Melbourne City's Childcare Centres Spatial Point
+
+```{r}
+childcare_sp <- read_csv("data/geospatial/Childcare Centres Spatial Point/childcare-centres.csv")
+
+```
+
+#### Creating a simple feature data frame from Childcare Centres Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's GDA2020 / MGA zone 55 -- EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+childcare_sp_sf <- st_as_sf(childcare_sp, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+write_rds(childcare_sp_sf, "SpatialBros/rds/childcare.rds")
+```
+
+#### Converting to Spatial Point Data Frame
+
+```{r}
+childcare_spdf <- as(childcare_sp_sf, "Spatial")
+childcare_spdf
+```
+
+### Melbourne City's Public Toilets Spatial Point
+
+```{r}
+public_toilets_sp <- read_csv("data/geospatial/Public Toilets Spatial Point/public-toilets.csv")
+```
+
+#### Creating a simple feature data frame from Public Toilets Spatial Point listings
+
+Upon research, it was found that EPSG: 4326 is wGS84 Geographic Coordinate System, therefore we have to convert it to Melbourne's GDA2020 / MGA zone 55 -- EPSG:7855 (https://parametricmonkey.com/2020/04/08/understanding-australias-coordinate-systems/)
+
+```{r}
+public_toilets_sp_sf <- st_as_sf(public_toilets_sp, 
+                       coords = c("lon", "lat"),
+                       crs=4326) %>%
+  st_transform(crs = 7855)
+write_rds(public_toilets_sp_sf, "SpatialBros/rds/public_toilets.rds")
+```
+
+#### Converting to Spatial Point Data Frame
+
+```{r}
+public_toilets_spdf <- as(public_toilets_sp_sf, "Spatial")
+public_toilets_spdf
+```
+
+## Visualising the Geospatial Data
+
+### Melbourne City's road network with Business Establishments
+
+```{r}
+tmap_options('view')
+road_network_be <- tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(business_est_sp) +
+  tm_dots(size = 0.02, col="green")
+```
+
+### Melbourne City's road network with Childcare Centres
+
+```{r}
+tmap_options('view')
+road_network_cc <- tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(childcare_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's road network with Drinking Fountain
+
+```{r}
+tmap_options('view')
+road_network_df <- tm_shape(road_network_lines) +
+ tm_lines() +
+ tm_shape(drinking_fountain_sp) +
+ tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's road network with Landmarks
+
+```{r}
+tmap_options('view')
+road_network_landmarks <- tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's road network with Public Toilets
+
+```{r}
+tmap_options('view')
+road_network_pt <- tm_shape(road_network_lines) +
+  tm_lines() +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+Saving road networks with all spatial points to a html file separately
+
+```{r}
+tmap_save(road_network_cc, "tmaphtml/road_network_cc.html")
+tmap_save(road_network_be, "tmaphtml/road_network_be.html")
+tmap_save(road_network_df, "tmaphtml/road_network_df.html")
+tmap_save(road_network_landmarks, "tmaphtml/road_network_landmarks.html")
+tmap_save(road_network_pt, "tmaphtml/road_network_pt.html")
+```
+
+### Melbourne City's pedestrian network with Business Establishments
+
+```{r}
+tmap_options('view')
+pedestrian_network_be <- tm_shape(pedestrian_network) +
+  tm_lines() +
+  tm_shape(business_est_sp) +
+  tm_dots(size = 0.02, col = "green")
+```
+
+### Melbourne City's pedestrian network with Childcare Centres
+
+```{r}
+tmap_options('view')
+pedestrian_network_cc <- tm_shape(pedestrian_network) +
+  tm_lines() +
+  tm_shape(childcare_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's pedestrian network with Drinking Fountain
+
+```{r}
+tmap_options('view')
+pedestrian_network_df <- tm_shape(pedestrian_network) +
+ tm_lines() +
+ tm_shape(drinking_fountain_sp) +
+ tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's pedestrian network with Landmarks
+
+```{r}
+tmap_options('view')
+pedestrian_network_landmarks <- tm_shape(pedestrian_network) +
+  tm_lines() +
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's pedestrian network with Public Toilets
+
+```{r}
+tmap_options('view')
+pedestrian_network_pt <- tm_shape(pedestrian_network) +
+  tm_lines() +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+Saving pedestrian networks with all spatial points to a html file separately
+
+```{r}
+tmap_save(pedestrian_network_cc, "tmaphtml/pedestrian_network_cc.html")
+tmap_save(pedestrian_network_be, "tmaphtml/pedestrian_network_be.html")
+tmap_save(pedestrian_network_df, "tmaphtml/pedestrian_network_df.html")
+tmap_save(pedestrian_network_landmarks, "tmaphtml/pedestrian_network_landmarks.html")
+tmap_save(pedestrian_network_pt, "tmaphtml/pedestrian_network_pt.html")
+```
+
+### Melbourne City's tram network with Business Establishments
+
+```{r}
+tmap_options('view')
+tram_network_be <- tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(business_est_sp) +
+  tm_dots(size = 0.02, col = "green")
+```
+
+### Melbourne City's tram network with Childcare Centres
+
+```{r}
+tmap_options('view')
+tram_network_cc <- tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(childcare_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's tram network with Drinking Fountain
+
+```{r}
+tmap_options('view')
+tram_network_df <- tm_shape(tram_network) +
+ tm_lines() +
+ tm_shape(drinking_fountain_sp) +
+ tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's tram network with Landmarks
+
+```{r}
+tmap_options('view')
+tram_network_landmarks <- tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(landmarks_sp) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+### Melbourne City's tram network with Public Toilets
+
+```{r}
+tmap_options('view')
+tram_network_pt <- tm_shape(tram_network) +
+  tm_lines() +
+  tm_shape(public_toilets_spdf) +
+  tm_dots(size = 0.03, col = "green")
+```
+
+Saving tram networks with all spatial points to a html file separately
+
+```{r}
+tmap_save(tram_network_cc, "tmaphtml/tram_network_cc.html")
+tmap_save(tram_network_be, "tmaphtml/tram_network_be.html")
+tmap_save(tram_network_df, "tmaphtml/tram_network_df.html")
+tmap_save(tram_network_landmarks, "tmaphtml/tram_network_landmarks.html")
+tmap_save(tram_network_pt, "tmaphtml/tram_network_pt.html")
+```
+
+## Network Constrained KDE (NetKDE) Analysis
+
+In this section, we will perform NetKDE analysis by using appropriate functions provided in spNetwork package.
+
+### Preparing the lixels objects
+
+Before computing NetKDE, the SpatialLines object need to be cut into lixels with a specified minimal distance. This task can be performed by using with lixelize_lines() of spNetwork as shown in the code chunk below.
+
+```{r}
+# Lixels for Road Network
+road_lixels_cc <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_be <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_df <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_lm <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+road_lixels_pt <- lixelize_lines(road_network_lines, 1000, mindist = 350)
+
+# Lixels for Pedestrian Network
+pedestrian_lixels_cc <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_be <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_df <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_lm <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+pedestrian_lixels_pt <- lixelize_lines(pedestrian_network, 500, mindist = 250)
+
+# Lixels for Tram Network
+tram_lixels_cc <- lixelize_lines(tram_network, 1000, mindist = 350)
+tram_lixels_be <- lixelize_lines(tram_network, 1000, mindist = 350)
+tram_lixels_df <- lixelize_lines(tram_network, 1000, mindist = 350)
+tram_lixels_lm <- lixelize_lines(tram_network, 1000, mindist = 350)
+tram_lixels_pt <- lixelize_lines(tram_network, 1000, mindist = 350)
+```
+
+The length of a lixel, lx_length is set to 1000m, 500m and 1000m respectively for road_network, pedestrian_network and tram_network. The minimum length of a lixel, mindist is set to 350m for network of road and tram whereas 250m for pedestrian network.
+
+### Generating line centre points
+
+Next, lines_center() of spNetwork will be used to generate a SpatialPointsDataFrame (i.e. samples) with line centre points as shown in the code chunk below.
+
+```{r}
+# Road network lines center
+road_samples_cc <- lines_center(road_lixels_cc)
+road_samples_be <- lines_center(road_lixels_be)
+road_samples_df <- lines_center(road_lixels_df)
+road_samples_lm <- lines_center(road_lixels_lm)
+road_samples_pt <- lines_center(road_lixels_pt)
+
+# Pedestrian network lines center
+pedestrian_samples_cc <- lines_center(pedestrian_lixels_cc)
+pedestrian_samples_be <- lines_center(pedestrian_lixels_be)
+pedestrian_samples_df <- lines_center(pedestrian_lixels_df)
+pedestrian_samples_lm <- lines_center(pedestrian_lixels_lm)
+pedestrian_samples_pt <- lines_center(pedestrian_lixels_pt)
+
+# # Tram network lines center
+tram_samples_cc <- lines_center(tram_lixels_cc)
+tram_samples_be <- lines_center(tram_lixels_be)
+tram_samples_df <- lines_center(tram_lixels_df)
+tram_samples_lm <- lines_center(tram_lixels_lm)
+tram_samples_pt <- lines_center(tram_lixels_pt)
+```
+
+### Road Network NetKDE
+
+We are ready to compute the NetKDE by using the code chunk below.
+
+#### Childcare Centres NetKDE
+
+```{r}
+road_network_cc_densities <- nkde(road_network_lines, 
+                  events = childcare_sp_sf,
+                  w = rep(1,nrow(childcare_sp_sf)),
+                  samples = road_samples_cc,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Business Establishments NetKDE
+
+```{r}
+road_network_be_densities <- nkde(road_network_lines, 
+                  events = business_est_sp,
+                  w = rep(1,nrow(business_est_sp)),
+                  samples = road_samples_be,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Drinking Fountain NetKDE
+
+```{r}
+road_network_df_densities <- nkde(road_network_lines, 
+                  events = drinking_fountain_sp,
+                  w = rep(1,nrow(drinking_fountain_sp)),
+                  samples = road_samples_df,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Landmarks NetKDE
+
+```{r}
+road_network_lm_densities <- nkde(road_network_lines, 
+                  events = landmarks_sp,
+                  w = rep(1,nrow(landmarks_sp)),
+                  samples = road_samples_lm,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Public Toilets NetKDE
+
+```{r}
+road_network_pt_densities <- nkde(road_network_lines, 
+                  events = public_toilets_sp_sf,
+                  w = rep(1,nrow(public_toilets_sp_sf)),
+                  samples = road_samples_pt,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+### Visualising Road Network NetKDE
+
+Before we can visualise the NetKDE values, code chunk below will be used to insert the computed density values (i.e. densities) into samples and lixels objects as density field.
+
+```{r}
+road_samples_cc$density <- road_network_cc_densities * 1000
+road_lixels_cc$density <- road_network_cc_densities * 1000
+
+road_samples_be$density <- road_network_be_densities * 1000
+road_lixels_be$density <- road_network_be_densities * 1000
+
+road_samples_df$density <- road_network_df_densities * 1000
+road_lixels_df$density <- road_network_df_densities * 1000
+
+road_samples_lm$density <- road_network_lm_densities * 1000
+road_lixels_lm$density <- road_network_lm_densities * 1000
+
+road_samples_pt$density <- road_network_pt_densities * 1000
+road_lixels_pt$density <- road_network_pt_densities * 1000
+```
+
+#### Childcare Centre
+
+```{r}
+tmap_options('view')
+road_networkKDE_cc <- tm_shape(road_lixels_cc) +
+  tm_lines(col="density")+
+  tm_shape(childcare_spdf)+
+  tm_dots(size = 0.03)
+```
+
+#### Business Establishments
+
+```{r}
+tmap_options('view')
+road_networkKDE_be <- tm_shape(road_lixels_be) +
+  tm_lines(col="density")+
+  tm_shape(business_est_sp)+
+  tm_dots(size = 0.02)
+```
+
+#### Drinking Fountain
+
+```{r}
+tmap_options('view')
+road_networkKDE_df <- tm_shape(road_lixels_df) +
+  tm_lines(col="density")+
+  tm_shape(drinking_fountain_sp)+
+  tm_dots(size = 0.03)
+```
+
+#### Landmarks
+
+```{r}
+tmap_options('view')
+road_networkKDE_lm <- tm_shape(road_lixels_lm) +
+  tm_lines(col="density")+
+  tm_shape(landmarks_sp)+
+  tm_dots(size = 0.03)
+```
+
+#### Public Toilets
+
+```{r}
+tmap_options('view')
+road_networkKDE_pt <- tm_shape(road_lixels_pt) +
+  tm_lines(col="density")+
+  tm_shape(public_toilets_spdf)+
+  tm_dots(size = 0.03)
+```
+
+Saving road networks KDE to separate html file
+
+```{r}
+tmap_save(road_networkKDE_cc, "tmapnetworkKDEhtml/road_networkKDE_cc.html")
+tmap_save(road_networkKDE_be, "tmapnetworkKDEhtml/road_networkKDE_be.html")
+tmap_save(road_networkKDE_df, "tmapnetworkKDEhtml/road_networkKDE_df.html")
+tmap_save(road_networkKDE_lm, "tmapnetworkKDEhtml/road_networkKDE_lm.html")
+tmap_save(road_networkKDE_pt, "tmapnetworkKDEhtml/road_networkKDE_pt.html")
+```
+
+### Pedestrian Network NetKDE
+
+We are ready to compute the NetKDE by using the code chunk below. When using the continuous and discontinuous methods, the calculation time and memory use can go wild if the network has many small edges (area with many of intersections and many events) - especially for pedestrian network. To avoid it, it is possible to set here a maximum depth. Considering that the kernel is divided at intersections, a value of max_depth value of 10 is set and should yield good estimates in most cases. (https://cran.r-project.org/web/packages/spNetwork/spNetwork.pdf)
+
+#### Childcare Centres NetKDE
+
+```{r}
+pedestrian_network_cc_densities <- nkde(pedestrian_network, 
+                  events = childcare_sp_sf,
+                  w = rep(1,nrow(childcare_sp_sf)),
+                  samples = pedestrian_samples_cc,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 10,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Business Establishments NetKDE
+
+```{r}
+pedestrian_network_be_densities <- nkde(pedestrian_network, 
+                  events = business_est_sp,
+                  w = rep(1,nrow(business_est_sp)),
+                  samples = pedestrian_samples_be,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 10,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Drinking Fountain NetKDE
+
+```{r}
+pedestrian_network_df_densities <- nkde(pedestrian_network, 
+                  events = drinking_fountain_sp,
+                  w = rep(1,nrow(drinking_fountain_sp)),
+                  samples = pedestrian_samples_df,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 10,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Landmarks NetKDE
+
+```{r}
+pedestrian_network_lm_densities <- nkde(pedestrian_network, 
+                  events = landmarks_sp,
+                  w = rep(1,nrow(landmarks_sp)),
+                  samples = pedestrian_samples_lm,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 10,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Public Toilets NetKDE
+
+```{r}
+pedestrian_network_pt_densities <- nkde(pedestrian_network, 
+                  events = public_toilets_sp_sf,
+                  w = rep(1,nrow(public_toilets_sp_sf)),
+                  samples = pedestrian_samples_pt,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 1, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 10,
+                  agg = 10, #we aggregate events within a 10m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+### Visualising Pedestrian Network NetKDE
+
+Before we can visualise the NetKDE values, code chunk below will be used to insert the computed density values (i.e. densities) into samples and lixels objects as density field.
+
+```{r}
+pedestrian_samples_cc$density <- pedestrian_network_cc_densities * 1000
+pedestrian_lixels_cc$density <- pedestrian_network_cc_densities * 1000 
+
+pedestrian_samples_be$density <- pedestrian_network_be_densities * 1000
+pedestrian_lixels_be$density <- pedestrian_network_be_densities * 1000
+
+pedestrian_samples_df$density <- pedestrian_network_df_densities * 1000
+pedestrian_lixels_df$density <- pedestrian_network_df_densities * 1000
+
+pedestrian_samples_lm$density <- pedestrian_network_lm_densities * 1000
+pedestrian_lixels_lm$density <- pedestrian_network_lm_densities * 1000
+
+pedestrian_samples_pt$density <- pedestrian_network_pt_densities * 1000
+pedestrian_lixels_pt$density <- pedestrian_network_pt_densities * 1000
+```
+
+#### Childcare Centre
+
+```{r}
+tmap_options('view')
+pedestrian_networkKDE_cc <- tm_shape(pedestrian_lixels_cc) +
+  tm_lines(col="density")+
+  tm_shape(childcare_spdf)+
+  tm_dots(size = 0.03)
+```
+
+#### Business Establishments
+
+```{r}
+tmap_options('view')
+pedestrian_networkKDE_be <- tm_shape(pedestrian_lixels_be) +
+  tm_lines(col="density")+
+  tm_shape(business_est_sp)+
+  tm_dots(size = 0.02)
+```
+
+#### Drinking Fountain
+
+```{r}
+tmap_options('view')
+pedestrian_networkKDE_df <- tm_shape(pedestrian_lixels_df) +
+  tm_lines(col="density")+
+  tm_shape(drinking_fountain_sp)+
+  tm_dots(size = 0.03)
+```
+
+#### Landmarks
+
+```{r}
+tmap_options('view')
+pedestrian_networkKDE_lm <- tm_shape(pedestrian_lixels_lm) +
+  tm_lines(col="density")+
+  tm_shape(landmarks_sp)+
+  tm_dots(size = 0.03)
+```
+
+#### Public Toilets
+
+```{r}
+tmap_options('view')
+pedestrian_networkKDE_pt <- tm_shape(pedestrian_lixels_pt) +
+  tm_lines(col="density")+
+  tm_shape(public_toilets_spdf)+
+  tm_dots(size = 0.03)
+```
+
+Saving road networks KDE to separate html file
+
+```{r}
+tmap_save(pedestrian_networkKDE_cc, "tmapnetworkKDEhtml/pedestrian_networkKDE_cc.html")
+tmap_save(pedestrian_networkKDE_be, "tmapnetworkKDEhtml/pedestrian_networkKDE_be.html")
+tmap_save(pedestrian_networkKDE_df, "tmapnetworkKDEhtml/pedestrian_networkKDE_df.html")
+tmap_save(pedestrian_networkKDE_lm, "tmapnetworkKDEhtml/pedestrian_networkKDE_lm.html")
+tmap_save(pedestrian_networkKDE_pt, "tmapnetworkKDEhtml/pedestrian_networkKDE_pt.html")
+```
+
+### Tram Network NetKDE
+
+We are ready to compute the NetKDE by using the code chunk below.
+
+#### Childcare Centres NetKDE
+
+```{r}
+tram_network_cc_densities <- nkde(tram_network, 
+                  events = childcare_sp_sf,
+                  w = rep(1,nrow(childcare_sp_sf)),
+                  samples = tram_samples_cc,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Business Establishments NetKDE
+
+```{r}
+tram_network_be_densities <- nkde(tram_network, 
+                  events = business_est_sp,
+                  w = rep(1,nrow(business_est_sp)),
+                  samples = tram_samples_be,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Drinking Fountain NetKDE
+
+```{r}
+tram_network_df_densities <- nkde(tram_network, 
+                  events = drinking_fountain_sp,
+                  w = rep(1,nrow(drinking_fountain_sp)),
+                  samples = tram_samples_df,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Landmarks NetKDE
+
+```{r}
+tram_network_lm_densities <- nkde(tram_network, 
+                  events = landmarks_sp,
+                  w = rep(1,nrow(landmarks_sp)),
+                  samples = tram_samples_lm,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+#### Public Toielts NetKDE
+
+```{r}
+tram_network_pt_densities <- nkde(tram_network, 
+                  events = public_toilets_sp_sf,
+                  w = rep(1,nrow(public_toilets_sp_sf)),
+                  samples = tram_samples_pt,
+                  kernel_name = "quartic",
+                  bw = 300, 
+                  div= "bw", 
+                  method = "simple", 
+                  digits = 3, 
+                  tol = 1,
+                  grid_shape = c(1,1), 
+                  max_depth = 8,
+                  agg = 20, #we aggregate events within a 20m radius (faster calculation)
+                  sparse = TRUE,
+                  verbose = FALSE)
+```
+
+### Visualising Tram Network NetKDE
+
+Before we can visualise the NetKDE values, code chunk below will be used to insert the computed density values (i.e. densities) into samples and lixels objects as density field.
+
+```{r}
+tram_samples_cc$density <- tram_network_cc_densities * 1000
+tram_lixels_cc$density <- tram_network_cc_densities * 1000 
+
+tram_samples_be$density <- tram_network_be_densities * 1000
+tram_lixels_be$density <- tram_network_be_densities * 1000
+
+tram_samples_df$density <- tram_network_df_densities * 1000
+tram_lixels_df$density <- tram_network_df_densities * 1000
+
+tram_samples_lm$density <- tram_network_lm_densities * 1000
+tram_lixels_lm$density <- tram_network_lm_densities * 1000
+
+tram_samples_pt$density <- tram_network_pt_densities * 1000
+tram_lixels_pt$density <- tram_network_pt_densities * 1000
+```
+
+#### Childcare Centre
+
+```{r}
+tmap_options('view')
+tram_networkKDE_cc <- tm_shape(tram_lixels_cc) +
+  tm_lines(col="density")+
+  tm_shape(childcare_spdf)+
+  tm_dots(size = 0.03)
+```
+
+#### Business Establishments
+
+```{r}
+tmap_options('view')
+tram_networkKDE_be <- tm_shape(tram_lixels_be) +
+  tm_lines(col="density")+
+  tm_shape(business_est_sp)+
+  tm_dots(size = 0.02)
+```
+
+#### Drinking Fountain
+
+```{r}
+tmap_options('view')
+tram_networkKDE_df <- tm_shape(tram_lixels_df) +
+  tm_lines(col="density")+
+  tm_shape(drinking_fountain_sp)+
+  tm_dots(size = 0.03)
+```
+
+#### Landmarks
+
+```{r}
+tmap_options('view')
+tram_networkKDE_lm <- tm_shape(tram_lixels_lm) +
+  tm_lines(col="density")+
+  tm_shape(landmarks_sp)+
+  tm_dots(size = 0.03)
+```
+
+#### Public Toilets
+
+```{r}
+tmap_options('view')
+tram_networkKDE_pt <- tm_shape(tram_lixels_pt) +
+  tm_lines(col="density")+
+  tm_shape(public_toilets_spdf)+
+  tm_dots(size = 0.03)
+```
+
+Saving tram networks KDE to separate html file
+
+```{r}
+tmap_save(tram_networkKDE_cc, "tmapnetworkKDEhtml/tram_networkKDE_cc.html")
+tmap_save(tram_networkKDE_be, "tmapnetworkKDEhtml/tram_networkKDE_be.html")
+tmap_save(tram_networkKDE_df, "tmapnetworkKDEhtml/tram_networkKDE_df.html")
+tmap_save(tram_networkKDE_lm, "tmapnetworkKDEhtml/tram_networkKDE_lm.html")
+tmap_save(tram_networkKDE_pt, "tmapnetworkKDEhtml/tram_networkKDE_pt.html")
+```
+
+## Network Constrained G- and K-Function Analysis
+
+In this section, we are going to perform complete spatial randomness (CSR) test by using kfunctions() of spNetwork package. The null hypothesis is defined as:
+
+### Road Network Null Hypothesis
+
+Ho: The observed spatial point events (i.e distribution of childcare centres) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of business establishments) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of drinking fountain) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of landmarks) are uniformly distributed over a road network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of public toilets) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+### Pedestrian Network Null Hypothesis
+
+Ho: The observed spatial point events (i.e distribution of childcare centres) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of business establishments) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of drinking fountain) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of landmarks) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of public toilets) are uniformly distributed over a pedestrian network in Melbourne City Area.
+
+### Tram Network Null Hypothesis
+
+Ho: The observed spatial point events (i.e distribution of childcare centres) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of business establishments) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of drinking fountain) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of landmarks) are uniformly distributed over a tram network in Melbourne City Area.
+
+Ho: The observed spatial point events (i.e distribution of public toilets) are uniformly distributed over a tram network in Melbourne City Area.
+
+The CSR test is based on the assumption of the binomial point process which implies the hypothesis that the spatial points are randomly and independently distributed over the various network.
+
+If this hypothesis is rejected, we may infer that the distribution of spatial points are spatially interacting and dependent on each other; as a result, they may form nonrandom patterns.
+
+### G & K Function
+
+#### Childcare Centres with Road Network
+
+```{r}
+kfun_childcare_road <- kfunctions(road_network_lines, 
+                             childcare_sp_sf,
+                             start = 0, 
+                             end = 1000, 
+                             step = 100, 
+                             width = 50, 
+                             nsim = 100, 
+                             resolution = 50,
+                             verbose = FALSE, 
+                             conf_int = 0.05)
+```
+
+```{r}
+kfun_childcare_road <- kfun_childcare_road$plotk
+```
+
+#### Business Establishments with Road Network
+
+```{r}
+business_est_sp_unique <- business_est_sp[!duplicated(st_geometry(business_est_sp)), ]
+kfun_be_road <- kfunctions(road_network_lines, 
+                           business_est_sp_unique,
+                           start = 0, 
+                           end = 1000, 
+                           step = 100, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 100,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_be_road <- kfun_be_road$plotk
+```
+
+#### Drinking Fountain with Road Network
+
+```{r}
+kfun_df_road <- kfunctions(road_network_lines, 
+                           drinking_fountain_sp,
+                           start = 0, 
+                           end = 250, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50,
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_df_road <- kfun_df_road$plotk
+```
+
+#### Landmarks with Road Network
+
+```{r}
+kfun_lm_road <- kfunctions(road_network_lines, 
+                           landmarks_sp,
+                           start = 0, 
+                           end = 250, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 100,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+#kfun_lm_road <- kfun_lm_road$plotk
+kfun_lm_road$plotk
+```
+
+#### Public Toilets with Road Network
+
+```{r}
+public_toilets_sp_sf_unique <- public_toilets_sp_sf[!duplicated(st_geometry(public_toilets_sp_sf)), ]
+kfun_pt_road <- kfunctions(road_network_lines, 
+                           public_toilets_sp_sf,
+                           start = 0, 
+                           end = 1000, 
+                           step = 100, 
+                           width = 50, 
+                           nsim = 50,
+                           agg = 100,
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_pt_road <- kfun_pt_road$plotk
+```
+
+```{r}
+ggsave(file = "g&kplot/kfun_childcare_road.png", plot = kfun_childcare_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_be_road.png", plot = kfun_be_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_df_road.png", plot = kfun_df_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_lm_road.png", plot = kfun_lm_road, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_pt_road.png", plot = kfun_pt_road, width = 6, height = 4, dpi = 300)
+```
+
+#### Childcare Centres with Pedestrian Network
+
+```{r}
+kfun_childcare_pedestrian <- kfunctions(pedestrian_network, 
+                             childcare_sp_sf,
+                             start = 0, 
+                             end = 1000, 
+                             step = 50, 
+                             width = 50, 
+                             nsim = 50, 
+                             resolution = 50,
+                             verbose = FALSE, 
+                             conf_int = 0.05)
+```
+
+```{r}
+kfun_childcare_pedestrian <- kfun_childcare_pedestrian$plotk
+```
+
+#### Business Establishments with Pedestrian Network
+
+```{r}
+business_est_sp_unique <- business_est_sp[!duplicated(st_geometry(business_est_sp)), ]
+kfun_be_pedestrian <- kfunctions(pedestrian_network, 
+                           business_est_sp_unique,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 100,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_be_pedestrian <- kfun_be_pedestrian$plotk
+```
+
+#### Drinking Fountain with Pedestrian Network
+
+```{r}
+kfun_df_pedestrian <- kfunctions(pedestrian_network, 
+                           drinking_fountain_sp,
+                           start = 0, 
+                           end = 250, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_df_pedestrian <- kfun_df_pedestrian$plotk
+```
+
+#### Landmarks with Pedestrian Network
+
+```{r}
+kfun_lm_pedestrian <- kfunctions(pedestrian_network, 
+                           landmarks_sp,
+                           start = 0, 
+                           end = 250, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_lm_pedestrian <- kfun_lm_pedestrian$plotk
+```
+
+#### Public Toilets with Pedestrian Network
+
+```{r}
+public_toilets_sp_sf_unique <- public_toilets_sp_sf[!duplicated(st_geometry(public_toilets_sp_sf)), ]
+kfun_pt_pedestrian <- kfunctions(pedestrian_network, 
+                           public_toilets_sp_sf,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50,
+                           agg = 100,
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_pt_pedestrian <- kfun_pt_pedestrian$plotk
+```
+
+```{r}
+ggsave(file = "g&kplot/kfun_childcare_pedestrian.png", plot = kfun_childcare_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_be_pedestrian.png", plot = kfun_be_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_df_pedestrian.png", plot = kfun_df_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_lm_pedestrian.png", plot = kfun_lm_pedestrian, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_pt_pedestrian.png", plot = kfun_pt_pedestrian, width = 6, height = 4, dpi = 300)
+```
+
+#### Childcare Centres with Tram Network
+
+```{r}
+kfun_childcare_tram <- kfunctions(tram_network, 
+                             childcare_sp_sf,
+                             start = 0, 
+                             end = 500, 
+                             step = 50, 
+                             width = 50, 
+                             nsim = 50, 
+                             resolution = 50,
+                             verbose = FALSE, 
+                             conf_int = 0.05)
+```
+
+```{r}
+kfun_childcare_tram <- kfun_childcare_tram$plotk
+```
+
+#### Business Establishments with Tram Network
+
+```{r}
+business_est_sp_unique <- business_est_sp[!duplicated(st_geometry(business_est_sp)), ]
+kfun_be_tram <- kfunctions(tram_network, 
+                           business_est_sp_unique,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 500,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_be_tram <- kfun_be_tram$plotk
+```
+
+#### Drinking Fountain with Tram Network
+
+```{r}
+kfun_df_tram <- kfunctions(tram_network, 
+                           drinking_fountain_sp,
+                           start = 0, 
+                           end = 250, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 500,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_df_tram <- kfun_df_tram$plotk
+```
+
+#### Landmarks with Tram Network
+
+```{r}
+kfun_lm_tram <- kfunctions(tram_network, 
+                           landmarks_sp,
+                           start = 0, 
+                           end = 250, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50, 
+                           resolution = 50,
+                           agg = 700,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_lm_tram <- kfun_lm_tram$plotk
+```
+
+#### Public Toilets with Tram Network
+
+```{r}
+public_toilets_sp_sf_unique <- public_toilets_sp_sf[!duplicated(st_geometry(public_toilets_sp_sf)), ]
+kfun_pt_tram <- kfunctions(tram_network, 
+                           public_toilets_sp_sf,
+                           start = 0, 
+                           end = 1000, 
+                           step = 50, 
+                           width = 50, 
+                           nsim = 50,
+                           agg = 500,
+                           resolution = 50,
+                           verbose = FALSE, 
+                           conf_int = 0.05)
+```
+
+```{r}
+kfun_pt_tram <- kfun_pt_tram$plotk
+```
+
+```{r}
+ggsave(file = "g&kplot/kfun_childcare_tram.png", plot = kfun_childcare_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_be_tram.png", plot = kfun_be_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_df_tram.png", plot = kfun_df_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_lm_tram.png", plot = kfun_lm_tram, width = 6, height = 4, dpi = 300)
+ggsave(file = "g&kplot/kfun_pt_tram.png", plot = kfun_pt_tram, width = 6, height = 4, dpi = 300)
+```

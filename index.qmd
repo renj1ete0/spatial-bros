@@ -7,11 +7,21 @@ description: "Exploring Spatial Point and Network-Constrained Spatial Point Anal
 Note: The Spatial Bros shiny web application may take up to 3 minutes to load fully, please wait patiently, thank you.
 :::
 
-## About the Project
+## Background
 
-The City of Melbourne has many datasets that are readily available to the public, through [City of Melbourne Open Data](https://data.melbourne.vic.gov.au/pages/home/) and [Data Vic](https://www.data.vic.gov.au/). Yet, this only fufills the first part of 'accessibility of data' through the democratisation of datasets by the government.
+![](imgs/datademocratisation.png){fig-align="center"}
+
+The City of Melbourne has many datasets that are readily available to the public, through [City of Melbourne Open Data](https://data.melbourne.vic.gov.au/pages/home/) and [Data Vic](https://www.data.vic.gov.au/). Yet, this only fufills the first part of 'data access' by providing datasets on their websites available for download and simple spatial points exploration using the interactive map provided.
 
 Users who are not trained in geospatial analysis or GIS are unable to perform their own analysis to understand spatial pattern or trends behind their neighbourhood which could help citizens or outsiders to understand the city better and possibly formulate citizen efforts.
+
+These are important pointers as the true democratisation of data should allow users to be empowered with tools to comfortably analyse datasets with ease and come up with their analysis and conclusions.
+
+## About the Project
+
+![](imgs/titleblock.png){.column-screen width="910"}
+
+*Network Constrained Spatial Point Pattern Analysis of Accomodation in City of Melbourne by Road Network*
 
 The Spatial Bros is created to fufill the next step of data democratisation to assist non-technical savvy users in performing geographical point pattern analysis to gain insights from open data. Our application will assist users with 2 kinds of analysis as shown:
 
@@ -33,12 +43,36 @@ Spatial Points Analysis
 
 For each of the analyses, the application will provide users with kernel density maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.
 
-## Use Cases
+Users can look forward to a simple-to-use interface, with clear instructions to understand the functionality of each feature, explanations of each option and instructions on interpreting the output data to come up with their conclusions.
+
+## Fun Areas to Explore
+
+Here are some locations of interest you can explore and analyse to get started!
+
+1.  Drinking Fountains
+
+2.  Business Establishments \> Vacant Space
+
+3.  Public Toilets
+
+4.  Business Establishments \> Accomodation
+
+5.  Business Establishments \> Convenience Store
 
 ## Contents
 
 1.  [Project Proposal](/proposal.html)
-2.  [Project Poster](https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20Poster.pdf)
+
+2.  [Project Poster](Spatial%20Bros%20Poster.pdf)
+
 3.  [Interactive Shiny Application](https://renjieteo.shinyapps.io/SpatialBros/)
-4.  [Practice Research Paper](https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20Research%20Report.pdf)
-5.  [User Guide](https://github.com/renjie-teo/spatial-bros/blob/master/Spatial%20Bros%20User%20Guide.pdf)
+
+4.  [Practice Research Paper](Spatial%20Bros%20Research%20Report.pdf)
+
+5.  [User Guide](Spatial%20Bros%20User%20Guide.pdf)
+
+## Special Thanks
+
+This project is done for IS415 Geospatial Analytics & Application under the guidance of Professor Kam Tin Seong.
+
+![](SpatialBros/www/smu.png){width="248"} ![](SpatialBros/www/logo.png){width="357"}
