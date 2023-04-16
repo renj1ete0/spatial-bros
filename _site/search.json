@@ -11,14 +11,14 @@
     "href": "index.html",
     "title": "Spatial Bros",
     "section": "",
-    "text": "The Spatial Bros is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:\nSpatial Points Analysis\n\nNetwork Constrained Spatial Point\n\nNetwork Constrained Kernel Density Map\nNetwork Constrained G/K Statistical Functions\n\n1st/2nd Order Spatial Point Pattern Analysis\n\nNetwork Constrained Kernel Density Map\nNetwork Constrained G/K Statistical Functions\n\n\nFor each of the analyses, the application will provide users with kernel density maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.\nSome of the use cases could incldue\n…"
+    "text": "The Spatial Bros is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:\nSpatial Points Analysis\n\nNetwork Constrained Spatial Point\n\nNetwork Constrained Kernel Density Map\nNetwork Constrained G/K Statistical Functions\n\n1st/2nd Order Spatial Point Pattern Analysis\n\nNetwork Constrained Kernel Density Map\nNetwork Constrained G/K Statistical Functions\n\n\nFor each of the analyses, the application will provide users with kernel density maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks."
   },
   {
     "objectID": "index.html#contents",
     "href": "index.html#contents",
     "title": "Spatial Bros",
     "section": "Contents",
-    "text": "Contents\n\nProject Proposal\nProject Poster\nInteractive Shiny Application\nPractice Research Paper"
+    "text": "Contents\n\nProject Proposal\nProject Poster\nInteractive Shiny Application\nPractice Research Paper\nUser Guide"
   },
   {
     "objectID": "network_constraint_sp.html",
@@ -60,7 +60,7 @@
     "href": "proposal.html#st-2nd-order-kernel-density-estimation",
     "title": "Project Proposal: Spatial Bros",
     "section": "5.4 1st & 2nd Order Kernel Density Estimation",
-    "text": "5.4 1st & 2nd Order Kernel Density Estimation\n\n1st order Kernel Density Estimation\nG and K function"
+    "text": "5.4 1st & 2nd Order Kernel Density Estimation\n\n1st order Kernel Density Estimation\nClarks Evans Test\n2nd Order G and K function analysis"
   },
   {
     "objectID": "proposal.html#network-constrained-and-category-based-point-pattern-analysis-for-suguo-retail-stores-in-nanjing-china",
@@ -152,5 +152,12 @@
     "title": "",
     "section": "",
     "text": "install.packages(\"sf_1.0-9.tar.gz\", repos = NULL, type=\"source\")\nlibrary(shiny)\nlibrary(shinythemes)\nlibrary(sp)\nlibrary(sf)\nlibrary(rgdal)\nlibrary(spNetwork)\nlibrary(tmap)\nlibrary(readr)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(plotly)\n\n\nloc <- read_rds(\"rds/melbourne_localities.rds\")\n\n\nloc <- st_transform(loc, crs = 7855)\n\n\nplot(loc)\n\n\nboundary <- read_rds(\"rds/melbourne_local_government_areas.rds\")\n\n\nboundary <- st_transform(boundary, crs = 7855)\n\n\nlocalities = st_read(\"test/\", layer = \"vic_localities\") \n\n\nlocalities <- st_transform(localities, crs = 7855)\n\n\ntest <- localities %>% filter(LOC_NAME %in% c(\"Carlton\", \"Carlton North\", \"Docklands\", \"East Melbourne\", \"Flemington\", \"Kensington\", \"Melbourne\", \"North Melbourne\", \"Parkville\", \"Port Melbourne\", \"South Wharf\", \"South Yarra\", \"Southbank\", \"West Melbourne\"))\n\n\nplot(test)\nplot(boundary)\n\n\nsaveRDS(test, \"rds/melbourne_localities.rds\")\n\n\ntest3\nboundary\n\n\ntest3 <- localities %>% filter(LOC_NAME == \"Flemington\")\n\ntest2 <- st_intersection(boundary, test)\n\n\nplot(test2)\n\n\nsaveRDS(test2, \"rds/melbourne_localities.rds\")\n\n\nnet_lines <- read_rds(\"rds/road_network_lines.rds\")\nnet_lines\n\n\nhi <- st_intersection(net_lines, boundary)\n\n\nloc_interest = read_rds(\"rds/drinking_fountain.rds\")\nnetwork_type = read_rds(\"rds/road_network_lines.rds\")\n\n      adaptive = FALSE\n      trim_bw = NULL\n\n    \n    cv_scores <- bw_cv_likelihood_calc(c(200,800),50,\n                             network_type, loc_interest,\n                             rep(1,nrow(loc_interest)),\n                             \"quartic\", \"simple\" , verbose=FALSE, check=TRUE)\n    max_index <- which.max(cv_scores[,2])\n    max_bandwidth <- cv_scores[max_index, 1]\n\n    road_lixels_cc <- lixelize_lines(network_type, 700, mindist = 350)\n    road_samples_cc <- lines_center(road_lixels_cc)\n    road_network_cc_densities <- nkde(network_type,\n                                      events = loc_interest,\n                                      w = rep(1,nrow(loc_interest)), \n                                      samples = road_samples_cc, \n                                      kernel_name =  noquote(input$kernel_name),\n                                      bw = max_bandwidth, \n                                      trim_bw = trim_bw,\n                                      div= \"bw\", \n                                      adaptive = adaptive,\n                                      method = noquote(input$method_name), \n                                      digits = 3, \n                                      tol = 1,\n                                      grid_shape = c(1,1), \n                                      max_depth = 8,\n                                      agg = 10,\n                                      sparse = TRUE,\n                                      verbose = FALSE)\n    road_samples_cc$density <- road_network_cc_densities * 1000\n    road_lixels_cc$density <- road_network_cc_densities * 1000\n    \n    tmap_options(\"view\")\n          tm_shape(localities) +\n        tm_polygons(\"LOC_NAME\", alpha=0.1) +\n        tm_shape(boundary) +\n        tm_borders(lwd = 2.5, lty = 5,  col=\"blue\") +\n        tm_shape(road_lixels_cc) +\n        tm_lines(lwd = 1.5, col = \"density\")+\n        tm_shape(loc_interest)+ \n        tm_dots(size = 0.03, alpha = 0.6)"
+  },
+  {
+    "objectID": "proposal.html#identifying-factors-of-influence-in-the-spatial-distribution-of-domestic-fires",
+    "href": "proposal.html#identifying-factors-of-influence-in-the-spatial-distribution-of-domestic-fires",
+    "title": "Project Proposal: Spatial Bros",
+    "section": "6.2 Identifying factors of influence in the spatial distribution of domestic fires",
+    "text": "6.2 Identifying factors of influence in the spatial distribution of domestic fires\nhttps://doi.org/10.1080/13658810903143634\n\n6.2.1 Summary\nTo gain an understanding of how domestic fires arise based on different factors such as time of day, building types and income groups.\n\n\n\n\n6.2.2 Learning Points and Linking Back to Our Project\nThe use of the Strauss process for inferring different variables such as building types, income groups is an interesting way to generate random patterns of points where it stimulates the realization of the Strauss process. Developed by Strauss, Kelly and Ripley, it is a model for spatial inhibition that ranges from a strong ‘hard core’ inhibition to a completely random pattern according to gamma and beta value. The results also show that there are significant differences in factors that influence the spatial distribution of fires with the above variables listed."
   }
 ]

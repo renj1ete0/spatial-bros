@@ -70,7 +70,9 @@ Throughout the development of this project, our group would like to perform our 
 
 -   1st order Kernel Density Estimation
 
--   G and K function
+-   Clarks Evans Test
+
+-   2nd Order G and K function analysis
 
 # Relevant Related Works
 
@@ -86,35 +88,19 @@ Network KDE and Network K-function was used to study retail service  hot-spot a
 
 The bandwidth for generating network-constrained kernel density estimation (KDE) maps would produce representations of distributions that  and we should explore various network KDE bandwidths to find suitable bandwidth and also provide options for users to adjust bandwidth
 
-## Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S
+## **Identifying factors of influence in the spatial distribution of domestic fires**
 
-<https://arxiv.org/abs/2212.06954>
+<https://doi.org/10.1080/13658810903143634>
 
 ### Summary
 
-The team created a tool to analyse the ease and equity of access to major POI using public transit in US cities using an interactive website (to filter selected POIs) calculated with 2SFCA (2-step floating catchment area) approach.\
+To gain an understanding of how domestic fires arise based on different factors such as time of day, building types and income groups. \
 \
-It aims to explore effectiveness and equity of public transit system in major US cities
 
 ### Learning Points and Linking Back to Our Project
 
--   User Interface for users to filter by POI and view geographical accessibility information and additional
+The use of the Strauss process for inferring different variables such as building types, income groups is an interesting way to generate random patterns of points where it stimulates the realization of the Strauss process. Developed by Strauss, Kelly and Ripley, it is a model for spatial inhibition that ranges from a strong ‘hard core’ inhibition to a completely random pattern according to gamma and beta value. The results also show that there are significant differences in factors that influence the spatial distribution of fires with the above variables listed. 
 
-## Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments -- a case study of public amenities in Toruń
-
-<http://dx.doi.org/10.2478/mgrsd-2018-0037>
-
-### Summary
-
-The paper looks at a methodology to analyse spatial accessibility using network analysis and a hexagonal grid to the city of Toruń, Poland. The paper also explored that it is important to empower citizens with knowledge of the geospatial analysis and created a web application to empower citizens with knowledge.
-
-### Learning Points and Linking Back to Our Project
-
--   Adopt a similar methodology of converting distance for OD Matrix, specifically Origin and Destination distances to travel times by assuming a walking speed of 4km/h
-
--   Network will be calculated using the travel time of the appropriate speed (eg. road will be calculated based on road speed limit)
-
--   This will prevent underestimation of travel times which may affect the accessbility metrics
 
 # Story Board
 
@@ -155,7 +141,7 @@ The paper looks at a methodology to analyse spatial accessibility using network 
 Our data sources includes datasets from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria) due to its large and wide range of datasets available for exploration and analysis.
 
 | **Type**               | **Name**                                                                                                                                     | **Link**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-------------|-------------|-----------------------------------------------|
 | Localities             | Localities Outline for Australia (to filter out City of Melbourne)                                                                           | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Local Government Areas | LGA Outline for Australia (to use to filter out City of Melbourne Localities)                                                                | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Network                | Pedestrian                                                                                                                                   | <https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
