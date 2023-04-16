@@ -95,6 +95,14 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link active" href="./proposal.html" aria-current="page">
  <span class="menu-text">Proposal</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data.qmd">
+ <span class="menu-text">Data Pre-processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://renjieteo.shinyapps.io/SpatialBros/">
+ <span class="menu-text">spatialbros - Shiny Web App</span></a>
+  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros"><i class="bi bi-github" role="img">
 </i> 
@@ -170,6 +178,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="toc-section-number">5.2</span>  Exploratory Data Analysis</a></li>
   <li><a href="#network-constrained-point-pattern-analysis" id="toc-network-constrained-point-pattern-analysis" class="nav-link" data-scroll-target="#network-constrained-point-pattern-analysis"><span class="toc-section-number">5.3</span>  Network Constrained Point Pattern Analysis</a></li>
   <li><a href="#st-2nd-order-kernel-density-estimation" id="toc-st-2nd-order-kernel-density-estimation" class="nav-link" data-scroll-target="#st-2nd-order-kernel-density-estimation"><span class="toc-section-number">5.4</span>  1st &amp; 2nd Order Kernel Density Estimation</a></li>
+  <li><a href="#user-interface-and-design" id="toc-user-interface-and-design" class="nav-link" data-scroll-target="#user-interface-and-design"><span class="toc-section-number">5.5</span>  User Interface and Design</a></li>
   </ul></li>
   <li><a href="#relevant-related-works" id="toc-relevant-related-works" class="nav-link" data-scroll-target="#relevant-related-works"><span class="toc-section-number">6</span>  Relevant Related Works</a>
   <ul class="collapse">
@@ -191,9 +200,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#network-statistical-function" id="toc-network-statistical-function" class="nav-link" data-scroll-target="#network-statistical-function"><span class="toc-section-number">7.3</span>  Network Statistical Function</a></li>
   <li><a href="#st-order-kde" id="toc-st-order-kde" class="nav-link" data-scroll-target="#st-order-kde"><span class="toc-section-number">7.4</span>  1st Order KDE</a></li>
   <li><a href="#st-order-stat-function" id="toc-st-order-stat-function" class="nav-link" data-scroll-target="#st-order-stat-function"><span class="toc-section-number">7.5</span>  1st Order Stat Function</a></li>
-  <li><a href="#nd-order-kde" id="toc-nd-order-kde" class="nav-link" data-scroll-target="#nd-order-kde"><span class="toc-section-number">7.6</span>  2nd Order KDE</a></li>
-  <li><a href="#nd-order-stat-function" id="toc-nd-order-stat-function" class="nav-link" data-scroll-target="#nd-order-stat-function"><span class="toc-section-number">7.7</span>  2nd Order Stat Function</a></li>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">7.8</span>  Data</a></li>
+  <li><a href="#nd-order-stat-function" id="toc-nd-order-stat-function" class="nav-link" data-scroll-target="#nd-order-stat-function"><span class="toc-section-number">7.6</span>  2nd Order Stat Function</a></li>
   </ul></li>
   <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources"><span class="toc-section-number">8</span>  Data Sources</a></li>
   <li><a href="#application-architecture" id="toc-application-architecture" class="nav-link" data-scroll-target="#application-architecture"><span class="toc-section-number">9</span>  Application Architecture</a></li>
@@ -233,7 +240,7 @@ ul.task-list li input[type="checkbox"] {
 </p>
 <ul>
 <li><p>Better understand the capabilities of Network-Constrained Point Pattern Analysis</p></li>
-<li><p>Better understanding of 1st and 2nd order Kernel Density Estimation (KDE)</p></li>
+<li><p>Better understanding of 1st Kernel Density Estimation (KDE), Clarks and Evans Test and 2nd Order (G,K) function analysis</p></li>
 <li><p>Conduct Network-Constrained Point Pattern Analysis density estimation (NetKDE) and (G, K) function analysis</p></li>
 <li><p>Ability to generate insights based on the above analysis for any decision making</p></li>
 </ul>
@@ -271,6 +278,14 @@ ul.task-list li input[type="checkbox"] {
 <li><p>2nd Order G and K function analysis</p></li>
 </ul>
 </section>
+<section id="user-interface-and-design" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="user-interface-and-design"><span class="header-section-number">5.5</span> User Interface and Design</h2>
+<ul>
+<li><p>Allow users to use the Interactive Shiny App easily, even without the user guide</p></li>
+<li><p>Instructions on interpretation of results will be provided on each individual KDE or statistical analysis page to allow users to understand results and formulate their conclusions</p></li>
+<li><p>Explanations of what each function and method that users are allowed to select for them to understand how each function/method works</p></li>
+</ul>
+</section>
 </section>
 <section id="relevant-related-works" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Relevant Related Works</h1>
@@ -292,7 +307,6 @@ ul.task-list li input[type="checkbox"] {
 <section id="summary-1" class="level3" data-number="6.2.1">
 <h3 data-number="6.2.1" class="anchored" data-anchor-id="summary-1"><span class="header-section-number">6.2.1</span> Summary</h3>
 <p>To gain an understanding of how domestic fires arise based on different factors such as time of day, building types and income groups.<br>
-<br>
 </p>
 </section>
 <section id="learning-points-and-linking-back-to-our-project-1" class="level3" data-number="6.2.2">
@@ -323,17 +337,9 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="7.5" class="anchored" data-anchor-id="st-order-stat-function"><span class="header-section-number">7.5</span> 1st Order Stat Function</h2>
 <p><img src="proposal/1st Order Stat Function.jpg" class="img-fluid"></p>
 </section>
-<section id="nd-order-kde" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="nd-order-kde"><span class="header-section-number">7.6</span> 2nd Order KDE</h2>
-<p><img src="proposal/2nd Order KDE.jpg" class="img-fluid"></p>
-</section>
-<section id="nd-order-stat-function" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="nd-order-stat-function"><span class="header-section-number">7.7</span> 2nd Order Stat Function</h2>
+<section id="nd-order-stat-function" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="nd-order-stat-function"><span class="header-section-number">7.6</span> 2nd Order Stat Function</h2>
 <p><img src="proposal/2nd Order Stat Function.jpg" class="img-fluid"></p>
-</section>
-<section id="data" class="level2" data-number="7.8">
-<h2 data-number="7.8" class="anchored" data-anchor-id="data"><span class="header-section-number">7.8</span> Data</h2>
-<p><img src="proposal/Data.jpg" class="img-fluid"></p>
 </section>
 </section>
 <section id="data-sources" class="level1" data-number="8">
@@ -417,8 +423,7 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li>Dr Kam Tin Seong - <a href="https://is415-ay2022-23t2.netlify.app/">Course Website</a> and <a href="https://r4gdsa.netlify.app/chap01.html"><u>R for Geospatial Data Science and Analytics</u></a> textbook</li>
 <li>Yikang Rui, Zaigui Yang, Tianlu Qian, Shoaib Khalid, Nan Xia &amp; Jiechen Wang - <a href="https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829">Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China</a></li>
-<li>Alexander Li, Mengyang Liu, Aurimas Racas, Tejas Santanam, Junaid Syed, Przemyslaw Zientala - <a href="https://arxiv.org/abs/2212.06954">Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S</a></li>
-<li>Jan Burdziej - <a href="https://doi.org/10.2478/mgrsd-2018-0037">Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments – a case study of public amenities in Toruń</a></li>
+<li>Olga Špatenková &amp; Alfred Stein - <a href="https://www.tandfonline.com/doi/abs/10.1080/13658810903143634">Identifying factors of influence in the spatial distribution of domestic fires</a></li>
 </ol>
 
 

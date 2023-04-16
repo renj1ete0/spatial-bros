@@ -3,9 +3,17 @@ title: "Spatial Bros"
 description: "Exploring Spatial Point and Network-Constrained Spatial Point Analysis"
 ---
 
+::: callout-note
+Note: The Spatial Bros shiny web application may take up to 3 minutes to load fully, please wait patiently, thank you.
+:::
+
 ## About the Project
 
-The Spatial Bros is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:
+The City of Melbourne has many datasets that are readily available to the public, through [City of Melbourne Open Data](https://data.melbourne.vic.gov.au/pages/home/) and [Data Vic](https://www.data.vic.gov.au/). Yet, this only fufills the first part of 'accessibility of data' through the democratisation of datasets by the government.
+
+Users who are not trained in geospatial analysis or GIS are unable to perform their own analysis to understand spatial pattern or trends behind their neighbourhood which could help citizens or outsiders to understand the city better and possibly formulate citizen efforts.
+
+The Spatial Bros is created to fufill the next step of data democratisation to assist non-technical savvy users in performing geographical point pattern analysis to gain insights from open data. Our application will assist users with 2 kinds of analysis as shown:
 
 Spatial Points Analysis
 
@@ -17,11 +25,15 @@ Spatial Points Analysis
 
 -   1st/2nd Order Spatial Point Pattern Analysis
 
-    -   Network Constrained Kernel Density Map
+    -   Kernel Density Map
 
-    -   Network Constrained G/K Statistical Functions
+    -   1st Order Clarks and Evans Test
+
+    -   2nd Order G/K Statistical Functions
 
 For each of the analyses, the application will provide users with kernel density maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.
+
+## Use Cases
 
 ## Contents
 

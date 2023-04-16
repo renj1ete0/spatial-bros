@@ -36,7 +36,7 @@ Throughout the development of this project, our group would like to perform our 
 
 -   Better understand the capabilities of Network-Constrained Point Pattern Analysis
 
--   Better understanding of 1st and 2nd order Kernel Density Estimation (KDE)
+-   Better understanding of 1st Kernel Density Estimation (KDE), Clarks and Evans Test and 2nd Order (G,K) function analysis
 
 -   Conduct Network-Constrained Point Pattern Analysis density estimation (NetKDE) and (G, K) function analysis
 
@@ -74,6 +74,14 @@ Throughout the development of this project, our group would like to perform our 
 
 -   2nd Order G and K function analysis
 
+## User Interface and Design
+
+-   Allow users to use the Interactive Shiny App easily, even without the user guide
+
+-   Instructions on interpretation of results will be provided on each individual KDE or statistical analysis page to allow users to understand results and formulate their conclusions
+
+-   Explanations of what each function and method that users are allowed to select for them to understand how each function/method works
+
 # Relevant Related Works
 
 ## Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China
@@ -94,13 +102,11 @@ The bandwidth for generating network-constrained kernel density estimation (KDE)
 
 ### Summary
 
-To gain an understanding of how domestic fires arise based on different factors such as time of day, building types and income groups. \
-\
+To gain an understanding of how domestic fires arise based on different factors such as time of day, building types and income groups.\
 
 ### Learning Points and Linking Back to Our Project
 
-The use of the Strauss process for inferring different variables such as building types, income groups is an interesting way to generate random patterns of points where it stimulates the realization of the Strauss process. Developed by Strauss, Kelly and Ripley, it is a model for spatial inhibition that ranges from a strong ‘hard core’ inhibition to a completely random pattern according to gamma and beta value. The results also show that there are significant differences in factors that influence the spatial distribution of fires with the above variables listed. 
-
+The use of the Strauss process for inferring different variables such as building types, income groups is an interesting way to generate random patterns of points where it stimulates the realization of the Strauss process. Developed by Strauss, Kelly and Ripley, it is a model for spatial inhibition that ranges from a strong 'hard core' inhibition to a completely random pattern according to gamma and beta value. The results also show that there are significant differences in factors that influence the spatial distribution of fires with the above variables listed.
 
 # Story Board
 
@@ -124,24 +130,16 @@ The use of the Strauss process for inferring different variables such as buildin
 
 ![](proposal/1st%20Order%20Stat%20Function.jpg)
 
-## 2nd Order KDE
-
-![](proposal/2nd%20Order%20KDE.jpg)
-
 ## 2nd Order Stat Function
 
 ![](proposal/2nd%20Order%20Stat%20Function.jpg)
-
-## Data
-
-![](proposal/Data.jpg)
 
 # Data Sources
 
 Our data sources includes datasets from Australia Bureau of Statistics, City of Melbourne Open Data and Data Vic (State Government of Victoria) due to its large and wide range of datasets available for exploration and analysis.
 
 | **Type**               | **Name**                                                                                                                                     | **Link**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|-------------|-------------|-----------------------------------------------|
+|---------------|---------------|------------------------------------------|
 | Localities             | Localities Outline for Australia (to filter out City of Melbourne)                                                                           | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Local Government Areas | LGA Outline for Australia (to use to filter out City of Melbourne Localities)                                                                | <https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files>                                                                                                                                                                                                                                                                                                                                                                           |
 | Network                | Pedestrian                                                                                                                                   | <https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-network/information/>                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -171,5 +169,4 @@ They could also select and see accessibility of drinking fountains by pedestrian
 
 1.  Dr Kam Tin Seong - [Course Website](https://is415-ay2022-23t2.netlify.app/) and [[R for Geospatial Data Science and Analytics]{.underline}](https://r4gdsa.netlify.app/chap01.html) textbook
 2.  Yikang Rui, Zaigui Yang, Tianlu Qian, Shoaib Khalid, Nan Xia & Jiechen Wang - [Network-constrained and category-based point pattern analysis for Suguo retail stores in Nanjing, China](https://www.tandfonline.com/doi/full/10.1080/13658816.2015.1080829)
-3.  Alexander Li, Mengyang Liu, Aurimas Racas, Tejas Santanam, Junaid Syed, Przemyslaw Zientala - [Ease and Equity of Point of Interest Accessibility via Public Transit in the U.S](https://arxiv.org/abs/2212.06954)
-4.  Jan Burdziej - [Using hexagonal grids and network analysis for spatial accessibility assessment in urban environments -- a case study of public amenities in Toruń](https://doi.org/10.2478/mgrsd-2018-0037)
+3.  Olga Špatenková & Alfred Stein - [Identifying factors of influence in the spatial distribution of domestic fires](https://www.tandfonline.com/doi/abs/10.1080/13658810903143634)

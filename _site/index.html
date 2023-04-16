@@ -93,6 +93,14 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./proposal.html">
  <span class="menu-text">Proposal</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data.qmd">
+ <span class="menu-text">Data Pre-processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://renjieteo.shinyapps.io/SpatialBros/">
+ <span class="menu-text">spatialbros - Shiny Web App</span></a>
+  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros"><i class="bi bi-github" role="img">
 </i> 
@@ -121,6 +129,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#about-the-project" id="toc-about-the-project" class="nav-link active" data-scroll-target="#about-the-project">About the Project</a></li>
+  <li><a href="#use-cases" id="toc-use-cases" class="nav-link" data-scroll-target="#use-cases">Use Cases</a></li>
   <li><a href="#contents" id="toc-contents" class="nav-link" data-scroll-target="#contents">Contents</a></li>
   </ul>
 </nav>
@@ -150,9 +159,24 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: The Spatial Bros shiny web application may take up to 3 minutes to load fully, please wait patiently, thank you.</p>
+</div>
+</div>
 <section id="about-the-project" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-project">About the Project</h2>
-<p>The Spatial Bros is created to assist non-technical savvy users in performing geographical point pattern analysis. Our application will assist users with 2 kinds of analysis as shown:</p>
+<p>The City of Melbourne has many datasets that are readily available to the public, through <a href="https://data.melbourne.vic.gov.au/pages/home/">City of Melbourne Open Data</a> and <a href="https://www.data.vic.gov.au/">Data Vic</a>. Yet, this only fufills the first part of ‘accessibility of data’ through the democratisation of datasets by the government.</p>
+<p>Users who are not trained in geospatial analysis or GIS are unable to perform their own analysis to understand spatial pattern or trends behind their neighbourhood which could help citizens or outsiders to understand the city better and possibly formulate citizen efforts.</p>
+<p>The Spatial Bros is created to fufill the next step of data democratisation to assist non-technical savvy users in performing geographical point pattern analysis to gain insights from open data. Our application will assist users with 2 kinds of analysis as shown:</p>
 <p>Spatial Points Analysis</p>
 <ul>
 <li><p>Network Constrained Spatial Point</p>
@@ -162,11 +186,15 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 <li><p>1st/2nd Order Spatial Point Pattern Analysis</p>
 <ul>
-<li><p>Network Constrained Kernel Density Map</p></li>
-<li><p>Network Constrained G/K Statistical Functions</p></li>
+<li><p>Kernel Density Map</p></li>
+<li><p>1st Order Clarks and Evans Test</p></li>
+<li><p>2nd Order G/K Statistical Functions</p></li>
 </ul></li>
 </ul>
 <p>For each of the analyses, the application will provide users with kernel density maps and perform types of hypothesis testing to allow users to generate insights towards statistical conclusions on the distribution of spatial points along networks.</p>
+</section>
+<section id="use-cases" class="level2">
+<h2 class="anchored" data-anchor-id="use-cases">Use Cases</h2>
 </section>
 <section id="contents" class="level2">
 <h2 class="anchored" data-anchor-id="contents">Contents</h2>

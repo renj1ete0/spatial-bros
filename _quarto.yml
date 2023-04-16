@@ -17,6 +17,10 @@ website:
         text: About Us
       - href: proposal.qmd
         text: Proposal
+      - href: data.qmd
+        text: Data Pre-processing
+      - href: https://renjieteo.shinyapps.io/SpatialBros/
+        text: spatialbros - Shiny Web App
       - icon: github
         href: https://github.com/renjie-teo/spatial-bros
         

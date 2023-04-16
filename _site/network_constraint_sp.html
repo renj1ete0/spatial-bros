@@ -159,12 +159,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  <span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./network_constraint_sp.html" aria-current="page">
- <span class="menu-text">Project (Network Constrained Spatial Point)</span></a>
+    <a class="nav-link" href="./data.qmd">
+ <span class="menu-text">Data Pre-processing</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./sp.html">
- <span class="menu-text">Project (Spatial Point)</span></a>
+    <a class="nav-link" href="https://renjieteo.shinyapps.io/SpatialBros/">
+ <span class="menu-text">spatialbros - Shiny Web App</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/renjie-teo/spatial-bros"><i class="bi bi-github" role="img">
@@ -317,7 +317,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>road_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Roads Network"</span>, <span class="at">layer =</span> <span class="st">"road-corridors"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>road_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(road_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>road_network_lines <span class="ot">&lt;-</span> <span class="fu">st_boundary</span>(road_network) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">st_cast</span>(<span class="st">"LINESTRING"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">st_cast</span>(<span class="st">"LINESTRING"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(road_network_lines, <span class="st">"SpatialBros/rds/road_network_lines.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melbourne-citys-pedestrian-network" class="level3" data-number="1.3.2">
@@ -325,23 +326,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Pedestrian Network/pedestrian-network.geojson"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(pedestrian_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> pedestrian_network[<span class="fu">st_geometry_type</span>(<span class="fu">st_geometry</span>(pedestrian_network)) <span class="sc">==</span> <span class="st">"LINESTRING"</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pedestrian_network <span class="ot">&lt;-</span> pedestrian_network[<span class="fu">st_geometry_type</span>(<span class="fu">st_geometry</span>(pedestrian_network)) <span class="sc">==</span> <span class="st">"LINESTRING"</span>,]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(pedestrian_network, <span class="st">"SpatialBros/rds/pedestrian_network_lines.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melbourne-citys-tram-network" class="level3" data-number="1.3.3">
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="melbourne-citys-tram-network"><span class="header-section-number">1.3.3</span> Melbourne City’s Tram Network</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Trams Network"</span>, <span class="at">layer =</span> <span class="st">"PTV_METRO_TRAM_ROUTE"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(tram_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tram_network <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(tram_network, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(tram_network, <span class="st">"SpatialBros/rds/tram_network_lines.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="localities" class="level3" data-number="1.3.4">
 <h3 data-number="1.3.4" class="anchored" data-anchor-id="localities"><span class="header-section-number">1.3.4</span> Localities</h3>
 <p>Localities file downloaded was entire Australia. Therefore, we need to filter to retrieve localities of Melbourne.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>localities <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Localities"</span>, <span class="at">layer =</span> <span class="st">"vic_localities"</span>) </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#melbourne_localities &lt;- localities[localities$UCL_NAME21 == "Melbourne", ]</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#melbourne_localities &lt;- st_transform(melbourne_localities, crs = 7855)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>localities <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Localities"</span>, <span class="at">layer =</span> <span class="st">"UCL_2021_AUST_GDA2020"</span>) </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>melbourne_localities <span class="ot">&lt;-</span> localities[localities<span class="sc">$</span>UCL_NAME21 <span class="sc">==</span> <span class="st">"Melbourne"</span>, ]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>melbourne_localities <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(melbourne_localities, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(melbourne_localities, <span class="st">"SpatialBros/rds/melbourne_localities.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melbourne-citys-local-government-areas" class="level3" data-number="1.3.5">
@@ -350,7 +354,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>local_government_areas <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Local Government Areas"</span>, <span class="at">layer =</span> <span class="st">"LGA_2022_AUST_GDA2020"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">=</span> local_government_areas[local_government_areas<span class="sc">$</span>LGA_NAME22 <span class="sc">==</span> <span class="st">"Melbourne"</span>,]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(melbourne_local_government_areas, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>melbourne_local_government_areas <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(melbourne_local_government_areas, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(melbourne_local_government_areas, <span class="st">"SpatialBros/rds/melbourne_local_government_areas.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melbourne-citys-business-establishments-spatial-point" class="level3" data-number="1.3.6">
@@ -358,21 +363,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To retrieve only latest as of 2021 business establishments and is not vacant.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>business_est_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Business Establishments Spatial Point/business-establishments-with-address-and-industry-classification.geojson"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(census_year <span class="sc">==</span> <span class="st">"2021"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(trading_name <span class="sc">!=</span> <span class="st">"Vacant"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>business_est_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(business_est_sp, <span class="at">crs =</span> <span class="dv">7855</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>business_est_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(business_est_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(business_est_sp, <span class="st">"SpatialBros/rds/business_establishments.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melbourne-citys-drinking-fountain-spatial-point" class="level3" data-number="1.3.7">
 <h3 data-number="1.3.7" class="anchored" data-anchor-id="melbourne-citys-drinking-fountain-spatial-point"><span class="header-section-number">1.3.7</span> Melbourne City’s Drinking Fountain Spatial Point</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Drinking Fountain Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"drinking-fountains"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(drinking_fountain_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>drinking_fountain_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(drinking_fountain_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(drinking_fountain_sp, <span class="st">"SpatialBros/rds/drinking_fountain.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melbourne-citys-landmarks-spatial-point" class="level3" data-number="1.3.8">
 <h3 data-number="1.3.8" class="anchored" data-anchor-id="melbourne-citys-landmarks-spatial-point"><span class="header-section-number">1.3.8</span> Melbourne City’s Landmarks Spatial Point</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>landmarks_sp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/geospatial/Landmarks Spatial Point"</span>, <span class="at">layer =</span> <span class="st">"landmarks-and-places-of-interest-including-schools-theatres-health-services-spor"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>landmarks_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(landmarks_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>landmarks_sp <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(landmarks_sp, <span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(landmarks_sp, <span class="st">"SpatialBros/rds/landmarks.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="melbourne-citys-childcare-centres-spatial-point" class="level3" data-number="1.3.9">
@@ -387,7 +395,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>childcare_sp_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(childcare_sp, </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(childcare_sp_sf, <span class="st">"SpatialBros/rds/childcare.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="converting-to-spatial-point-data-frame" class="level4" data-number="1.3.9.2">
@@ -410,7 +419,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>public_toilets_sp_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(public_toilets_sp, </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>),</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">7855</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(public_toilets_sp_sf, <span class="st">"SpatialBros/rds/public_toilets.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="converting-to-spatial-point-data-frame-1" class="level4" data-number="1.3.10.2">
@@ -1300,11 +1310,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">width =</span> <span class="dv">50</span>, </span>
 <span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">nsim =</span> <span class="dv">50</span>, </span>
 <span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">resolution =</span> <span class="dv">50</span>,</span>
-<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">verbose =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>                           <span class="at">conf_int =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">agg =</span> <span class="dv">100</span>,</span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>                           <span class="at">verbose =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>                           <span class="at">conf_int =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>kfun_lm_road <span class="ot">&lt;-</span> kfun_lm_road<span class="sc">$</span>plotk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co">#kfun_lm_road &lt;- kfun_lm_road$plotk</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>kfun_lm_road<span class="sc">$</span>plotk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="public-toilets-with-road-network" class="level4" data-number="1.6.4.5">

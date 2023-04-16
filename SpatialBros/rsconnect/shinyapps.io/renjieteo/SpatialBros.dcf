@@ -5,9 +5,9 @@ account: renjieteo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 8807410
-bundleId: 7071888
+bundleId: 7089337
 url: https://renjieteo.shinyapps.io/SpatialBros/
-when: 1681150453.03496
-lastSyncTime: 1681150453.03497
+when: 1681473914.84027
+lastSyncTime: 1681473914.84029
 asMultiple: FALSE
 asStatic: FALSE
